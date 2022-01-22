@@ -1,0 +1,98 @@
+:root {
+    --color1: rgba(0, 0, 0, 0.5);
+    --color2: rgba(0, 0, 0, 0.3);
+    --color3: rgba(0, 0, 0, 0.2);
+    --shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0  ;
+}
+
+html {
+    /* background: rgba(0, 0, 0, 0.8) url("../images/background-sample.jpg"); */
+    background: rgba(0, 0, 0, 0.8);
+    background-blend-mode: darken;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+html, body {
+    color: white;
+    font-family: sans-serif;
+}
+
+p {
+    font-size: 50px;
+}
+
+h1 {
+    font-size: 80px;
+    margin: 0;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--color3); 
+    border-radius: 5px;
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color2); 
+}
+
+.light-container {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    margin: 30px;
+    width: fit-content;
+}
+
+.time-container {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.note-container {
+    width: 30vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+textarea {
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 10px;
+    border: none;
+    color: white;
+    background: var(--color3);
+    resize: none;
+    transition-duration: 0.2s;
+}
+
+textarea:focus {
+    background: var(--color2);
+    outline: none;
+    box-shadow: var(--shadow);
+}
