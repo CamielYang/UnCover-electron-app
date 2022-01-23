@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
     <link rel="stylesheet" href="assets/css/style.css">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<body onload="startTime()">
-    <div class="time-container">
-        <h1 id="clock">00:00:00</h1>
-        <h2>21 januari 2022</h2>
+<body>
+    <div class="fixed-close-button">
+        <button class="material-icons" onclick="closeWindow()">close</button>
     </div>
-    <div class="light-container">
-        <div class="note-container">
-            <h3>Take notes</h3>
-            <textarea cols="30" rows="10"></textarea>
+    
+    <div class="time-container">
+        <h1 id="time">00:00:00</h1>
+        <h2 id="date">1 januari 2022</h2>
+    </div>
+
+    <div class="middle-container">
+        <div class="light-container">
+            <div class="note-container">
+                <div class="flex-row">
+                    <h3>Notes</h3>
+                    <button onclick="clearNote()" class="button button-primary">Clear</button>
+                </div>
+                <textarea id="notepad" cols="30" rows="10"></textarea>
+            </div>
         </div>
     </div>
 
+    <div class="bottom-container">
+        <ul>
+            <li>
+                <button onclick="openBrowser()">Web Browser</button>
+            </li>
+            <li>
+                <button>Discord</button>
+            </li>
+            <li>
+                <button>Settings</button>
+            </li>
+        </ul>
+    </div>
     <script src="assets/js/index.js"></script>
 </body>
 </html>

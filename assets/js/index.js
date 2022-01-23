@@ -1,17 +1,44 @@
-const today = new Date();
+const { ipcRenderer } = require('electron');
 
-console.log("test");
+window.onload = function () {
+    startTime();
+    getDate();
+}
+
 function startTime() {
+    const today = new Date();
     let h = today.getHours();
     let m = today.getMinutes();
     let s = today.getSeconds();
     m = checkTime(m);
     s = checkTime(s);
-    document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+    document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
     setTimeout(startTime, 1000);
-  }
-  
-  function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+}
+
+function checkTime(i) {
+    // add zero in front of numbers < 10
+    if (i < 10) {
+        i = "0" + i;
+    }
     return i;
-  }
+}
+
+function getDate() {
+    const today = new Date();
+    const locale = 'en-US';
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("date").innerHTML = today.toLocaleDateString(locale, options);
+}
+
+function clearNote() {
+    document.getElementById('notepad').value = '';
+}
+
+function closeWindow() {
+    ipcRenderer.invoke('close-window', '');
+}
+
+function openBrowser() {
+    ipcRenderer.invoke('open-web-browser', '');
+}

@@ -6,7 +6,8 @@ const {
 } = require("electron");
 const path = require("path");
 
-var win;
+let win;
+let browser;
 
 function createWindow() {
     win = new BrowserWindow({
@@ -15,8 +16,11 @@ function createWindow() {
         autoHideMenuBar: true,
         transparent: true,
         skipTaskbar: true,
+        fullscreen: true,
         webPreferences: {
             //preload: path.join(__dirname, "preload.js")
+            nodeIntegration: true,
+            contextIsolation: false,
         },
     });
     //win.setIgnoreMouseEvents(true, { forward: true });
@@ -24,9 +28,27 @@ function createWindow() {
     let level = "normal";
 
     minimizeWindow();
-    win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
     win.setAlwaysOnTop(true, level);
+    win.setFullScreenable(false);
     win.loadFile("index.html");
+}
+
+function createWebWindow() {
+    browser = new BrowserWindow({ 
+        width: 800,
+        height: 500,
+        parent: win, 
+        show: false,
+        autoHideMenuBar: true,
+    })
+    browser.on('closed', () => {
+        browser = null
+    })
+    
+    browser.loadURL('https://www.google.com')
+    browser.once('ready-to-show', () => {
+        browser.show()
+    })
 }
 
 function createShortcuts() {
@@ -37,13 +59,15 @@ function createShortcuts() {
 }
 
 function minimizeWindow() {
-    win.maximize();
     win.minimize()
 }
 
 function maximizeWindow() {
-    win.maximize();
-    win.show();
+    win.restore();
+}
+
+function openWebBrowser() {
+    browser ? browser.show() : createWebWindow();
 }
 
 app.whenReady().then(() => {
@@ -58,4 +82,12 @@ app.on("window-all-closed", () => {
 ipcMain.handle("set-ignore-mouse-events", (e, ...args) => {
     const win = BrowserWindow.fromWebContents(e.sender);
     win.setIgnoreMouseEvents(...args);
+});
+
+ipcMain.handle("close-window", (e, ...args) => {
+    minimizeWindow();
+});
+
+ipcMain.handle("open-web-browser", (e, ...args) => {
+    openWebBrowser();
 });

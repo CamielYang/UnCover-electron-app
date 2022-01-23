@@ -2,7 +2,10 @@
     --color1: rgba(0, 0, 0, 0.5);
     --color2: rgba(0, 0, 0, 0.3);
     --color3: rgba(0, 0, 0, 0.2);
+    --textColor: hsl(0, 0%, 100%);
+    --textColorGray: hsl(0, 0%, 75%);
     --shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    --transitionDuration: 0.2s;
 }
 
 * {
@@ -17,11 +20,19 @@ html {
     background-blend-mode: darken;
     background-size: cover;
     min-height: 100vh;
+    user-select: none;
 }
 
 html, body {
-    color: white;
+    color: var(--textColor);
     font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
 }
 
 p {
@@ -58,11 +69,90 @@ h3 {
     background: var(--color2); 
 }
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.button {
+    margin-bottom: 5px;
+    padding: 5px 30px;
+    color: var(--textColor);
+    transition: var(--transitionDuration);
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+    outline: none;
+}
+
+.button-primary:hover  {
+    background: var(--color1);
+    color: var(--textColor);
+}
+
+.button-primary,
+.button-primary:active {
+    background: var(--color2);
+    color: var(--textColor);
+}
+
 .light-container {
+    padding: 20px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
     margin: 30px;
     width: fit-content;
+}
+
+.middle-container {
+    flex: 1;
+}
+
+.fixed-close-button {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
+
+.fixed-close-button button {
+    background: none;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    color: var(--textColor);
+    transition: var(--transitionDuration);
+}
+
+.fixed-close-button button:hover {
+    color: var(--textColorGray);
+}
+
+.bottom-container {
+    margin: 30px;
+}
+
+.bottom-container ul {
+    display: flex;
+}
+
+.bottom-container ul li {
+    list-style-type: none;
+    margin-right: 50px;
+}
+
+.bottom-container ul li button {
+    all: unset;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 50px;
+    color: var(--textColorGray);
+    transition: var(--transitionDuration);
+}
+
+.bottom-container ul li button:hover {
+    color: var(--textColor);
 }
 
 .time-container {
@@ -74,10 +164,8 @@ h3 {
 
 .note-container {
     width: 30vw;
-    height: 30vh;
     display: flex;
     flex-direction: column;
-    padding: 20px;
 }
 
 textarea {
@@ -88,7 +176,7 @@ textarea {
     color: white;
     background: var(--color3);
     resize: none;
-    transition-duration: 0.2s;
+    transition: var(--transitionDuration);
 }
 
 textarea:focus {
@@ -96,3 +184,5 @@ textarea:focus {
     outline: none;
     box-shadow: var(--shadow);
 }
+
+
