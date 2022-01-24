@@ -30,7 +30,7 @@ function createWindow() {
     minimizeWindow();
     win.setAlwaysOnTop(true, level);
     win.setFullScreenable(false);
-    win.loadFile("index.html");
+    win.loadFile("src/renderer/index.html");
 }
 
 function createWebWindow() {
