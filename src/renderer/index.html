@@ -10,12 +10,25 @@
 
 <body>
     <div class="fixed-close-button">
-        <button class="material-icons" id="closeWinBtn">close</button>
+        <button class="material-icons icon-button" id="closeWinBtn">close</button>
     </div>
     
-    <div class="time-container">
-        <h1 id="time">00:00:00</h1>
-        <h2 id="date">1 januari 2022</h2>
+    <div class="top-container">
+        <div class="top-outer-container">
+            <div class="light-container margin-none">
+                <div class="volume-container">
+                    <button class="material-icons icon-button" id="volumeIcon">volume_up</button>
+                    <input type="range" id="volumebar" min="1" max="100" value="0">
+                    <p id="volume">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="time-container">
+            <h1 id="time">00:00:00</h1>
+            <h2 id="date">1 januari 2022</h2>
+        </div>
+        <div class="top-outer-container">
+        </div>
     </div>
 
     <div class="middle-container">
@@ -36,7 +49,7 @@
                 <button id="openWebBtn">Web Browser</button>
             </li>
             <li>
-                <button>Discord</button>
+                <button id="openWebBtn">Discord</button>
             </li>
             <li>
                 <button>Settings</button>

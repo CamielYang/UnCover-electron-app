@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^16.0.7"
+  },
+  "dependencies": {
+    "loudness": "^0.4.1"
   }
 }

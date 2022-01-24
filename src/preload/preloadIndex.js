@@ -1,4 +1,5 @@
-const { ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
+const loudness = require('loudness')
 
 // Waits until the view is completely loaded
 window.addEventListener("DOMContentLoaded", () => {
@@ -14,4 +15,13 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log("click");
         ipcRenderer.invoke('open-web-browser', '');
     });
+
+    document.getElementById("openWebBtn").addEventListener("click", function() {
+        console.log("click");
+        ipcRenderer.invoke('open-web-browser', '');
+    });
 });
+contextBridge.exposeInMainWorld("api", {
+    getVolume: () => loudness.getVolume(),
+    setVolume: (value) => loudness.setVolume(value),
+})
