@@ -3,6 +3,7 @@ const {
     BrowserWindow,
     ipcMain,
     globalShortcut,
+    nativeTheme,
 } = require("electron");
 const path = require("path");
 

@@ -1,4 +1,5 @@
 const volumebar =  document.getElementById("volumebar");
+const volumeIcon = document.getElementById("volumeIcon");
 
 window.onload = function () {
     startTime();
@@ -6,7 +7,8 @@ window.onload = function () {
     getVolume();
 }
 
-/* DATE AND TIME */ 
+/* DATE AND TIME */
+// Update time every second
 function startTime() {
     const today = new Date();
     let h = today.getHours();
@@ -20,6 +22,7 @@ function startTime() {
     setTimeout(startTime, 1000);
 }
 
+// Return right format
 function checkTime(i) {
     // add zero in front of numbers < 10
     if (i < 10) {
@@ -28,6 +31,7 @@ function checkTime(i) {
     return i;
 }
 
+// get current date
 function getDate() {
     const today = new Date();
     const locale = 'en-US';
@@ -38,45 +42,68 @@ function getDate() {
 
 
 /* VOLUME CONTROL */ 
-async function getVolume() {
-    const value = await api.getVolume();
-
-    updateVolumeText(value);
-    volumebar.value = value;
-    updateVolumeIcon(value);
-
-    setTimeout(getVolume, 500);
-}
-
+// Update the text that represents the volume level
 function updateVolumeText(value) {
     document.getElementById("volume").innerText = value;
 }
 
+// Set volume icon by icon name
+function setVolumeIcon(iconName) {
+    volumeIcon.innerText = iconName;
+}
+
+// Update everything related to volume
+function updateAllVolume(value) {
+    updateVolumeText(value);
+    volumebar.value = value;
+    updateVolumeIcon(value);
+}
+
+// Get the system volume (every second)
+async function getVolume() {
+    const value = await api.getVolume();
+
+    updateAllVolume(value);
+
+    setTimeout(getVolume, 2000);
+}
+
+// Event for updating audio level on slider value
 volumebar.addEventListener("input", async function() {
     let value = volumebar.value;
 
-    updateVolumeText(value);
+    await api.setMuted(false);
     await api.setVolume(value);
+    updateVolumeText(value);
+    updateVolumeIcon(value);
 });
 
-function updateVolumeIcon(value) {
-    const volumeIcon = document.getElementById("volumeIcon");
+// Event for toggling mute
+volumeIcon.addEventListener("click", async function() {
+    const mute = await api.getMuted();
+    await api.setMuted(!mute);
+    updateVolumeIcon(0);
+});
 
-    switch (true) {
-        case (value == 0):
-            volumeIcon.innerText = 'volume_off';
+// Update icon based on it's value
+async function updateVolumeIcon(value) {
+    const mute = await api.getMuted();
+    
+    switch (!mute) {
+        case (value <= 0):
+            setVolumeIcon('volume_off');
             break;
         case (value < 25):
-            volumeIcon.innerText = 'volume_mute';
+            setVolumeIcon('volume_mute');
             break;
         case (value < 70):
-            volumeIcon.innerText = 'volume_down';
+            setVolumeIcon('volume_down');
             break;
-        case (value < 100):
-            volumeIcon.innerText = 'volume_up';
+        case (value <= 100):
+            setVolumeIcon('volume_up');
             break;
         default:
-            volumeIcon.innerText = 'volume_up';
+            setVolumeIcon('volume_off');
             break;
     }
 }

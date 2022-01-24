@@ -24,4 +24,6 @@ window.addEventListener("DOMContentLoaded", () => {
 contextBridge.exposeInMainWorld("api", {
     getVolume: () => loudness.getVolume(),
     setVolume: (value) => loudness.setVolume(value),
+    getMuted: () => loudness.getMuted(),
+    setMuted: (bool) => loudness.setMuted(bool),
 })

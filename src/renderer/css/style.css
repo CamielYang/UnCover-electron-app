@@ -84,6 +84,15 @@ h3 {
 .icon-button {
     background: none;
     border: none;
+    font-size: 36px;
+    cursor: pointer;
+    color: var(--textColorGray);
+    transition: var(--transitionDuration);
+}
+
+.icon-button:hover,
+.icon-button:focus {
+    color: var(--textColor);
 }
 
 .button {
@@ -184,18 +193,6 @@ input[type=range]::-webkit-slider-thumb {
     position: absolute;
     top: 30px;
     right: 30px;
-}
-
-.fixed-close-button button {
-    font-size: 36px;
-    cursor: pointer;
-    color: var(--textColorGray);
-    transition: var(--transitionDuration);
-}
-
-.fixed-close-button button:hover,
-.fixed-close-button button:focus {
-    color: var(--textColor);
 }
 
 
