@@ -15,8 +15,8 @@
 }
 
 html {
-    background: rgba(0, 0, 0, 0.8) url("../images/background-sample.jpg");
-    /* background: rgba(0, 0, 0, 0.8); */
+    /* background: rgba(0, 00, 0, 0.75) url("../images/background-sample.jpg"); */
+    background: rgba(0, 0, 0, 0.75);
     background-blend-mode: darken;
     background-size: cover;
     min-height: 100vh;
@@ -66,7 +66,7 @@ h3 {
   
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color2); 
+    background: var(--color2);
 }
 
 .flex-row {
@@ -120,16 +120,17 @@ h3 {
     border: none;
     font-size: 36px;
     cursor: pointer;
-    color: var(--textColor);
+    color: var(--textColorGray);
     transition: var(--transitionDuration);
 }
 
 .fixed-close-button button:hover {
-    color: var(--textColorGray);
+    color: var(--textColor);
 }
 
 .bottom-container {
-    margin: 30px;
+    padding: 40px 30px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,1) 85%);
 }
 
 .bottom-container ul {

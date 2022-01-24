@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 window.onload = function () {
     startTime();
     getDate();
@@ -31,14 +29,7 @@ function getDate() {
     document.getElementById("date").innerHTML = today.toLocaleDateString(locale, options);
 }
 
-function clearNote() {
+// Event for clearing the notepad on click
+document.getElementById("clearNotepad").addEventListener("click", function() {
     document.getElementById('notepad').value = '';
-}
-
-function closeWindow() {
-    ipcRenderer.invoke('close-window', '');
-}
-
-function openBrowser() {
-    ipcRenderer.invoke('open-web-browser', '');
-}
+});

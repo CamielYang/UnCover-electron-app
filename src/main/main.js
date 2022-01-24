@@ -18,16 +18,14 @@ function createWindow() {
         skipTaskbar: true,
         fullscreen: true,
         webPreferences: {
-            //preload: path.join(__dirname, "preload.js")
-            nodeIntegration: true,
-            contextIsolation: false,
+            preload: path.join(__dirname, "../../src/preload/preloadIndex.js"),
         },
     });
     //win.setIgnoreMouseEvents(true, { forward: true });
 
     let level = "normal";
 
-    minimizeWindow();
+    //minimizeWindow();
     win.setAlwaysOnTop(true, level);
     win.setFullScreenable(false);
     win.loadFile("src/renderer/index.html");

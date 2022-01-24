@@ -10,7 +10,7 @@
 
 <body>
     <div class="fixed-close-button">
-        <button class="material-icons" onclick="closeWindow()">close</button>
+        <button class="material-icons" id="closeWinBtn">close</button>
     </div>
     
     <div class="time-container">
@@ -23,7 +23,7 @@
             <div class="note-container">
                 <div class="flex-row">
                     <h3>Notes</h3>
-                    <button onclick="clearNote()" class="button button-primary">Clear</button>
+                    <button id="clearNotepad" class="button button-primary">Clear</button>
                 </div>
                 <textarea id="notepad" cols="30" rows="10"></textarea>
             </div>
@@ -33,7 +33,7 @@
     <div class="bottom-container">
         <ul>
             <li>
-                <button onclick="openBrowser()">Web Browser</button>
+                <button id="openWebBtn">Web Browser</button>
             </li>
             <li>
                 <button>Discord</button>
