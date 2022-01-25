@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <link rel="stylesheet" href="../css/webBrowser.css">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div class="browser-navbar">
+        <ul>
+            <li>
+                <button id="backBtn" class="material-icons icon-button">navigate_before</button>
+            </li>
+            <li>
+                <button id="forwardBtn" class="material-icons icon-button">navigate_next</button>
+            </li>
+            <li>
+                <button id="reloadBtn" class="material-icons icon-button">refresh</button>
+            </li>
+            <li>
+                <button id="homeBtn" class="material-icons icon-button">home</button>
+            </li>
+            <li class="li-flex-one">
+              <input id="addressBar" class="address-bar" type="url">
+            </li>
+        </ul>
+    </div>
+    <webview src="https://www.google.com"></webview>
+    <script src="../js/webBrowser.js"></script>
+</body>
+</html>

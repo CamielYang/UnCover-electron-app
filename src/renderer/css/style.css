@@ -227,7 +227,7 @@ textarea:focus {
 /* BOTTOM CONTAINER STYLING */
 .bottom-container {
     padding: 40px 30px;
-    /* background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,1) 85%); */
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,1) 85%);
 }
 
 .bottom-container ul {
@@ -250,7 +250,7 @@ textarea:focus {
 }
 
 .bottom-container ul li button:hover,
-.bottom-container ul li button:focus {
+.bottom-container ul li button:focus-visible {
     color: var(--textColor);
 }
 

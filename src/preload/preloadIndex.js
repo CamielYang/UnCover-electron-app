@@ -12,15 +12,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // Event for opening web browser on click
     document.getElementById("openWebBtn").addEventListener("click", function() {
-        console.log("click");
-        ipcRenderer.invoke('open-web-browser', '');
-    });
-
-    document.getElementById("openWebBtn").addEventListener("click", function() {
-        console.log("click");
         ipcRenderer.invoke('open-web-browser', '');
     });
 });
+
 contextBridge.exposeInMainWorld("api", {
     getVolume: () => loudness.getVolume(),
     setVolume: (value) => loudness.setVolume(value),

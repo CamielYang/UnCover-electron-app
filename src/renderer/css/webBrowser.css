@@ -1,0 +1,85 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0  ;
+}
+
+html, body {
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+button:focus,
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+webview {
+    background: white;
+    height: 100%;
+}
+
+.browser-navbar {
+    padding: 0 20px;
+    background: hsl(0, 0%, 95%);
+    width: 100vw;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+.browser-navbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.browser-navbar li {
+    margin: 10px;
+}
+
+.browser-navbar .li-flex-one {
+    flex: 1;
+}
+
+.address-bar {
+    border: unset;
+    padding: 0 10px;
+    width: 100%;
+    height: 25px;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    transition-duration: 0.2s;
+    color: gray;
+}
+
+.address-bar:hover {
+    border-color: lightgray;
+    color: black;
+
+}
+
+.address-bar:focus {
+    border-color: gray;
+    color: black;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    color: gray;
+    transition: 0.2s;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+    color: darkgray;
+}
