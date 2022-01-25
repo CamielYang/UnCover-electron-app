@@ -42,6 +42,7 @@ input:focus {
 }
 
 webview {
+    background: var(--navbarColor);
     height: 100%;
 }
 
