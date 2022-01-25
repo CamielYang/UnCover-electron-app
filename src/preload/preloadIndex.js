@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", () => {
     
     // Event for closing the main window on click
     document.getElementById("closeWinBtn").addEventListener("click", function() {
-        console.log("click");
         ipcRenderer.invoke('close-window', '');
     });
 

@@ -1,5 +1,5 @@
 {
-  "name": "my-electron-app",
+  "name": "UnCover",
   "version": "1.0.0",
   "description": "my-electron-app",
   "main": "src/main/main.js",
