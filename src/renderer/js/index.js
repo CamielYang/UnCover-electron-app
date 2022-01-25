@@ -1,10 +1,12 @@
 const volumebar =  document.getElementById("volumebar");
 const volumeIcon = document.getElementById("volumeIcon");
+let value;
+let mute;
 
 window.onload = function () {
     startTime();
     getDate();
-    getVolume();
+    updateAllVolume();
 }
 
 /* DATE AND TIME */
@@ -53,42 +55,40 @@ function setVolumeIcon(iconName) {
 }
 
 // Update everything related to volume
-function updateAllVolume(value) {
+async function updateAllVolume() {
+    value = await api.getVolume();
+    mute = await api.getMuted();
+
     updateVolumeText(value);
     volumebar.value = value;
-    updateVolumeIcon(value);
-}
+    updateVolumeIcon(value, mute)
 
-// Get the system volume (every second)
-async function getVolume() {
-    const value = await api.getVolume();
-
-    updateAllVolume(value);
-
-    setTimeout(getVolume, 2000);
+    setTimeout(updateAllVolume, 2000);
 }
 
 // Event for updating audio level on slider value
 volumebar.addEventListener("input", async function() {
-    let value = volumebar.value;
-
-    await api.setMuted(false);
-    await api.setVolume(value);
+    mute = false;
+    value = volumebar.value;
+    
     updateVolumeText(value);
     updateVolumeIcon(value);
+
+    await api.setVolume(value);
+    await api.setMuted(mute);
 });
 
 // Event for toggling mute
 volumeIcon.addEventListener("click", async function() {
-    const mute = await api.getMuted();
-    await api.setMuted(!mute);
-    updateVolumeIcon(0);
+    mute = !mute;
+
+    updateVolumeIcon(value, mute);
+    
+    await api.setMuted(mute);
 });
 
 // Update icon based on it's value
-async function updateVolumeIcon(value) {
-    const mute = await api.getMuted();
-    
+function updateVolumeIcon(value, mute) {    
     switch (!mute) {
         case (value <= 0):
             setVolumeIcon('volume_off');

@@ -91,7 +91,7 @@ h3 {
 }
 
 .icon-button:hover,
-.icon-button:focus {
+.icon-button:focus-visible {
     color: var(--textColor);
 }
 
@@ -137,7 +137,7 @@ input[type=range] {
 }
   
 input[type=range]:hover,
-input[type=range]:focus {
+input[type=range]:focus-visible {
     opacity: 1;
 }
 
@@ -227,7 +227,7 @@ textarea:focus {
 /* BOTTOM CONTAINER STYLING */
 .bottom-container {
     padding: 40px 30px;
-    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,1) 85%);
+    /* background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,1) 85%); */
 }
 
 .bottom-container ul {
