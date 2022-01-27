@@ -4,14 +4,61 @@
   "description": "my-electron-app",
   "main": "src/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
-  "author": "",
+  "author": "Camiel Yang",
   "license": "MIT",
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^16.0.7"
   },
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
     "loudness": "^0.4.1"
-  }
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "UnCover"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CamielYang/UnCover-electron-app.git"
+  },
+  "keywords": [
+    "Overlay",
+    "App"
+  ],
+  "bugs": {
+    "url": "https://github.com/CamielYang/UnCover-electron-app/issues"
+  },
+  "homepage": "https://github.com/CamielYang/UnCover-electron-app#readme"
 }

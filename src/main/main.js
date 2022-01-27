@@ -7,6 +7,7 @@ const {
     Menu,
 } = require("electron");
 const path = require("path");
+const { getMaxListeners } = require("process");
 const webBrowser = require("./webBrowser/webBrowserMain");
 
 let win;
@@ -77,6 +78,10 @@ function maximizeWindow() {
     win.restore();
 }
 
+function getMainWindow() {
+    return win;
+}
+
 app.whenReady().then(() => {
     createWindow();
     createShortcuts();
@@ -91,15 +96,10 @@ ipcMain.handle("close-window", (e, ...args) => {
     minimizeWindow();
 });
 
-
 // ipcMain.handle("set-ignore-mouse-events", (e, ...args) => {
 //     const win = BrowserWindow.fromWebContents(e.sender);
 //     win.setIgnoreMouseEvents(...args);
 // });
 
-
-/* BROWSER FUNCTIONS */
-ipcMain.handle("open-web-browser", (e, ...args) => {
-    webBrowser.openWebBrowser(win);
-});
+exports.getMainWindow = getMainWindow;
 

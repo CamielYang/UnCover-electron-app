@@ -105,3 +105,8 @@ webview {
 .icon-button:focus-visible {
     color: var(--colorLight);
 }
+
+.icon-button:disabled {
+    color: var(--colorLight);
+    cursor: default;
+}

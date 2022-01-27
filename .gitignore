@@ -1,3 +1,7 @@
+# Distributed application
+out/
+
+
 # Logs
 logs
 *.log

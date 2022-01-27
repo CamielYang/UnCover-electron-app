@@ -37,6 +37,7 @@ address.addEventListener("keydown", function(event) {
 // Event on webview page load
 webview.addEventListener('load-commit', (e) => {
     updateAddressBar(webview.getURL())
+    updateNavbar();
 })
 
 // Update AddressBar text value
@@ -44,17 +45,20 @@ function updateAddressBar(url) {
     address.value = url;
 }
 
+function updateNavbar() {
+    back.disabled = webview.canGoBack() ? false : true;
+    forward.disabled = webview.canGoForward() ? false : true;
+}
+
 // Load the url in the webview after checked the url
 function loadURL(url) {
     const newUrl = checkURL(url);
     webview.loadURL(newUrl);
-
-    return newUrl;
 }
 
-// Check url for save for secure address
+// Check url for save for secure address protocol
 function checkURL(url) {
-    if(url.toLowerCase().startsWith('https://www.')) {
+    if(url.toLowerCase().startsWith('https://')) {
         return url;
     }
     return 'https://' + url;
