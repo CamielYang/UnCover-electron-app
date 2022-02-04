@@ -1,22 +1,25 @@
 const { contextBridge, ipcRenderer, clipboard } = require('electron');
 const loudness = require('loudness')
-
-let currentImage = "";
-let currentText = "";
+const clipboardListener = require('clipboard-event');
+clipboardListener.startListening();
 
 // Waits until the view is completely loaded
 window.addEventListener("DOMContentLoaded", () => {    
     const modal = document.getElementById("myModal");
     const contentDiv = document.getElementById("clipboard");
 
-    window.onload = function () {
+    window.onload = () => {
         updateClipboard();
     }
-
+    
     // Clipboard
     // Event for clearing clipboard
     document.getElementById("clearClipboard").addEventListener("click", function() {
         clipboard.clear();
+    });
+    
+    clipboardListener.on('change', () => {
+        updateClipboard();
     });
 
     function updateClipboard() {
@@ -32,32 +35,25 @@ window.addEventListener("DOMContentLoaded", () => {
         else {
             setClipboardEmpty();
         }
-
-        setTimeout(updateClipboard, 1000);
     }
 
     function setClipboardImage(image) {
-        if (currentImage != image.toDataURL()) {
-            const modal = document.getElementById("modalImage");
-            currentImage = image.toDataURL();
-            contentDiv.innerHTML = `<img class="clipboard-image" id="clipboardImg" src="${currentImage}">`;
-            modal.src = currentImage;
-            
-            const clipboardImage = document.getElementById("clipboardImg");
-            clipboardImage.onclick = function() {
-                setModal();
-            }
+        const modal = document.getElementById("modalImage");
+        const imageUrl = image.toDataURL();
+        contentDiv.innerHTML = `<img class="clipboard-image" id="clipboardImg" src="${imageUrl}">`;
+        modal.src = imageUrl;
+        
+        const clipboardImage = document.getElementById("clipboardImg");
+        clipboardImage.onclick = function() {
+            setModal();
         }
     }
 
     function setClipboardText(text) {
-        if (ignoreLineBreaks(currentText) != ignoreLineBreaks(text)) {
-            currentText = text;
             contentDiv.innerHTML = `
             <div class="clipboard-text">
                 <p >${escapeHtml(text)}</p>
             </div>`;
-        }
     }
 
     function setClipboardEmpty() {
@@ -86,11 +82,11 @@ window.addEventListener("DOMContentLoaded", () => {
     
     /* MODAL FUNCTIONS */
     function setModal() {
-        modal.style.display = "block";
+        modal.classList.remove("hidden");
     }
     
     function unsetModal() {
-        modal.style.display = "none";
+        modal.classList.add("hidden");
     }
     
     // When the user clicks anywhere outside of the modal, close it

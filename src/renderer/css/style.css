@@ -60,7 +60,6 @@ h3 {
 
 /* Modal background */
 .modal {
-    display: none;
     position: fixed;
     z-index: 1;
     padding-top: 100px;
@@ -70,6 +69,21 @@ h3 {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.6);
+    animation-name: fade-in;
+    animation-duration: var(--transitionDuration);
+}
+
+@keyframes fade-in {
+    from {
+  	opacity: 0;
+  }
+  to {
+ 	opacity: 1;
+  }
+}
+
+.hidden {
+    display: none;
 }
 
 .image-modal {
@@ -82,6 +96,17 @@ h3 {
 .image-modal img {
     max-width: 80vw;
     max-height: 80vh;
+}
+
+/* Image Animation */
+.image-modal img {  
+    animation-name: zoom;
+    animation-duration: var(--transitionDuration);
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
 }
 
 /* width and height */
@@ -187,7 +212,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 15px;
     height: 15px;
     background: var(--textColor);
-    background: black;
+    background: var(--textColor);
     cursor: pointer;
 }
 
@@ -263,7 +288,8 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .note-container {
-    width: 35vw;
+    aspect-ratio: 16/10;
+    max-width: 35vw;
     display: flex;
     flex-direction: column;
 }

@@ -33,7 +33,6 @@ function createWebWindow() {
     })
 
     browser.webContents.on('did-attach-webview', (e, content) => {
-        console.log("new window");
         content.setWindowOpenHandler(({ url }) => {
             createNewWindow(url);
             return { action: 'deny' }
