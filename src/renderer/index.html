@@ -32,15 +32,39 @@
     </div>
 
     <div class="middle-container">
-        <div class="light-container">
-            <div class="note-container">
-                <div class="flex-row">
-                    <h3>Notes</h3>
-                    <button id="clearNotepad" class="button button-primary">Clear</button>
+        <div class="middle-flex-row space-between">
+            <div class="middle-flex-colum-start">
+                <div class="light-container">
+                    <h1>Container</h1>
                 </div>
-                <textarea id="notepad" cols="30" rows="10"></textarea>
+                <div class="light-container">
+                    <h1>Container</h1>
+                </div>
             </div>
-        </div>
+            <div class="middle-flex-column-end">
+                <div class="light-container note-container">
+                    <div class="flex-row space-between">
+                        <h3>Notes</h3>
+                        <div class="flex-row flex-buttons">
+                            <button id="#" class="button button-primary">Save</button>
+                            <button id="clearNotepad" class="button button-primary">Clear</button>
+                        </div>
+                    </div>
+                    <textarea id="notepad" cols="30" rows="8"></textarea>
+                </div>
+                <div class="light-container clipboard-container">
+                    <div class="flex-row space-between">
+                        <h3>Clipboard</h3>
+                        <div class="flex-row flex-buttons">
+                            <button id="#" class="button button-primary">Save</button>
+                            <button id="clearClipboard" class="button button-primary">Clear</button>
+                        </div>
+                    </div>
+                    <div class="clipboard-content" id="clipboard">
+                    </div>
+                </div>
+            </div>
+        </div>    
     </div>
 
     <div class="bottom-container">
@@ -56,6 +80,14 @@
             </li>
         </ul>
     </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="image-modal">
+            <img id="modalImage">
+        </div>
+    </div>
+
     <script src="js/index.js"></script>
 </body>
 </html>

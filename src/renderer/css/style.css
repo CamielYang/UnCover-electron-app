@@ -28,6 +28,10 @@ html, body {
     font-family: sans-serif;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -54,13 +58,41 @@ h3 {
     margin-bottom: 10px;
 }
 
-/* width */
+/* Modal background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.image-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.image-modal img {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+/* width and height */
 ::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
 }
   
 /* Track */
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
     background: transparent;
 }
    
@@ -78,7 +110,14 @@ h3 {
 .flex-row {
     display: flex;
     flex-direction: row;
+}
+
+.space-between {
     justify-content: space-between;
+}
+
+.flex-buttons button {
+    margin-left: 5px;
 }
 
 .icon-button {
@@ -121,8 +160,9 @@ h3 {
     padding: 20px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
-    margin: 30px;
+    margin: 15px 30px;
     width: fit-content;
+    height: fit-content;
 }
 
 input[type=range] {
@@ -147,6 +187,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 15px;
     height: 15px;
     background: var(--textColor);
+    background: black;
     cursor: pointer;
 }
 
@@ -158,6 +199,7 @@ input[type=range]::-webkit-slider-thumb {
 
 /* TOP CONTAINER STYLING */
 .top-container {
+    flex: 1;
     margin: 30px;
     display: flex;
     flex-direction: row;
@@ -198,13 +240,90 @@ input[type=range]::-webkit-slider-thumb {
 
 /* MIDDLE CONTAINER STYLING */
 .middle-container {
-    flex: 1;
+    height: 65vh;
+}
+
+.middle-flex-row {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.middle-flex-column-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.middle-flex-column-end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .note-container {
-    width: 30vw;
+    width: 35vw;
     display: flex;
     flex-direction: column;
+}
+
+.clipboard-container {
+    flex: 1;
+    display: flex;
+    aspect-ratio: 16/11;
+    max-width: 35vw;
+    max-height: 250px;
+    flex-direction: column;
+}
+
+.clipboard-content {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: var(--color3);
+}
+
+.clipboard-empty {
+    display: flex;
+    height: 100%;
+    font-weight: bold;
+    color: var(--textColorGray);
+    justify-content: center;
+    align-items: center;
+}
+
+.clipboard-text {
+    padding: 10px;
+    overflow-y: scroll;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.clipboard-text p {
+    white-space: pre;
+}
+
+.clipboard-image {
+    object-fit: contain;
+    max-height: 100%;
+    max-width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    transition-duration: var(--transitionDuration);
+}
+
+.clipboard-image:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.clipboard-image::before {
+    color: var(--textColorGray);
+    content: "Error loading image";
 }
 
 textarea {

@@ -1,5 +1,6 @@
 const volumebar =  document.getElementById("volumebar");
 const volumeIcon = document.getElementById("volumeIcon");
+const tempPath = "../templates/";
 let value;
 let mute;
 
