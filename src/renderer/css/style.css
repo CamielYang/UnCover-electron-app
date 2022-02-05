@@ -60,6 +60,7 @@ h3 {
 
 /* Modal background */
 .modal {
+    visibility: visible;
     position: fixed;
     z-index: 1;
     padding-top: 100px;
@@ -69,21 +70,13 @@ h3 {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.6);
-    animation-name: fade-in;
-    animation-duration: var(--transitionDuration);
-}
-
-@keyframes fade-in {
-    from {
-  	opacity: 0;
-  }
-  to {
- 	opacity: 1;
-  }
+    opacity: 1;
+    transition-duration: var(--transitionDuration);
 }
 
 .hidden {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
 }
 
 .image-modal {
@@ -93,6 +86,11 @@ h3 {
     transform: translate(-50%, -50%);
 }
 
+.modal.hidden .image-modal img {
+    max-width: 0;
+    max-height: 0;
+}
+
 .image-modal img {
     max-width: 80vw;
     max-height: 80vh;
@@ -100,13 +98,7 @@ h3 {
 
 /* Image Animation */
 .image-modal img {  
-    animation-name: zoom;
-    animation-duration: var(--transitionDuration);
-}
-
-@keyframes zoom {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
+    transition-duration: var(--transitionDuration);
 }
 
 /* width and height */
@@ -212,14 +204,12 @@ input[type=range]::-webkit-slider-thumb {
     width: 15px;
     height: 15px;
     background: var(--textColor);
-    background: var(--textColor);
     cursor: pointer;
 }
 
 .margin-none {
     margin: 0;
 }
-
 
 
 /* TOP CONTAINER STYLING */

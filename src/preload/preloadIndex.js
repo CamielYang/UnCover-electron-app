@@ -7,21 +7,24 @@ clipboardListener.startListening();
 window.addEventListener("DOMContentLoaded", () => {    
     const modal = document.getElementById("myModal");
     const contentDiv = document.getElementById("clipboard");
+    const tempPath = "templates/";
 
     window.onload = () => {
         updateClipboard();
     }
     
-    // Clipboard
+    /* CLIPBOARD FUNTIONS */
     // Event for clearing clipboard
     document.getElementById("clearClipboard").addEventListener("click", function() {
         clipboard.clear();
     });
     
+    // Update clipboard when clipboard change event is fired
     clipboardListener.on('change', () => {
         updateClipboard();
     });
 
+    // Update cllipboard content
     function updateClipboard() {
         const text = clipboard.readText();
         const image = clipboard.readImage();
@@ -37,25 +40,26 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Set the image in the clipboard content
     function setClipboardImage(image) {
-        const modal = document.getElementById("modalImage");
         const imageUrl = image.toDataURL();
         contentDiv.innerHTML = `<img class="clipboard-image" id="clipboardImg" src="${imageUrl}">`;
-        modal.src = imageUrl;
         
         const clipboardImage = document.getElementById("clipboardImg");
         clipboardImage.onclick = function() {
-            setModal();
+            loadImageModal(imageUrl);
         }
     }
 
+    // Set the text in the clipboard content
     function setClipboardText(text) {
-            contentDiv.innerHTML = `
-            <div class="clipboard-text">
-                <p >${escapeHtml(text)}</p>
-            </div>`;
+        contentDiv.innerHTML = `
+        <div class="clipboard-text">
+            <p >${escapeHtml(text)}</p>
+        </div>`;
     }
 
+    // Default empty clipboard
     function setClipboardEmpty() {
         contentDiv.innerHTML = `
         <p class="clipboard-empty">
@@ -63,6 +67,7 @@ window.addEventListener("DOMContentLoaded", () => {
         </p>`;
     }
     
+    // Convert plain html to html entities to prevent xss injection and html interruption
     function escapeHtml(text) {
         var map = {
           '&': '&amp;',
@@ -73,18 +78,15 @@ window.addEventListener("DOMContentLoaded", () => {
         };
         
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
-    
-    function ignoreLineBreaks(text) {
-        return text.replace(/(\r\n|\n|\r)/gm, "")
-    }
-    
+    }   
     
     /* MODAL FUNCTIONS */
+    // Show modal
     function setModal() {
         modal.classList.remove("hidden");
     }
     
+    // Hide modal
     function unsetModal() {
         modal.classList.add("hidden");
     }
@@ -96,17 +98,21 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    async function loadModal(file) {
-        let request = await fetch(file);
+    // Load modal content by fetching a template
+    async function loadModal(file) {  
+        let request = await fetch(tempPath + file);
         let response = await request.text();
         document.getElementById("myModal").innerHTML = response;
-    
+        
         setModal();
     }
     
-    // Image modal
-    function loadImageModal() {
-        loadModal(tempPath + "imageModal.html");
+    // Load modal that previews the image
+    async function loadImageModal(image) {
+        await loadModal("imageModal.html");
+        
+        const modal = document.getElementById("modalImage");
+        modal.src = image;
     }
 
     /* ipcRenderers */
