@@ -7,8 +7,6 @@ const {
     Menu,
 } = require("electron");
 const path = require("path");
-const { getMaxListeners } = require("process");
-const webBrowser = require("./webBrowser/webBrowserMain");
 
 let win;
 let tray;

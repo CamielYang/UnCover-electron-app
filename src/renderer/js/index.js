@@ -3,6 +3,7 @@ const volumeIcon = document.getElementById("volumeIcon");
 const modal = document.getElementById("myModal");
 const contentDiv = document.getElementById("clipboard");
 const tempPath = "templates/";
+const currentCity = "Hoogeveen";
 let value;
 let mute;
 
@@ -11,6 +12,7 @@ window.onload = function () {
     getDate();
     updateAllVolume();
     updateClipboard();
+    updateCurrentWeather();
 }
 
 /* DATE AND TIME */
@@ -109,6 +111,44 @@ function updateVolumeIcon(value, mute) {
         default:
             setVolumeIcon('volume_off');
             break;
+    }
+}
+
+
+/* WEATHER */
+async function updateCurrentWeather() {
+    const currentWeather = await api.getCurrentWeather(currentCity);
+    const icon = document.getElementById("currentWeatherIcon");
+    const temp = document.getElementById("currentWeatherTemp");
+    const city = document.getElementById("currentWeatherCity");
+
+    temp.innerText = `${parseInt(currentWeather.main.temp - 273.15)}°`;
+    city.innerText = currentWeather.name;
+    icon.innerHTML = `<span class="weather-icon-main bi ${getIcon(currentWeather.weather[0].description)}"></span>`;
+}
+
+function getIcon(description) {
+    switch (description) {
+        case 'clear sky':
+            return 'bi-sun-fill'
+        case 'few clouds':
+            return 'bi-cloud-sun-fill'
+        case 'scattered clouds':
+            return 'bi-cloudy-fill'
+        case 'broken clouds':
+            return 'bi-clouds-fill'
+        case 'shower rain':
+            return 'bi-cloud-rain-heavy-fill'
+        case 'rain':
+            return 'bi-cloud-drizzle-fill'
+        case 'thunderstorm':
+            return 'bi-cloud-lightning-fill'
+        case 'snow':
+            return 'bi-cloud-snow-fill'
+        case 'mist':
+            return 'bi-cloud-haze-fill'
+        default:
+            return 'bi-sun-fill'
     }
 }
 
