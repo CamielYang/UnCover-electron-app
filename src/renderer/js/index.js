@@ -1,18 +1,27 @@
+// Volume
 const volumebar =  document.getElementById("volumebar");
 const volumeIcon = document.getElementById("volumeIcon");
-const modal = document.getElementById("myModal");
-const contentDiv = document.getElementById("clipboard");
-const tempPath = "templates/";
-const currentCity = "Hoogeveen";
-let value;
+let volumeValue;
 let mute;
+
+// Modal
+const modal = document.getElementById("myModal");
+const tempPath = "templates/";
+
+// Clipboard
+const contentDiv = document.getElementById("clipboard");
+
+// Weather
+const currentCity = "Hoogeveen";
+const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const forecastDays = 3;
 
 window.onload = function () {
     startTime();
     getDate();
     updateAllVolume();
     updateClipboard();
-    updateCurrentWeather();
+    updateWeather();
 }
 
 /* DATE AND TIME */
@@ -75,12 +84,12 @@ async function updateAllVolume() {
 // Event for updating audio level on slider value
 volumebar.addEventListener("input", async function() {
     mute = false;
-    value = volumebar.value;
+    volumeValue = volumebar.value;
     
-    updateVolumeText(value);
-    updateVolumeIcon(value);
+    updateVolumeText(volumeValue);
+    updateVolumeIcon(volumeValue);
 
-    await api.setVolume(value);
+    await api.setVolume(volumeValue);
     await api.setMuted(mute);
 });
 
@@ -116,15 +125,41 @@ function updateVolumeIcon(value, mute) {
 
 
 /* WEATHER */
-async function updateCurrentWeather() {
-    const currentWeather = await api.getCurrentWeather(currentCity);
+function kelvinToCelcius(kelvin) {
+    return parseInt(kelvin - 273.15)
+}
+
+async function updateWeather() {
+    const weatherData = await api.getWeatherData(currentCity);
+    updateCurrentWeather(weatherData.current);
+    updateForecastWeather(weatherData.daily);
+}
+
+function updateCurrentWeather(weatherData) {
     const icon = document.getElementById("currentWeatherIcon");
     const temp = document.getElementById("currentWeatherTemp");
     const city = document.getElementById("currentWeatherCity");
 
-    temp.innerText = `${parseInt(currentWeather.main.temp - 273.15)}°`;
-    city.innerText = currentWeather.name;
-    icon.innerHTML = `<span class="weather-icon-main bi ${getIcon(currentWeather.weather[0].description)}"></span>`;
+    temp.innerText = `${kelvinToCelcius(weatherData.temp)}°`;
+    city.innerText = currentCity;
+    icon.innerHTML = `<span class="weather-icon-main bi ${getIcon(weatherData.weather[0].description)}"></span>`;
+}
+
+function updateForecastWeather(weatherData) {
+    const forecastDiv = document.getElementById("weatherForecast");
+    let forecastInfo = '';
+
+    for(day = 1; day <= forecastDays; day++) {
+        const date = new Date(weatherData[day].dt * 1000);
+        forecastInfo += `
+        <div class="weather-sub-item">
+            <h4>${weekday[date.getDay()]}</h4>
+            <span class="weather-icon-sub bi ${getIcon(weatherData[day].weather[0].description)}"></span>
+            <h4>${kelvinToCelcius(weatherData[day].temp.day)}°</h4>
+        </div>`
+    }
+
+    forecastDiv.innerHTML = forecastInfo;
 }
 
 function getIcon(description) {
