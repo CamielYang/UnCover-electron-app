@@ -12,6 +12,7 @@ let weatherData;
 
 clipboardListener.startListening();
 
+// Fetch weather data
 async function getWeatherData(city) {
     if (!cityCoords) {
         await getCoords(city);
@@ -25,6 +26,7 @@ async function getWeatherData(city) {
     return weatherData;
 }
 
+// Fetch coords of corresponding city
 async function getCoords(city) {
     let request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${process.env.WEATHER_API_KEY}`);
     let response = await request.json();
