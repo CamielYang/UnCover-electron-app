@@ -250,7 +250,7 @@ input[type=range]::-webkit-slider-thumb {
     flex-direction: column;
     align-items: center;
     margin: 0 30px;
-    width: 325px;
+    width: 400px;
 }
 
 .fixed-close-button {

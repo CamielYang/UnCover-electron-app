@@ -7,6 +7,7 @@ const {
     Menu,
 } = require("electron");
 const path = require("path");
+require("./webBrowser/webBrowserMain");
 
 let win;
 let tray;
