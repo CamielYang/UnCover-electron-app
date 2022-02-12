@@ -13,16 +13,16 @@ let weatherData;
 clipboardListener.startListening();
 
 // Fetch weather data
-async function getWeatherData(city) {
-    if (!cityCoords) {
+async function getWeatherData(city, updatedCity) {
+    if (!cityCoords || updatedCity) {
         await getCoords(city);
     }
-    if (!weatherData) {
-        let request = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${cityCoords[0].lat}&lon=${cityCoords[0].lon}&exclude=minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}`)
-        let response = await request.json();
-        
-        weatherData = response;
-    }
+
+    let request = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${cityCoords[0].lat}&lon=${cityCoords[0].lon}&exclude=minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}`)
+    let response = await request.json();
+    
+    weatherData = response;
+    
     return weatherData;
 }
 
@@ -67,7 +67,7 @@ contextBridge.exposeInMainWorld("api", {
     },
 
     // Weather
-    getWeatherData: (city) => getWeatherData(city),
+    getWeatherData: (city, updatedCity) => getWeatherData(city, updatedCity),
     getCoords: (city) => getCoords(city),
     
 })

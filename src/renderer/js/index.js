@@ -1,8 +1,12 @@
+import {TimeDate} from  "./widgets/timeDate.js";
+import {SystemVolume} from  "./widgets/systemVolume.js";
+
+
+// TimeDate
+const timeDate = new TimeDate();
+
 // Volume
-const volumebar =  document.getElementById("volumebar");
-const volumeIcon = document.getElementById("volumeIcon");
-let volumeValue;
-let mute;
+const systemVolume = new SystemVolume();
 
 // Modal
 const modal = document.getElementById("myModal");
@@ -12,127 +16,36 @@ const tempPath = "templates/";
 const contentDiv = document.getElementById("clipboard");
 
 // Weather
-const currentCity = "Hoogeveen";
+let currentCity = "Hoogeveen";
 const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const forecastDays = 3;
 
 window.onload = function () {
-    startTime();
-    getDate();
-    updateAllVolume();
     updateClipboard();
     updateWeather();
 }
 
-/* DATE AND TIME */
-// Update time every second
-function startTime() {
-    const today = new Date();
-    let h = today.getHours();
-    let m = today.getMinutes();
-    let s = today.getSeconds();
-
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
-
-    setTimeout(startTime, 1000);
-}
-
-// Return right format
-function checkTime(i) {
-    // add zero in front of numbers < 10
-    if (i < 10) {
-        i = "0" + i;
-    }
-    return i;
-}
-
-// get current date
-function getDate() {
-    const today = new Date();
-    const locale = 'en-US';
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-
-    document.getElementById("date").innerText = today.toLocaleDateString(locale, options);
-}
-
-
-/* VOLUME CONTROL */ 
-// Update the text that represents the volume level
-function updateVolumeText(value) {
-    document.getElementById("volume").innerText = value;
-}
-
-// Set volume icon by icon name
-function setVolumeIcon(iconName) {
-    volumeIcon.innerText = iconName;
-}
-
-// Update everything related to volume
-async function updateAllVolume() {
-    value = await api.getVolume();
-    mute = await api.getMuted();
-
-    updateVolumeText(value);
-    volumebar.value = value;
-    updateVolumeIcon(value, mute)
-
-    setTimeout(updateAllVolume, 2000);
-}
-
-// Event for updating audio level on slider value
-volumebar.addEventListener("input", async function() {
-    mute = false;
-    volumeValue = volumebar.value;
-    
-    updateVolumeText(volumeValue);
-    updateVolumeIcon(volumeValue);
-
-    await api.setVolume(volumeValue);
-    await api.setMuted(mute);
-});
-
-// Event for toggling mute
-volumeIcon.addEventListener("click", async function() {
-    mute = !mute;
-
-    updateVolumeIcon(value, mute);
-    
-    await api.setMuted(mute);
-});
-
-// Update icon based on it's value
-function updateVolumeIcon(value, mute) {    
-    switch (!mute) {
-        case (value <= 0):
-            setVolumeIcon('volume_off');
-            break;
-        case (value < 25):
-            setVolumeIcon('volume_mute');
-            break;
-        case (value < 70):
-            setVolumeIcon('volume_down');
-            break;
-        case (value <= 100):
-            setVolumeIcon('volume_up');
-            break;
-        default:
-            setVolumeIcon('volume_off');
-            break;
-    }
-}
-
 
 /* WEATHER */
+function setCurrentCity(city) {
+    currentCity = city;
+}
+
 // Convert Kelvin temperature to Celcius
 function kelvinToCelcius(kelvin) {
     return parseInt(kelvin - 273.15)
 }
 
 // Update weather content
-async function updateWeather() {
-    const weatherData = await api.getWeatherData(currentCity);
+async function updateWeather(city) {
+    let weatherData;
+    if (city) {
+        setCurrentCity(city);
+        weatherData = await api.getWeatherData(city, true);
+    }
+    else {
+        weatherData = await api.getWeatherData(currentCity, false);
+    } 
 
     updateCurrentWeather(weatherData.current);
     updateForecastWeather(weatherData.daily);
@@ -154,7 +67,7 @@ function updateForecastWeather(weatherData) {
     const forecastDiv = document.getElementById("weatherForecast");
     let forecastInfo = '';
 
-    for(day = 1; day <= forecastDays; day++) {
+    for(let day = 1; day <= forecastDays; day++) {
         const date = new Date(weatherData[day].dt * 1000);
         forecastInfo += `
         <div class="weather-sub-item">
@@ -171,7 +84,6 @@ function updateForecastWeather(weatherData) {
 // Check https://openweathermap.org/weather-conditions for icon code
 function getWeatherIcon(icon) {
     const iconCode = icon.substring(0, 2);
-    console.log(iconCode)
     switch (iconCode) {
         case '01':
             return 'bi-sun-fill'
