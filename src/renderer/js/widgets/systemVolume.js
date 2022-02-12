@@ -9,7 +9,6 @@ export class SystemVolume {
 
         this.createSliderEvent();
         this.createMuteEvent();
-
         this.updateAllVolume();
     }
 
@@ -20,12 +19,12 @@ export class SystemVolume {
 
     // Event for toggling mute
     createMuteEvent() {
-        this.volumeIconId.addEventListener("click", async function() {
+        this.volumeIconId.addEventListener("click", async () => {
             this.mute = !this.mute;
             this.updateVolumeIcon(this.volumeValue, this.mute);
             
             await api.setMuted(this.mute);
-        }.bind(this));
+        });
     }
 
     async updateVolumebar() {
