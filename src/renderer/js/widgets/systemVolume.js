@@ -2,10 +2,11 @@ export class SystemVolume {
     static volumeValue;
     static mute;
 
-    constructor(volumebarId, volumeIconId, volumeId) {
-        this.volumebarId = document.getElementById(volumebarId) ?? document.getElementById("volumebar");
-        this.volumeIconId = document.getElementById(volumeIconId) ?? document.getElementById("volumeIcon");
-        this.volumeId = document.getElementById(volumeId) ?? document.getElementById("volume");
+    constructor(volumebarId = "volumebar", volumeIconId = "volumeIcon", volumeId = "volume") {
+        this.volumebarId = document.getElementById(volumebarId);
+        this.volumeIconId = document.getElementById(volumeIconId);
+        this.volumeId = document.getElementById(volumeId);
+        console.log(this.volumeId)
 
         this.createSliderEvent();
         this.createMuteEvent();

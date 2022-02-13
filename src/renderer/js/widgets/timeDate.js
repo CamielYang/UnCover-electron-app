@@ -1,7 +1,7 @@
 export class TimeDate {
-    constructor(timeId, dateId) {
-        this.timeId = document.getElementById(timeId) ?? document.getElementById("time");
-        this.dateId = document.getElementById(dateId) ?? document.getElementById("date");
+    constructor(timeId = "time", dateId = "date") {
+        this.timeId = document.getElementById(timeId);
+        this.dateId = document.getElementById(dateId);
 
         this.startTime();
         this.getDate();

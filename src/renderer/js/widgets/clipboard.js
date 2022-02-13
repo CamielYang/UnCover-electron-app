@@ -1,9 +1,9 @@
-import { loadModal } from "./modal.js"
+import { Modal } from "./modal.js"
 
 export class Clipboard {
-    constructor(contentId, clearClipboardId) {
-        this.contentId = document.getElementById(contentId) ?? document.getElementById("clipboard");
-        this.clearClipboardId = document.getElementById(clearClipboardId) ?? document.getElementById("clearClipboard");
+    constructor(contentId = "clipboard", clearClipboardId = "clearClipboard") {
+        this.contentId = document.getElementById(contentId);
+        this.clearClipboardId = document.getElementById(clearClipboardId);
 
         this.createClearEvent();
         this.createClipboardChangedEvent();
@@ -82,7 +82,7 @@ export class Clipboard {
 
     // Load modal that previews the image
     async loadImageModal(image) {
-        await loadModal("imageModal.html");
+        await Modal.loadModal("imageModal.html");
         
         const modal = document.getElementById("modalImage");
         modal.src = image;

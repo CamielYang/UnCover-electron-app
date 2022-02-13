@@ -1,7 +1,7 @@
 export class Notepad {
-    constructor(notepadId, clearButtonId) {
-        this.notepadId = document.getElementById(notepadId) ?? document.getElementById("notepad");
-        this.clearButtonId = document.getElementById(clearButtonId) ?? document.getElementById("clearNotepad");
+    constructor(notepadId = "notepad", clearButtonId = "clearNotepad") {
+        this.notepadId = document.getElementById(notepadId);
+        this.clearButtonId = document.getElementById(clearButtonId);
 
         this.createClearEvent();
     }
