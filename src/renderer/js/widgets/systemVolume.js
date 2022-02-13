@@ -1,3 +1,10 @@
+/**
+ * Volume widget to manage system volume. You can mute or change the system volume value.
+ *
+ * @param {string} volumebarId Id of volumebar.
+ * @param {string} volumeIconId Id of volume icon.
+ * @param {string} volumeId Id of volume value.
+ */
 export class SystemVolume {
     static volumeValue;
     static mute;

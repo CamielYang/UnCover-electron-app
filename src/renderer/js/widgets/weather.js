@@ -1,4 +1,3 @@
-
 /**
  * Weather widget to show current weather and weather forecast.
  *

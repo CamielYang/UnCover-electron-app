@@ -1,3 +1,6 @@
+/**
+ * Modal module to load modal pages.
+ */
 export const Modal = (function() {
     let modal = document.getElementById("myModal");
     let baseTempPath = "templates/";

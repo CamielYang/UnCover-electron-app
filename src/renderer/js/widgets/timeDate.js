@@ -1,3 +1,9 @@
+/**
+ * Time and date widget to show current time and todays date.
+ *
+ * @param {string} timeId Id of time Div.
+ * @param {string} dateId Id of date Div.
+ */
 export class TimeDate {
     constructor(timeId = "time", dateId = "date") {
         this.timeId = document.getElementById(timeId);
