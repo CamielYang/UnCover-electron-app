@@ -95,7 +95,22 @@ h1 {
 /* Image Animation */
 .image-modal img {  
     transition-duration: var(--transitionDuration);
+    animation-name: img-fade-in;
+    animation-duration: var(--transitionDuration);
+    animation-timing-function: cubic-bezier(0,1.36,.46,.95);
 }
+
+
+@keyframes img-fade-in {
+    0% {
+        max-width: 0;
+        max-height: 0;
+    }
+    100% {
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+  }
 
 /* width and height */
 ::-webkit-scrollbar {
