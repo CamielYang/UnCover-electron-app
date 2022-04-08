@@ -2,6 +2,7 @@
     --color1: rgba(0, 0, 0, 0.5);
     --color2: rgba(0, 0, 0, 0.3);
     --color3: rgba(0, 0, 0, 0.2);
+
     --textColor: hsl(0, 0%, 100%);
     --textColorGray: hsl(0, 0%, 75%);
     --errorColor: crimson;
@@ -18,7 +19,7 @@
 
 html {
     /* background: rgba(0, 00, 0, 0.75) url("../images/background-sample.jpg"); */
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.5);
     background-blend-mode: darken;
     background-size: cover;
     min-height: 100vh;
@@ -112,7 +113,14 @@ h1 {
         max-width: 80vw;
         max-height: 80vh;
     }
-  }
+}
+
+/* Text Selection */
+::selection {
+    color: var(--textColor);
+    text-shadow: 2px 2px 5px black;
+    background: var(--textColorGray);
+}
 
 /* width and height */
 ::-webkit-scrollbar {
@@ -193,6 +201,11 @@ h1 {
     margin: 15px 30px;
     width: fit-content;
     height: fit-content;
+    transition-duration: var(--transitionDuration);
+}
+
+.light-container:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 input[type=range] {
@@ -294,6 +307,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .weather-main {
+    position: relative;
     display: flex;
     flex-direction: column;
     border-right: 3px solid var(--textColor);
@@ -317,6 +331,42 @@ input[type=range]::-webkit-slider-thumb {
 .weather-icon-sub {
  font-size: 24px;
 }
+
+.weather-edit-location {
+    display: flex;
+    overflow: hidden;
+    position: absolute;
+    background-color: var(--color3);
+    top: calc(100%);
+    left: 0;
+    height: 0;
+    width: 100%;
+
+    transition-duration: var(--transitionDuration);
+    transform-origin: 50px 50px;
+}
+
+.weather-edit-location span {
+    margin: auto;
+    margin-left: 5px;
+}
+
+.weather-edit-location input {
+    background: none;
+    color: white;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 24px;
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.weather-container:hover .weather-edit-location,
+.weather-edit-location:focus-within {
+    height: 40px;
+}
+
 
 /* MIDDLE CONTAINER STYLING */
 .middle-container {

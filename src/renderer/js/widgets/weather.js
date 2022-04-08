@@ -3,19 +3,44 @@
  *
  * @param {string} currentWeatherId Id of current weather Div.
  * @param {string} weatherForecastId Id of weather forecast Div.
+ * @param {string} editWeatherId Id of weather input field to change the weather location.
  * @param {string} location Location of the weather data.
  * @param {number} forecastDays Amount of days to show forecast weather data.
  */
 export class Weather {
     static weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-    constructor(currentWeatherId = "currentWeather", weatherForecastId = "weatherForecast", location = "Hoogeveen", forecastDays = 3) {
-        this.currentWeatherId = document.getElementById(currentWeatherId);
-        this.weatherForecastId = document.getElementById(weatherForecastId);
-        this.location = location;
-        this.forecastDays = forecastDays;
+    constructor(options = {}) {        
+        // Default values
+        const defaults = {
+            currentWeatherId: "currentWeather", 
+            weatherForecastId: "weatherForecast", 
+            editWeatherId: "editWeather", 
+            location: "Hoogeveen", 
+            forecastDays: 3
+        };
 
+        const opts = Object.assign(defaults, options);
+
+        this.currentWeatherId = document.getElementById(opts.currentWeatherId);
+        this.weatherForecastId = document.getElementById(opts.weatherForecastId);
+        this.editWeatherId = document.getElementById(opts.editWeatherId);
+        this.location = opts.location;
+        this.forecastDays = opts.forecastDays;
+
+        this.editWeatherId.value = this.location;
+
+        this.addEditEvent();
         this.updateWeather();
+    }
+
+    addEditEvent() {
+        this.editWeatherId.addEventListener("change", () => {
+            let location = this.editWeatherId.value;
+            location = location.charAt(0).toUpperCase() + location.slice(1);
+            
+            this.updateWeather(location);
+        });
     }
 
     #setLocation(location) {
@@ -28,7 +53,7 @@ export class Weather {
     }
 
     // Update weather content
-    async updateWeather(location) {
+    async updateWeather(location = undefined) {
         let weatherData;
         if (location) {
             this.#setLocation(location);
