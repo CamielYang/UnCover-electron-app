@@ -85,6 +85,8 @@ h1 {
     transform: translate(-50%, -50%);
 }
 
+
+/* Image Animation */
 .modal.hidden .image-modal img {
     max-width: 0;
     max-height: 0;
@@ -95,7 +97,6 @@ h1 {
     max-height: 80vh;
 }
 
-/* Image Animation */
 .image-modal img {  
     transition-duration: var(--transitionDuration);
     animation-name: img-fade-in;

@@ -1,40 +1,50 @@
 import { Modal } from "./modal.js"
 
 export class Clipboard {
-    constructor(contentId = "clipboard", clearClipboardId = "clearClipboard") {
+    text;
+    image;
+
+    constructor(contentId = "clipboard", saveClipboardId = "saveClipboard", clearClipboardId = "clearClipboard") {
         this.contentId = document.getElementById(contentId);
+        this.saveClipboardId = document.getElementById(saveClipboardId);
         this.clearClipboardId = document.getElementById(clearClipboardId);
 
-        this.createClearEvent();
-        this.createClipboardChangedEvent();
-
+        this.createEvents();
         this.updateClipboard();
     }
 
-    // Event for clearing clipboard
-    createClearEvent() {
+    createEvents() {
+        // Save Notepad content
+        this.saveClipboardId.addEventListener("click", () => {
+            if (this.text) {
+                api.saveDialog(this.text, "text");
+            } 
+            else if (!api.imageIsEmpty()) {
+                api.saveDialog(api.removeImageUrlPrefix(this.image), "image");
+            } 
+        })
+        
+        // Event for clearing clipboard
         this.clearClipboardId.addEventListener("click", () => {
             api.clearClipboard();
         });
-    }
 
-    // Update clipboard when clipboard change event is fired
-    createClipboardChangedEvent() {
+        // Update clipboard when clipboard change event is fired
         api.onClipboardChanged('change', () => {
             this.updateClipboard();
         });
     }
 
     // Update cllipboard content
-    updateClipboard() {
-        const text = api.readClipboardText();
-        const image = api.readClipboardImage();
+    updateClipboard() {        
+        this.text = api.readClipboardText();
+        this.image = api.readClipboardImage();
         
-        if (text) {
-            this.setClipboardText(text);
+        if (this.text) {
+            this.setClipboardText(this.text);
         } 
         else if (!api.imageIsEmpty()) {
-            this.setClipboardImage(image);
+            this.setClipboardImage(this.image);
         } 
         else {
             this.setClipboardEmpty();

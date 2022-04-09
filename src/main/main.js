@@ -5,7 +5,9 @@ const {
     globalShortcut,
     Tray,
     Menu,
+    dialog
 } = require("electron");
+const fs = require('fs');
 const path = require("path");
 require("./webBrowser/webBrowserMain");
 
@@ -93,6 +95,43 @@ app.on("window-all-closed", () => {
 
 ipcMain.handle("close-window", (e, ...args) => {
     minimizeWindow();
+});
+
+ipcMain.handle("open-save-dialog", (e, content, fileType) => {
+    const extensions = {
+        default : [
+            { name: 'All Files', extensions: ['*'] }
+        ],
+        text : [
+            { name: 'Text Files',extensions: ['txt', 'docx'] }, 
+            { name: 'All Files', extensions: ['*'] }
+        ],
+        image : [
+            {name: 'Images', extensions: ['png', 'jpg', 'gif']},
+        ]
+    }; 
+
+    const timestamp = new Date().getTime();
+    const setExtension = (extensions[fileType] ? extensions[fileType] : extensions.default)
+
+    // Resolves to a Promise<Object>
+    dialog.showSaveDialog(getMainWindow(), {
+        title: 'Select the File Path to save',
+        defaultPath : `C:\\${timestamp}_UnCover.${setExtension[0].extensions[0]}`,
+        buttonLabel: 'Save',
+        filters: setExtension,
+        properties: []
+    }).then(file => {
+        if (!file.canceled) {
+            // Creating and Writing to the sample.txt file
+            fs.writeFile(file.filePath.toString(), 
+                         content, function (err) {
+                if (err) throw err;
+            });
+        }
+    }).catch(err => {
+        console.log(err)
+    });
 });
 
 // ipcMain.handle("set-ignore-mouse-events", (e, ...args) => {

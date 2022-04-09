@@ -1,9 +1,9 @@
+require('dotenv').config();
 const { 
     contextBridge, 
     ipcRenderer, 
-    clipboard, 
+    clipboard,
 } = require('electron');
-require('dotenv').config();
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 
@@ -11,6 +11,15 @@ let cityCoords;
 let weatherData;
 
 clipboardListener.startListening();
+
+function removeImageUrlPrefix(dataUrl) {
+    let data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
+    return Buffer.from(data, 'base64');
+}
+
+async function saveDialog(content, fileType) {
+    ipcRenderer.invoke('open-save-dialog', content, fileType);
+}
 
 // Fetch weather data
 async function getWeatherData(city, updatedCity) {
@@ -62,6 +71,7 @@ contextBridge.exposeInMainWorld("api", {
     clearClipboard: () => clipboard.clear(),
     readClipboardText: () => clipboard.readText(),
     readClipboardImage: () => clipboard.readImage().toDataURL(),
+    removeImageUrlPrefix: (dataUrl) => removeImageUrlPrefix(dataUrl),
     imageIsEmpty: () => {
         return clipboard.readImage().isEmpty()
     },
@@ -69,5 +79,7 @@ contextBridge.exposeInMainWorld("api", {
     // Weather
     getWeatherData: (city, updatedCity) => getWeatherData(city, updatedCity),
     getCoords: (city) => getCoords(city),
-    
+
+    // Save Dialog
+    saveDialog: (content, fileType) => saveDialog(content, fileType),
 })

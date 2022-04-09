@@ -13,7 +13,6 @@ export class SystemVolume {
         this.volumebarId = document.getElementById(volumebarId);
         this.volumeIconId = document.getElementById(volumeIconId);
         this.volumeId = document.getElementById(volumeId);
-        console.log(this.volumeId)
 
         this.createSliderEvent();
         this.createMuteEvent();
