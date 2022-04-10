@@ -4,6 +4,7 @@ import { SystemVolume } from  "./widgets/systemVolume.js";
 import { Weather } from "./widgets/weather.js";
 import { Notepad } from "./widgets/notepad.js";
 import { Clipboard } from "./widgets/clipboard.js";
+import { Stopwatch } from "./widgets/stopwatch.js";
 
 // Modal
 Modal.setModalId("myModal");
@@ -16,10 +17,13 @@ const timeDate = new TimeDate();
 const systemVolume = new SystemVolume();
 
 // Weather
-const weather = new Weather();
+// const weather = new Weather();
 
 // Notepad
 const notepad = new Notepad();
 
 // Clipboard
 const clipboard = new Clipboard();
+
+// Stopwatch
+const stopwatch = new Stopwatch();

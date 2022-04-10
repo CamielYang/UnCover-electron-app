@@ -116,9 +116,7 @@ ipcMain.handle("open-save-dialog", (e, content, fileType) => {
 
     // Resolves to a Promise<Object>
     dialog.showSaveDialog(getMainWindow(), {
-        title: 'Select the File Path to save',
         defaultPath : `C:\\${timestamp}_UnCover.${setExtension[0].extensions[0]}`,
-        buttonLabel: 'Save',
         filters: setExtension,
         properties: []
     }).then(file => {

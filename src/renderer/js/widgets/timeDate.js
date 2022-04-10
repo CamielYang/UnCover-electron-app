@@ -29,6 +29,7 @@ export class TimeDate {
         let m = today.getMinutes();
         let s = today.getSeconds();
 
+        h = TimeDate.checkTime(h);
         m = TimeDate.checkTime(m);
         s = TimeDate.checkTime(s);
 

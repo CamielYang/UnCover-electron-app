@@ -57,6 +57,34 @@
         <div class="middle-flex-row space-between">
             <div class="middle-flex-colum-start">
                 
+                <div class="light-container clock-container">
+                    <div class="flex-row space-between">
+                        <div class="flex-row flex-start">
+                            <div class="dropdown">
+                                <button class="material-icons icon-button">
+                                    expand_more
+                                </button>
+                                <div class="dropdown-content">
+                                    <ul>
+                                        <li>
+                                            <button class="text-button">Timer</button>
+                                        </li>
+                                        <li>
+                                            <button class="text-button active">Stopwatch</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <h3>Stopwatch</h3>
+                        </div>
+                        <div class="flex-row flex-buttons">
+                            <button id="resetStopwatch" class="button button-primary">Reset</button>
+                            <button id="setStopwatch" class="button button-primary">Start</button>
+                        </div>
+                    </div>
+                    <h1 id="stopwatchTime"></h1>
+                </div>
+
             </div>
             <div class="middle-flex-column-end">
                 <div class="light-container note-container">
@@ -87,13 +115,13 @@
     <div class="bottom-container">
         <ul>
             <li>
-                <button id="openWebBtn">Web Browser</button>
+                <button class="text-button" id="openWebBtn">Web Browser</button>
             </li>
             <li>
-                <button class="error">Discord</button>
+                <button class="text-button error">Discord</button>
             </li>
             <li>
-                <button class="error">Settings</button>
+                <button class="text-button error">Settings</button>
             </li>
         </ul>
     </div>

@@ -3,6 +3,8 @@
     --color2: rgba(0, 0, 0, 0.3);
     --color3: rgba(0, 0, 0, 0.2);
 
+    --color4: rgba(0, 0, 0, 0.75);
+
     --textColor: hsl(0, 0%, 100%);
     --textColorGray: hsl(0, 0%, 75%);
     --errorColor: crimson;
@@ -56,6 +58,7 @@ h1 {
     font-size: 80px;
     margin: 0;
 }
+
 
 /* Modal background */
 .modal {
@@ -155,8 +158,27 @@ h1 {
     justify-content: space-between;
 }
 
+.flex-start {
+    align-items: flex-start;
+}
+
 .flex-buttons button {
     margin-left: 5px;
+}
+
+
+/* BUTTONS */
+.error:not(:active) {
+    animation-name: blink;
+    animation-duration: 0.1s;
+    animation-iteration-count: 6;
+    animation-direction: alternate;
+}
+
+@keyframes blink {    
+    100% {
+        color: var(--errorColor);
+    }
 }
 
 .icon-button {
@@ -194,6 +216,23 @@ h1 {
     background: var(--color2);
     color: var(--textColor);
 }
+
+.text-button {
+    all: unset;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 50px;
+    color: var(--textColorGray);
+    transition: var(--transitionDuration);
+}
+
+.text-button:hover,
+.text-button:focus-visible,
+.text-button.active {
+    color: var(--textColor);
+}
+
 
 .light-container {
     padding: 20px;
@@ -233,6 +272,7 @@ input[type=range]::-webkit-slider-thumb {
     background: var(--textColor);
     cursor: pointer;
 }
+/* ============================= */
 
 
 /* TOP CONTAINER STYLING */
@@ -260,6 +300,8 @@ input[type=range]::-webkit-slider-thumb {
     justify-content: flex-end;
 }
 
+
+/* VOLUME WIDGET */
 .volume-container {
     display: flex;
     flex-direction: row;
@@ -276,6 +318,8 @@ input[type=range]::-webkit-slider-thumb {
     margin-left: 5px;
 }
 
+
+/* TIME WIDGET */
 .time-container {
     display: flex;
     flex-direction: column;
@@ -284,6 +328,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 400px;
 }
 
+
 .fixed-close-button {
     position: absolute;
     top: 10px;
@@ -291,6 +336,8 @@ input[type=range]::-webkit-slider-thumb {
     transform: translateX(50%);
 }
 
+
+/* WEATHER WIDGET */
 .weather-container {
     display: flex;
     margin: 0;
@@ -367,6 +414,7 @@ input[type=range]::-webkit-slider-thumb {
 .weather-edit-location:focus-within {
     height: 40px;
 }
+/* ============================= */
 
 
 /* MIDDLE CONTAINER STYLING */
@@ -393,6 +441,8 @@ input[type=range]::-webkit-slider-thumb {
     align-items: flex-end;
 }
 
+
+/* NOTE WIDGET */
 .note-container {
     aspect-ratio: 16/10;
     max-width: 35vw;
@@ -400,6 +450,24 @@ input[type=range]::-webkit-slider-thumb {
     flex-direction: column;
 }
 
+textarea {
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 10px;
+    border: none;
+    color: white;
+    background: var(--color3);
+    resize: none;
+    transition: var(--transitionDuration);
+}
+
+textarea:focus {
+    background: var(--color2);
+    box-shadow: var(--shadow);
+}
+
+
+/* CLIPBOARD WIDGET */
 .clipboard-container {
     flex: 1;
     display: flex;
@@ -458,21 +526,45 @@ input[type=range]::-webkit-slider-thumb {
     content: "Error loading image";
 }
 
-textarea {
-    font-size: 16px;
-    font-family: sans-serif;
-    padding: 10px;
-    border: none;
-    color: white;
-    background: var(--color3);
-    resize: none;
-    transition: var(--transitionDuration);
+
+/* STOPWATCH WIDGET */
+.clock-container h1 {
+    padding: 10px 0;
+    font-weight: normal;
+    text-align: center;
+    font-size: 64px;
+    width: 400px;
 }
 
-textarea:focus {
-    background: var(--color2);
+.clock-container .flex-buttons :nth-child(2) {
+    width: 90px;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    position: absolute;
+    left: 0;
+    background-color: var(--color4);
+    visibility: hidden;
+    opacity: 0;
+    transition-duration: var(--transitionDuration);
+    padding: 10px;
     box-shadow: var(--shadow);
 }
+
+.dropdown-content ul {
+    list-style-type: none;
+}
+
+.dropdown button:focus ~ .dropdown-content,
+.dropdown-content:hover {
+    visibility: visible;
+    opacity: 1;
+}
+/* ============================= */
 
 
 /* BOTTOM CONTAINER STYLING */
@@ -482,11 +574,11 @@ textarea:focus {
 }
 
 .bottom-container ul {
+    list-style-type: none;
     display: flex;
 }
 
 .bottom-container ul li {
-    list-style-type: none;
     margin-right: 50px;
 }
 
@@ -499,24 +591,4 @@ textarea:focus {
     color: var(--textColorGray);
     transition: var(--transitionDuration);
 }
-
-.bottom-container ul li button:hover,
-.bottom-container ul li button:focus-visible {
-    color: var(--textColor);
-}
-
-
-.error:not(:active) {
-    animation-name: blink;
-    animation-duration: 0.1s;
-    animation-iteration-count: 6;
-    animation-direction: alternate;
-}
-
-@keyframes blink {    
-    100% {
-        color: var(--errorColor);
-    }
-}
-
-
+/* ============================= */
