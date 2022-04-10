@@ -110,12 +110,11 @@ h1 {
 
 @keyframes img-fade-in {
     0% {
-        max-width: 0;
-        max-height: 0;
+        transform: scale(0);
     }
+    
     100% {
-        max-width: 80vw;
-        max-height: 80vh;
+        transform: scale(1);
     }
 }
 
@@ -235,6 +234,7 @@ h1 {
 
 
 .light-container {
+    box-shadow: var(--shadow);
     padding: 20px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
@@ -342,6 +342,7 @@ input[type=range]::-webkit-slider-thumb {
     display: flex;
     margin: 0;
     align-items: center;
+    position: relative;
 }
 
 .weather-icon-main {
@@ -529,11 +530,12 @@ textarea:focus {
 
 /* STOPWATCH WIDGET */
 .clock-container h1 {
-    padding: 10px 0;
+    padding: 20px 0;
     font-weight: normal;
     text-align: center;
     font-size: 64px;
     width: 400px;
+    background-color: var(--color3);
 }
 
 .clock-container .flex-buttons :nth-child(2) {
@@ -559,7 +561,7 @@ textarea:focus {
     list-style-type: none;
 }
 
-.dropdown button:focus ~ .dropdown-content,
+.dropdown button:hover ~ .dropdown-content,
 .dropdown-content:hover {
     visibility: visible;
     opacity: 1;
