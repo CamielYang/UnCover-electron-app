@@ -107,7 +107,7 @@ ipcMain.handle("open-save-dialog", (e, content, fileType) => {
             { name: 'All Files', extensions: ['*'] }
         ],
         image : [
-            {name: 'Images', extensions: ['png', 'jpg', 'gif']},
+            {name: 'Images', extensions: ['png', 'jpg']},
         ]
     }; 
 

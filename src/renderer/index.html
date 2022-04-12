@@ -17,17 +17,21 @@
     </div> 
     <div class="top-container">
         <div class="top-outer-container-left">
+            <!-- VOLUME WIDGET -->
             <div class="light-container volume-container">
                     <button class="material-icons icon-button" id="volumeIcon">volume_up</button>
                     <input type="range" id="volumebar" min="1" max="100" value="0">
                     <p id="volume">0</p>
             </div>
         </div>
+        
+        <!-- TIME WIDGET -->
         <div class="time-container">
             <h1 id="time">00:00:00</h1>
             <h2 id="date">Monday, January 1, 2000</h2>
         </div>
         <div class="top-outer-container-right">       
+            <!-- WEATHER WIDGET -->
             <div class="light-container weather-container">
                 <div id="currentWeather" class="current-weather">
                     <div>
@@ -55,10 +59,34 @@
 
     <div class="middle-container">
         <div class="middle-flex-row space-between">
-            <div class="middle-flex-colum-start">
-                
+            <div class="middle-flex-column-start">
+                <!-- Performance WIDGET -->
+                <div class="light-container performance-container">
+                    <div class="widget-header flex-row space-between">
+                        <div class="flex-row flex-start">
+                            <h3>Performance</h3>
+                        </div>
+                    </div>
+                    <div id="performanceStats" class="performance-stats">
+                        <div id="cpuTab" class="performance-tab">
+                            <div class="flex-row space-between">
+                                <p class="title">CPU</p>
+                                <p class="usage"></p>
+                            </div>
+                            <div class="performance-bar"></div>
+                        </div>
+                        <div id="memoryTab" class="performance-tab">
+                            <div class="flex-row space-between">
+                                <p class="title">RAM</p>
+                                <p class="usage"></p>
+                            </div>
+                            <div class="performance-bar"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- STOPWATCH WIDGET -->
                 <div class="light-container clock-container">
-                    <div class="flex-row space-between">
+                    <div class="widget-header flex-row space-between">
                         <div class="flex-row flex-start">
                             <div class="dropdown">
                                 <button class="material-icons icon-button">
@@ -82,13 +110,13 @@
                             <button id="setStopwatch" class="button button-primary">Start</button>
                         </div>
                     </div>
-                    <h1 id="stopwatchTime"></h1>
+                    <h1 id="stopwatchTime">00:00:00</h1>
                 </div>
-
             </div>
             <div class="middle-flex-column-end">
+                <!-- NOTE WIDGET -->
                 <div class="light-container note-container">
-                    <div class="flex-row space-between">
+                    <div class="widget-header flex-row space-between">
                         <h3>Notes</h3>
                         <div class="flex-row flex-buttons">
                             <button id="saveNotepad" class="button button-primary">Save</button>
@@ -97,8 +125,10 @@
                     </div>
                     <textarea id="notepad" cols="30" rows="8"></textarea>
                 </div>
+                
+                <!-- CLIPBOARD WIDGET -->
                 <div class="light-container clipboard-container">
-                    <div class="flex-row space-between">
+                    <div class="widget-header flex-row space-between">
                         <h3>Clipboard</h3>
                         <div class="flex-row flex-buttons">
                             <button id="saveClipboard" class="button button-primary">Save</button>

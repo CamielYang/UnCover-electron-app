@@ -6,6 +6,7 @@ const {
 } = require('electron');
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
+const si = require('systeminformation');
 
 let cityCoords;
 let weatherData;
@@ -82,4 +83,34 @@ contextBridge.exposeInMainWorld("api", {
 
     // Save Dialog
     saveDialog: (content, fileType) => saveDialog(content, fileType),
+
+    // System Information
+    cpuLoad: () => si.currentLoad().then(data => Math.floor(data.currentLoad)),
+    memoryLoad: () => {
+        return si.mem().then(data => {
+            return {
+                total: data.total,
+                used: data.used,
+                usage: Math.floor(data.used / data.total * 100)
+            };
+        });
+    },
+    diskSpace: () => {
+        return si.fsSize().then(data => {
+            return data;
+        });
+    },
+    gpuLoad: async () => {
+        const graphics = await si.graphics();
+        const controllers = []
+        graphics.controllers.forEach(controller => {
+            if (!controller.vramDynamic) {
+                controllers.push( {
+                    model: controller.model,
+                    usage: Math.floor(controller.memoryUsed / controller.memoryTotal * 100)
+                })
+            }
+        })
+        return controllers;
+    },
 })

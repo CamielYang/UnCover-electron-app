@@ -22,7 +22,8 @@
     "clipboard-event": "^1.5.0",
     "dotenv": "^16.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "loudness": "^0.4.1"
+    "loudness": "^0.4.1",
+    "systeminformation": "^5.11.9"
   },
   "config": {
     "forge": {
