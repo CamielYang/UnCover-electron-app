@@ -1,28 +1,38 @@
+require('dotenv').config();
 const { 
     contextBridge, 
     ipcRenderer, 
-    clipboard, 
+    clipboard,
 } = require('electron');
-require('dotenv').config();
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
+const si = require('systeminformation');
 
 let cityCoords;
 let weatherData;
 
 clipboardListener.startListening();
 
+function removeImageUrlPrefix(dataUrl) {
+    let data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
+    return Buffer.from(data, 'base64');
+}
+
+async function saveDialog(content, fileType) {
+    ipcRenderer.invoke('open-save-dialog', content, fileType);
+}
+
 // Fetch weather data
-async function getWeatherData(city) {
-    if (!cityCoords) {
+async function getWeatherData(city, updatedCity) {
+    if (!cityCoords || updatedCity) {
         await getCoords(city);
     }
-    if (!weatherData) {
-        let request = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${cityCoords[0].lat}&lon=${cityCoords[0].lon}&exclude=minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}`)
-        let response = await request.json();
-        
-        weatherData = response;
-    }
+
+    let request = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${cityCoords[0].lat}&lon=${cityCoords[0].lon}&exclude=minutely,hourly,alerts&appid=${process.env.WEATHER_API_KEY}`)
+    let response = await request.json();
+    
+    weatherData = response;
+    
     return weatherData;
 }
 
@@ -62,12 +72,45 @@ contextBridge.exposeInMainWorld("api", {
     clearClipboard: () => clipboard.clear(),
     readClipboardText: () => clipboard.readText(),
     readClipboardImage: () => clipboard.readImage().toDataURL(),
+    removeImageUrlPrefix: (dataUrl) => removeImageUrlPrefix(dataUrl),
     imageIsEmpty: () => {
         return clipboard.readImage().isEmpty()
     },
 
     // Weather
-    getWeatherData: (city) => getWeatherData(city),
+    getWeatherData: (city, updatedCity) => getWeatherData(city, updatedCity),
     getCoords: (city) => getCoords(city),
-    
+
+    // Save Dialog
+    saveDialog: (content, fileType) => saveDialog(content, fileType),
+
+    // System Information
+    cpuLoad: () => si.currentLoad().then(data => Math.floor(data.currentLoad)),
+    memoryLoad: () => {
+        return si.mem().then(data => {
+            return {
+                total: data.total,
+                used: data.used,
+                usage: Math.floor(data.used / data.total * 100)
+            };
+        });
+    },
+    diskSpace: () => {
+        return si.fsSize().then(data => {
+            return data;
+        });
+    },
+    gpuLoad: async () => {
+        const graphics = await si.graphics();
+        const controllers = []
+        graphics.controllers.forEach(controller => {
+            if (!controller.vramDynamic) {
+                controllers.push( {
+                    model: controller.model,
+                    usage: Math.floor(controller.memoryUsed / controller.memoryTotal * 100)
+                })
+            }
+        })
+        return controllers;
+    },
 })

@@ -5,7 +5,7 @@ const {
 const main = require("../main");
 
 let browser;
-var parent;
+let parent;
 
 function createWebWindow() {
     parent = main.getMainWindow();
