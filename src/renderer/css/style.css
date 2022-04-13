@@ -423,6 +423,11 @@ input[type=range]::-webkit-slider-thumb {
 /* MIDDLE CONTAINER STYLING */
 .middle-container {
     height: 65vh;
+    overflow: scroll;
+}
+
+.middle-container::-webkit-scrollbar {
+    display: none;
 }
 
 .middle-flex-row {
@@ -447,8 +452,7 @@ input[type=range]::-webkit-slider-thumb {
 
 /* NOTE WIDGET */
 .note-container {
-    aspect-ratio: 16/10;
-    max-width: 35vw;
+    width: 400px;
     display: flex;
     flex-direction: column;
 }
@@ -474,9 +478,8 @@ textarea:focus {
 .clipboard-container {
     flex: 1;
     display: flex;
-    aspect-ratio: 16/11;
-    max-width: 35vw;
-    max-height: 250px;
+    width: 375px;
+    height: 250px;
     flex-direction: column;
 }
 

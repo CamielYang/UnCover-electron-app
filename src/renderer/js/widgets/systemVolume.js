@@ -1,18 +1,25 @@
+const template = document.createElement('template');
+template.innerHTML = `
+    <div class="light-container volume-container">
+        <button class="material-icons icon-button" id="volumeIcon">volume_up</button>
+        <input type="range" id="volumebar" min="1" max="100" value="0">
+        <p id="volume">0</p>
+    </div>
+`;
+
 /**
  * Volume widget to manage system volume. You can mute or change the system volume value.
- *
- * @param {string} volumebarId Id of volumebar.
- * @param {string} volumeIconId Id of volume icon.
- * @param {string} volumeId Id of volume value.
  */
-export class SystemVolume {
-    static volumeValue;
-    static mute;
+export class SystemVolume extends HTMLElement {
+    constructor() {
+        super()
 
-    constructor(volumebarId = "volumebar", volumeIconId = "volumeIcon", volumeId = "volume") {
-        this.volumebarId = document.getElementById(volumebarId);
-        this.volumeIconId = document.getElementById(volumeIconId);
-        this.volumeId = document.getElementById(volumeId);
+        this.appendChild(template.content.cloneNode(true));
+
+        this.volumeContainer = this.children[0];
+        this.volumebarId = this.volumeContainer.querySelector("#volumebar");
+        this.volumeIconId = this.volumeContainer.querySelector("#volumeIcon");
+        this.volumeId = this.volumeContainer.querySelector("#volume");
 
         this.createSliderEvent();
         this.createMuteEvent();
@@ -88,3 +95,5 @@ export class SystemVolume {
         }
     }
 }
+
+window.customElements.define('system-volume-widget', SystemVolume);

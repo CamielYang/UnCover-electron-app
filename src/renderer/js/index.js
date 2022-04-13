@@ -7,27 +7,7 @@ import { Clipboard } from "./widgets/clipboard.js";
 import { Stopwatch } from "./widgets/stopwatch.js";
 import { Performance } from "./widgets/performance.js";
 
+
 // Modal
 Modal.setModalId("myModal");
 Modal.setBaseTemplatePath("templates/")
-
-// TimeDate
-const timeDate = new TimeDate();
-
-// Volume
-const systemVolume = new SystemVolume();
-
-// Weather
-//const weather = new Weather();
-
-// Notepad
-const notepad = new Notepad();
-
-// Clipboard
-const clipboard = new Clipboard();
-
-// Stopwatch
-const stopwatch = new Stopwatch();
-
-// Performance
-const performance = new Performance();

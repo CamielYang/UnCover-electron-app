@@ -1,32 +1,52 @@
+const template = document.createElement('template');
+template.innerHTML = `
+    <div class="light-container weather-container">
+        <div id="currentWeather" class="current-weather">
+            <div>
+                <span class="weather-icon-main bi bi-cloud-sun-fill"></span>
+            </div>
+            <div class="weather-main">
+                <h2>0°</h2>
+                <h3>-</h3>
+            </div>
+        </div>
+        <div id="weatherForecast" class="weather-sub">
+            <div class="weather-sub-item">
+                <h4>-</h4>
+                <span class="weather-icon-sub bi bi-cloud-sun-fill"></span>
+                <h4>0°</h4>
+            </div>
+        </div>
+        <div class="weather-edit-location">
+            <span class="material-icons">edit</span>
+            <input id="editWeather" type="text"/>
+        </div>
+    </div>
+`;
+
 /**
  * Weather widget to show current weather and weather forecast.
- *
- * @param {string} currentWeatherId Id of current weather Div.
- * @param {string} weatherForecastId Id of weather forecast Div.
- * @param {string} editWeatherId Id of weather input field to change the weather location.
- * @param {string} location Location of the weather data.
- * @param {number} forecastDays Amount of days to show forecast weather data.
  */
-export class Weather {
+export class Weather extends HTMLElement {
     static weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
-    constructor(options = {}) {        
+    constructor() {
+        super()
+
+        this.appendChild(template.content.cloneNode(true));
+
         // Default values
         const defaults = {
-            currentWeatherId: "currentWeather", 
-            weatherForecastId: "weatherForecast", 
-            editWeatherId: "editWeather", 
             location: "Hoogeveen", 
             forecastDays: 3
         };
 
-        const opts = Object.assign(defaults, options);
-
-        this.currentWeatherId = document.getElementById(opts.currentWeatherId);
-        this.weatherForecastId = document.getElementById(opts.weatherForecastId);
-        this.editWeatherId = document.getElementById(opts.editWeatherId);
-        this.location = opts.location;
-        this.forecastDays = opts.forecastDays;
+        this.weatherContainer = this.children[0];
+        this.currentWeatherId = this.weatherContainer.querySelector("#currentWeather");
+        this.weatherForecastId = this.weatherContainer.querySelector("#weatherForecast");
+        this.editWeatherId = this.weatherContainer.querySelector("#editWeather");
+        this.location = this.getAttribute("location") ?? defaults.location;
+        this.forecastDays = this.getAttribute("forecast-days") ?? defaults.forecastDays;
 
         this.editWeatherId.value = this.location;
 
@@ -124,3 +144,5 @@ export class Weather {
         }
     }
 }
+
+window.customElements.define('weather-widget', Weather);

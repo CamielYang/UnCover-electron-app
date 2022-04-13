@@ -1,13 +1,33 @@
 import { Modal } from "./modal.js"
 
-export class Clipboard {
-    text;
-    image;
+const template = document.createElement('template');
+template.innerHTML = `
+    <div class="light-container clipboard-container">
+        <div class="widget-header flex-row space-between">
+            <h3>Clipboard</h3>
+            <div class="flex-row flex-buttons">
+                <button id="saveClipboard" class="button button-primary">Save</button>
+                <button id="clearClipboard" class="button button-primary">Clear</button>
+            </div>
+        </div>
+        <div class="clipboard-content" id="clipboard">
+        </div>
+    </div>
+`;
 
-    constructor(contentId = "clipboard", saveClipboardId = "saveClipboard", clearClipboardId = "clearClipboard") {
-        this.contentId = document.getElementById(contentId);
-        this.saveClipboardId = document.getElementById(saveClipboardId);
-        this.clearClipboardId = document.getElementById(clearClipboardId);
+export class Clipboard extends HTMLElement {
+    constructor() {
+        super()
+
+        this.appendChild(template.content.cloneNode(true));
+
+        this.clipboardContainer = this.children[0];
+
+        this.text;
+        this.image;
+        this.contentId = this.clipboardContainer.querySelector("#clipboard");
+        this.saveClipboardId = this.clipboardContainer.querySelector("#saveClipboard");
+        this.clearClipboardId = this.clipboardContainer.querySelector("#clearClipboard");
 
         this.createEvents();
         this.updateClipboard();
@@ -98,3 +118,5 @@ export class Clipboard {
         modal.src = image;
     }
 }
+
+window.customElements.define('clipboard-widget', Clipboard);
