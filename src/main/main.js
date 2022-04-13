@@ -48,7 +48,7 @@ function createShortcuts() {
 
 // Create the tray with a menu template
 function createTray() {
-    tray = new Tray(path.join(__dirname, "../../resources/electron.png"));
+    tray = new Tray(path.join(__dirname, "../../resources/UnCover.ico"));
     
     const menu = Menu.buildFromTemplate([ 
         {

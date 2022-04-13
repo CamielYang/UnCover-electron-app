@@ -27,7 +27,9 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "resources/UnCover.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",

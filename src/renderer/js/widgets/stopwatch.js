@@ -10,7 +10,7 @@ template.innerHTML = `
                     <div class="dropdown-content">
                         <ul>
                             <li>
-                                <button class="text-button">Timer</button>
+                                <button class="text-button error">Timer</button>
                             </li>
                             <li>
                                 <button class="text-button active">Stopwatch</button>
