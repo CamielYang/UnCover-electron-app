@@ -38,7 +38,8 @@ export class Weather extends HTMLElement {
         // Default values
         const defaults = {
             location: "Hoogeveen", 
-            forecastDays: 3
+            forecastDays: 3,
+            delay: 3600000 
         };
 
         this.weatherContainer = this.children[0];
@@ -46,13 +47,24 @@ export class Weather extends HTMLElement {
         this.weatherForecastId = this.weatherContainer.querySelector("#weatherForecast");
         this.editWeatherId = this.weatherContainer.querySelector("#editWeather");
         this.location = this.getAttribute("location") ?? defaults.location;
-        this.forecastDays = this.getAttribute("forecast-days") ?? defaults.forecastDays;
+        this.setForecastDays = this.getAttribute("forecast-days") ?? defaults.forecastDays;
+        this.delay = defaults.delay;
 
         this.editWeatherId.value = this.location;
 
         this.addEditEvent();
         this.updateWeather();
+        this.updateInterval = setInterval(this.updateWeather.bind(this), this.delay);
     }
+
+    set setForecastDays(value) {
+        if (value && (value <= 5)) {
+            this.forecastDays = value;
+        }
+        else {
+            this.forecastDays = 5;
+        }
+    } 
 
     addEditEvent() {
         this.editWeatherId.addEventListener("change", () => {
@@ -60,6 +72,10 @@ export class Weather extends HTMLElement {
             location = location.charAt(0).toUpperCase() + location.slice(1);
             
             this.updateWeather(location);
+
+            // Reset interval
+            clearInterval(this.updateInterval);
+            this.updateInterval = setInterval(this.updateWeather.bind(this), this.delay);
         });
     }
 
