@@ -51,6 +51,10 @@ export class Performance extends HTMLElement {
         this.clearPerformanceStats().then(e => {
             this.updateStatistics();
             setInterval(this.updateStatistics.bind(this), this.delay)
+
+            // Exception update every minute for cpu usage reasons
+            this.updateDiskSpace()
+            setInterval(this.updateDiskSpace.bind(this), 60000);
         });
     }
 
@@ -67,7 +71,6 @@ export class Performance extends HTMLElement {
     updateStatistics() {
         this.updateCpu();
         this.updateMemory();
-        this.updateDiskSpace();
         
         // Disabled because of performance issues
         // this.updateGpu();
@@ -92,13 +95,13 @@ export class Performance extends HTMLElement {
 
     async updateMemory() {
         const load = await api.memoryLoad();
-        this.updatePerformanceStat(this.memoryId, "RAM", load.usage, `${Performance.byteToGb(load.used, 1)} / ${Performance.byteToGb(load.total, 1)} GB (${load.usage}%)`);
+        this.updatePerformanceStat(this.memoryId, "RAM", load.usage, `${Performance.byteUnitToGb(load.used, 1, "KB")} / ${Performance.byteUnitToGb(load.total, 1, "KB")} GB (${load.usage}%)`);
     }
 
     async updateDiskSpace() {
         const load = await api.diskSpace();
         load.slice(0, this.maxDrives).forEach(disk => {
-            this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, disk.use, `${Performance.byteToGb(disk.available, 2)} / ${Performance.byteToGb(disk.size)} GB available`);
+            this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, disk.use, `${Performance.byteUnitToGb(disk.available, 2, "B")} / ${Performance.byteUnitToGb(disk.size, 0, "B")} GB available`);
         });
     }
 
@@ -131,8 +134,13 @@ export class Performance extends HTMLElement {
     }
 
     // Convert byte value to GB. Value will be round to the given decimals.
-    static byteToGb(size, decimals) {
-        return (decimals) ? (size / Math.pow(1024, 3)).toFixed(decimals) : Math.floor(size / Math.pow(1024, 3));
+    static byteUnitToGb(size, decimals, unit = "Byte") {
+        const units = {
+            B: 3,
+            KB: 2,
+            MB: 1
+        }; 
+        return (decimals) ? (size / Math.pow(1024, units[unit])).toFixed(decimals) : Math.floor(size / Math.pow(1024, units[unit]));
     }
 
     // Add new element for the disk stat. Id will the set to the given Id.

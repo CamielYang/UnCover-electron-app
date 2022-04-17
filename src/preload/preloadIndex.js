@@ -90,14 +90,13 @@ contextBridge.exposeInMainWorld("api", {
     // System Information
     cpuLoad: () => si.currentLoad().then(data => Math.floor(data.currentLoad)),
     memoryLoad: () => {
-        return si.mem().then(data => {
-            // Returns a new object with total and used memory in bytes and calculated average usage
-            return {
-                total: data.total,
-                used: data.used,
-                usage: Math.floor(data.used / data.total * 100)
-            };
-        });
+        const data = process.getSystemMemoryInfo();
+
+        return {
+            total: data.total,
+            used: data.total - data.free,
+            usage: Math.floor((data.total - data.free) / data.total * 100)
+        };
     },
     diskSpace: () => {
         return si.fsSize().then(data => {
