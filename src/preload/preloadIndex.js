@@ -71,6 +71,7 @@ contextBridge.exposeInMainWorld("api", {
     // Clipboard
     onClipboardChanged: (event, listener) => clipboardListener.on(event, listener),
     clearClipboard: () => clipboard.clear(),
+    getClipboardAvailableFormats: () => clipboard.availableFormats(),
     readClipboardText: () => clipboard.readText(),
     readClipboardImage: () => clipboard.readImage().toDataURL(),
     removeImageUrlPrefix: (dataUrl) => removeImageUrlPrefix(dataUrl),

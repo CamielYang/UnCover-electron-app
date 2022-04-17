@@ -36,10 +36,12 @@ export class Clipboard extends HTMLElement {
     createEvents() {
         // Save Notepad content
         this.saveClipboardId.addEventListener("click", () => {
-            if (this.text) {
+            const availableFormats = api.getClipboardAvailableFormats();
+
+            if (availableFormats.includes("text/plain")) {
                 api.saveDialog(this.text, "text");
             } 
-            else if (!api.imageIsEmpty()) {
+            else if (availableFormats.includes("image/png") || availableFormats.includes("image/jpg")) {
                 api.saveDialog(api.removeImageUrlPrefix(this.image), "image");
             } 
         })
@@ -57,13 +59,14 @@ export class Clipboard extends HTMLElement {
 
     // Update cllipboard content
     updateClipboard() {        
-        this.text = api.readClipboardText();
-        this.image = api.readClipboardImage();
-        
-        if (this.text) {
+        const availableFormats = api.getClipboardAvailableFormats();
+
+        if (availableFormats.includes("text/plain")) {
+            this.text = api.readClipboardText();
             this.setClipboardText(this.text);
         } 
-        else if (!api.imageIsEmpty()) {
+        else if (availableFormats.includes("image/png") || availableFormats.includes("image/jpeg")) {
+            this.image = api.readClipboardImage();    
             this.setClipboardImage(this.image);
         } 
         else {
