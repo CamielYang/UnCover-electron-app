@@ -116,6 +116,10 @@ h1 {
     padding: 30px;
 }
 
+.settings-page .hidden {
+    display: none;
+}
+
 .settings-page .header {
     margin-bottom: 10px;
 }

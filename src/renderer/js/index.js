@@ -18,13 +18,12 @@ window.onload = () => {
     const settings = document.getElementById("settingsPage");
 
     // Background Settings
-    const backgroundImgSettings = document.getElementById("imageSetting");
     const enableBackgroundImg = document.getElementById("enableBackgroundImg");
+    const backgroundInputDiv = document.getElementById("imageInputDiv");
     const backgroundInputId = "backgroundImgInput";
     let backgroundImgFile;
     
     initializeSettings()
-
 
     function initializeSettings() {
         addSettingsEvents();
@@ -56,14 +55,7 @@ window.onload = () => {
 
     function initializeBackgroundImg() {
         if (enableBackgroundImg.checked) {
-            const template = document.createElement('template');
-            template.innerHTML = `
-                <div id="imageInputDiv" class="file-input">
-                    <label for="${backgroundInputId}" class="button button-primary"><strong>Choose a image</strong></label>
-                    <input accept="image/*" type="file" id="${backgroundInputId}" />
-                </div>
-            `;
-            backgroundImgSettings.appendChild(template.content)
+            backgroundInputDiv.classList.remove("hidden")
 
             if (backgroundImgFile) {
                 document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
@@ -72,7 +64,7 @@ window.onload = () => {
             addBackgroundInputEvent();
         }
         else {
-            if (document.getElementById("imageInputDiv")) document.getElementById("imageInputDiv").remove()
+            backgroundInputDiv.classList.add("hidden")
             document.body.parentElement.style.backgroundImage = "";
         }
     }
