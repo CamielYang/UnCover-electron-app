@@ -48,9 +48,10 @@ export class Performance extends HTMLElement {
         this.delay = this.getAttribute("interval") ?? defaults.delay;
         this.setMaxDrives = this.getAttribute("max-drives");
 
-        this.clearPerformanceStats();
-        this.updateStatistics();
-        setInterval(this.updateStatistics.bind(this), this.delay)
+        this.clearPerformanceStats().then(e => {
+            this.updateStatistics();
+            setInterval(this.updateStatistics.bind(this), this.delay)
+        });
     }
 
     set setMaxDrives(value) {

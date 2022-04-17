@@ -1,4 +1,6 @@
 :root {
+    --transparency: 50%;
+
     --color1: rgba(60, 60, 60, 0.5);
     --color2: rgba(150, 150, 150, 0.3);
     --color3: rgba(0, 0, 0, 0.2);
@@ -20,8 +22,9 @@
 }
 
 html {
-    /* background: rgba(0, 0, 0, 0.5) url("../images/background-sample.jpg"); */
-    background: rgba(0, 0, 0, 0.5);
+    /* background: rgba(0, 0, 0, var(--transparency)) url("../images/wallpapers/background-sample.jpg"); */
+    background: rgba(0, 0, 0, var(--transparency));
+    background-position: center;
     background-blend-mode: darken;
     background-size: cover;
     min-height: 100vh;
@@ -37,7 +40,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-body {
+.overlay-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -65,7 +68,6 @@ h1 {
     visibility: visible;
     position: fixed;
     z-index: 1;
-    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -102,8 +104,96 @@ h1 {
     transition-duration: var(--transitionDuration);
     animation-name: img-fade-in;
     animation-duration: var(--transitionDuration);
-    animation-timing-function: cubic-bezier(0,1.36,.46,.95);
-    
+    animation-timing-function: cubic-bezier(0,1.36,.46,.95);   
+}
+
+
+/* Settings Page */
+.settings-page {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    padding: 30px;
+}
+
+.settings-page .header {
+    margin-bottom: 10px;
+}
+
+.light-container.settings-container {
+    margin: 15px 0;
+    width: auto;
+}
+
+.settings-container h2,
+.settings-container h3 {
+    margin-bottom: 5px;
+}
+
+.setting:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.input-info {
+    margin-right: 10px;
+}
+
+.file-input {
+    margin-top: 10px;
+}
+
+.file-input input[type=file] {
+    display: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch:active .slider:before {
+    width: 35px;
+}
+  
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+  
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .2s;
+    border: 2px solid var(--textColorGray);
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    text-align: center;
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--textColorGray);
+    transition: .2s;
+}
+
+input:checked + .slider {
+    border: 2px solid var(--textColor);
+}
+  
+input:checked + .slider:before {
+    background-color: var(--textColor);
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
 }
 
 
@@ -149,6 +239,7 @@ h1 {
 
 .flex-row {
     display: flex;
+    align-items: center;
     flex-direction: row;
 }
 
@@ -548,12 +639,14 @@ textarea:focus {
 }
 
 .dropdown {
+    display: flex;
     position: relative;
 }
 
 .dropdown-content {
     position: absolute;
     left: 0;
+    top: calc(100%);
     background-color: var(--color4);
     visibility: hidden;
     opacity: 0;

@@ -11,56 +11,84 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
 
-<body> 
-    <div class="fixed-close-button">
-        <button class="material-icons icon-button" id="closeWinBtn">close</button>
-    </div> 
-    <div class="top-container">
-        <div class="top-outer-container-left">
-            <!-- VOLUME WIDGET -->
-            <system-volume-widget></system-volume-widget>
+<body>
+    <div class="overlay-container" id="overlayPage">
+        <div class="fixed-close-button">
+            <button class="material-icons icon-button" id="closeWinBtn">close</button>
+        </div> 
+        <div class="top-container">
+            <div class="top-outer-container-left">
+                <!-- VOLUME WIDGET -->
+                <system-volume-widget></system-volume-widget>
+            </div>
+            
+            <!-- TIME WIDGET -->
+            <time-date-widget></time-date-widget>
+    
+            <div class="top-outer-container-right">       
+                <!-- WEATHER WIDGET -->
+                <!-- <weather-widget></weather-widget> -->
+            </div>
         </div>
-        
-        <!-- TIME WIDGET -->
-        <time-date-widget></time-date-widget>
-
-        <div class="top-outer-container-right">       
-            <!-- WEATHER WIDGET -->
-            <weather-widget></weather-widget>
+    
+        <div class="middle-container">
+            <div class="middle-flex-row space-between">
+                <div class="middle-flex-column-start">
+                    <!-- Performance WIDGET -->
+                    <!-- <performance-widget></performance-widget> -->
+    
+                    <!-- STOPWATCH WIDGET -->
+                    <stopwatch-widget></stopwatch-widget>
+                </div>
+                <div class="middle-flex-column-end">
+                    <!-- NOTE WIDGET -->
+                    <note-widget></note-widget> 
+    
+                    <!-- CLIPBOARD WIDGET -->
+                    <clipboard-widget></clipboard-widget>
+                </div>
+            </div>    
+        </div>
+    
+        <div class="bottom-container">
+            <ul>
+                <li>
+                    <button class="text-button" id="openWebBtn">Web Browser</button>
+                </li>
+                <li>
+                    <button class="text-button error">Discord</button>
+                </li>
+                <li>
+                    <button id="settingsBtn" class="text-button error">Settings</button>
+                </li>
+            </ul>
         </div>
     </div>
+    
+    <div class="settings-page" id="settingsPage">
+        <div class="flex-row flex-start header">
+            <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
+            <h2>Settings</h2>
+        </div>
 
-    <div class="middle-container">
-        <div class="middle-flex-row space-between">
-            <div class="middle-flex-column-start">
-                <!-- Performance WIDGET -->
-                <performance-widget></performance-widget>
-
-                <!-- STOPWATCH WIDGET -->
-                <stopwatch-widget></stopwatch-widget>
+        <div id="backgroundSettings" class="light-container settings-container">
+            <h2>Background</h2>
+            <div class="setting">
+                <h3>Transparency</h3>
+                <div class="flex-row">
+                    <p class="input-info" id="transparencyInfo">0%</p>
+                    <input type="range" id="transparencyInput" min="0" max="100" value="0">    
+                </div>
             </div>
-            <div class="middle-flex-column-end">
-                <!-- NOTE WIDGET -->
-                <note-widget></note-widget> 
-
-                <!-- CLIPBOARD WIDGET -->
-                <clipboard-widget></clipboard-widget>
+           
+            <div id="imageSetting" class="setting">
+                <h3>Enable image</h3>
+                <label class="switch">
+                    <input id="enableBackgroundImg" type="checkbox">
+                    <span class="slider"></span>
+                </label>
             </div>
-        </div>    
-    </div>
-
-    <div class="bottom-container">
-        <ul>
-            <li>
-                <button class="text-button" id="openWebBtn">Web Browser</button>
-            </li>
-            <li>
-                <button class="text-button error">Discord</button>
-            </li>
-            <li>
-                <button class="text-button error">Settings</button>
-            </li>
-        </ul>
+        </div>
     </div>
 
     <!-- The Modal -->

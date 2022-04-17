@@ -2,7 +2,7 @@ const template = document.createElement('template');
 template.innerHTML = `
     <div class="light-container clock-container">
         <div class="widget-header flex-row space-between">
-            <div class="flex-row flex-start">
+            <div class="flex-row">
                 <div class="dropdown">
                     <button class="material-icons icon-button">
                         expand_more
@@ -102,7 +102,6 @@ export class Stopwatch extends HTMLElement {
         s = Stopwatch.checkTime(s);
 
         this.stopwatchTime.innerHTML = h + ":" + m + ":" + s;
-        this.currentTime += 1000;
     }
 
     // Check if start time is set. Else set a new start time on the current time
