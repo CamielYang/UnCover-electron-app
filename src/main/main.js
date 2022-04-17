@@ -97,13 +97,15 @@ ipcMain.handle("close-window", (e, ...args) => {
     minimizeWindow();
 });
 
-ipcMain.handle("open-save-dialog", (e, content, fileType) => {
+// Event for opening save dialog
+ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
+    // Json of extensions fore different file types. Chosen extension will be determined by the fileType that is passed
     const extensions = {
         default : [
             { name: 'All Files', extensions: ['*'] }
         ],
         text : [
-            { name: 'Text Files',extensions: ['txt', 'docx'] }, 
+            { name: 'Text Files', extensions: ['txt', 'docx'] }, 
             { name: 'All Files', extensions: ['*'] }
         ],
         image : [
@@ -112,15 +114,16 @@ ipcMain.handle("open-save-dialog", (e, content, fileType) => {
     }; 
 
     const timestamp = new Date().getTime();
-    const setExtension = (extensions[fileType] ? extensions[fileType] : extensions.default)
-    // Resolves to a Promise<Object>
+    const setExtension = extensions[fileType];
+    // Show the save dialog. The default filename will is: [unixTime]_UnCover.[fileType].
+    // Filters expects an array of extensions passed.
     dialog.showSaveDialog(getMainWindow(), {
         defaultPath : `${app.getPath("downloads")}\\${timestamp}_UnCover.${setExtension[0].extensions[0]}`,
         filters: setExtension,
         properties: []
     }).then(file => {
         if (!file.canceled) {
-            // Creating and Writing to the sample.txt file
+            // Write file to the set path
             fs.writeFile(file.filePath.toString(), 
                 content, function (err) {
                 if (err) throw err;

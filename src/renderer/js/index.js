@@ -25,6 +25,7 @@ window.onload = () => {
     
     initializeSettings()
 
+    // Load all settings values
     function initializeSettings() {
         addSettingsEvents();
 
@@ -32,41 +33,13 @@ window.onload = () => {
         initializeBackgroundImg();
     }
 
+
     function addSettingsEvents() {
         document.getElementById("settingsBtn").addEventListener("click", showSettings);
         document.getElementById("returnOverlayBtn").addEventListener("click", showOverlay);
 
         enableBackgroundImg.addEventListener("change", initializeBackgroundImg);
-    }
-
-    function initializeTransparancy() {
-        const value = getComputedStyle(document.documentElement).getPropertyValue('--transparency');
-        
-        document.getElementById("transparencyInput").addEventListener("input", updateTransparancy); 
-
-        document.getElementById("transparencyInput").value = value.replace("%", "").trim();
-        document.getElementById("transparencyInfo").innerText = value;
-    }
-
-    function updateTransparancy(event) {
-        document.documentElement.style.setProperty('--transparency', `${event.target.value}%`);
-        document.getElementById("transparencyInfo").innerText = `${event.target.value}%`;
-    }
-
-    function initializeBackgroundImg() {
-        if (enableBackgroundImg.checked) {
-            backgroundInputDiv.classList.remove("hidden")
-
-            if (backgroundImgFile) {
-                document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
-            }
-
-            addBackgroundInputEvent();
-        }
-        else {
-            backgroundInputDiv.classList.add("hidden")
-            document.body.parentElement.style.backgroundImage = "";
-        }
+        addBackgroundInputEvent();
     }
 
     function addBackgroundInputEvent() {
@@ -90,15 +63,49 @@ window.onload = () => {
         });
     }
 
+    // Initialize values for background transparency
+    function initializeTransparancy() {
+        const value = getComputedStyle(document.documentElement).getPropertyValue('--transparency');
+        
+        document.getElementById("transparencyInput").addEventListener("input", updateTransparancy); 
+
+        document.getElementById("transparencyInput").value = value.replace("%", "").trim();
+        document.getElementById("transparencyInfo").innerText = value;
+    }
+
+    // Function for event on transparency slider input
+    function updateTransparancy(event) {
+        document.documentElement.style.setProperty('--transparency', `${event.target.value}%`);
+        document.getElementById("transparencyInfo").innerText = `${event.target.value}%`;
+    }
+
+    // Re-initialize background image settings depending on if the checkbox is checked or not.
+    function initializeBackgroundImg() {
+        if (enableBackgroundImg.checked) {
+            backgroundInputDiv.classList.remove("hidden")
+
+            if (backgroundImgFile) {
+                document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
+            }
+        }
+        else {
+            backgroundInputDiv.classList.add("hidden")
+            document.body.parentElement.style.backgroundImage = "";
+        }
+    }
+
+    // Reformat path to return usable path for css
     function getPathUrl(filePath) {
         return filePath.replaceAll("\\", "/").replace(/^[^\/]*/, "");
     }
     
+    // Display settings page
     function showSettings() {
         overlay.style.display = "none"
         settings.style.display = "block"
     }
     
+    // Display main page
     function showOverlay() {
         overlay.style.display = "flex"
         settings.style.display = "none"

@@ -61,6 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// Exposed methods for the renderer page
 contextBridge.exposeInMainWorld("api", {
     // Volume control
     getVolume: () => loudness.getVolume(),
@@ -90,6 +91,7 @@ contextBridge.exposeInMainWorld("api", {
     cpuLoad: () => si.currentLoad().then(data => Math.floor(data.currentLoad)),
     memoryLoad: () => {
         return si.mem().then(data => {
+            // Returns a new object with total and used memory in bytes and calculated average usage
             return {
                 total: data.total,
                 used: data.used,
@@ -106,6 +108,7 @@ contextBridge.exposeInMainWorld("api", {
         const graphics = await si.graphics();
         const controllers = []
         graphics.controllers.forEach(controller => {
+            // Only push graphics controllers that are non dedicated (static VRAM)
             if (!controller.vramDynamic) {
                 controllers.push( {
                     model: controller.model,

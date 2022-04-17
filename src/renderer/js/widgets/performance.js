@@ -63,15 +63,17 @@ export class Performance extends HTMLElement {
         }
     } 
 
+    // Update all performance stats information
     updateStatistics() {
         this.updateCpu();
         this.updateMemory();
         this.updateDiskSpace();
         
         // Disabled because of performance issues
-        //this.updateGpu();
+        // this.updateGpu();
     }
 
+    // Initialize all stats before updating it
     async clearPerformanceStats() {
             this.updatePerformanceStat(this.cpuId, "CPU");
             this.updatePerformanceStat(this.memoryId, "RAM", 0, "0 / 0 GB (0%)");
@@ -96,7 +98,7 @@ export class Performance extends HTMLElement {
     async updateDiskSpace() {
         const load = await api.diskSpace();
         load.slice(0, this.maxDrives).forEach(disk => {
-            this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, disk.use, `${Performance.byteToGb(disk.available, 2)} / ${Performance.byteToGb(disk.size, 0)} GB available`);
+            this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, disk.use, `${Performance.byteToGb(disk.available, 2)} / ${Performance.byteToGb(disk.size)} GB available`);
         });
     }
 
@@ -105,28 +107,35 @@ export class Performance extends HTMLElement {
         this.updatePerformanceStat("gpuTab", "GPU", load[0].usage)
     }
     
+    // General function for updating performance stat.
+    // Id is passed to identify the stat div. Name, load and info can be changed for each of those stats.
     updatePerformanceStat(id, name, load = 0, info = load + "%") {
         this.getNameElemById(id).innerText = name;
-        this.getPercentageElemById(id).innerText = info;
+        this.getInfoElemById(id).innerText = info;
         this.getBarElemById(id).style.width = `${load}%`;
     }
 
+    // Return name element of the given performance stat Id
     getNameElemById(id) {
         return this.performanceContainer.querySelector("#" + id).children[0].children[0];
     }
 
-    getPercentageElemById(id) {
+    // Return info element of the given performance stat Id
+    getInfoElemById(id) {
         return this.performanceContainer.querySelector("#" + id).children[0].children[1];
     }
     
+    // Return progress bar element of the given performance stat Id
     getBarElemById(id) {
         return this.performanceContainer.querySelector("#" + id).children[1];
     }
 
+    // Convert byte value to GB. Value will be round to the given decimals.
     static byteToGb(size, decimals) {
-        return (decimals == 0) ? Math.floor(size / Math.pow(1024, 3)) : (size / Math.pow(1024, 3)).toFixed(decimals);
+        return (decimals) ? (size / Math.pow(1024, 3)).toFixed(decimals) : Math.floor(size / Math.pow(1024, 3));
     }
 
+    // Add new element for the disk stat. Id will the set to the given Id.
     addDiskSpaceTab(id) {
         this.performanceStats.innerHTML += `
             <div id="${id}" class="performance-tab">
