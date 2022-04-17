@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { 
     contextBridge, 
     ipcRenderer, 
@@ -7,6 +6,8 @@ const {
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
+const path = require("path");
+require('dotenv').config({path: path.join(__dirname, "../.env")});
 
 let cityCoords;
 let weatherData;
@@ -70,6 +71,7 @@ contextBridge.exposeInMainWorld("api", {
     // Clipboard
     onClipboardChanged: (event, listener) => clipboardListener.on(event, listener),
     clearClipboard: () => clipboard.clear(),
+    getClipboardAvailableFormats: () => clipboard.availableFormats(),
     readClipboardText: () => clipboard.readText(),
     readClipboardImage: () => clipboard.readImage().toDataURL(),
     removeImageUrlPrefix: (dataUrl) => removeImageUrlPrefix(dataUrl),

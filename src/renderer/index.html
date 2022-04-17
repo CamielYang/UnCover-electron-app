@@ -11,149 +11,88 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 </head>
 
-<body> 
-    <div class="fixed-close-button">
-        <button class="material-icons icon-button" id="closeWinBtn">close</button>
-    </div> 
-    <div class="top-container">
-        <div class="top-outer-container-left">
-            <!-- VOLUME WIDGET -->
-            <div class="light-container volume-container">
-                    <button class="material-icons icon-button" id="volumeIcon">volume_up</button>
-                    <input type="range" id="volumebar" min="1" max="100" value="0">
-                    <p id="volume">0</p>
+<body>
+    <div class="overlay-container" id="overlayPage">
+        <div class="fixed-close-button">
+            <button class="material-icons icon-button" id="closeWinBtn">close</button>
+        </div> 
+        <div class="top-container">
+            <div class="top-outer-container-left">
+                <!-- VOLUME WIDGET -->
+                <system-volume-widget></system-volume-widget>
+            </div>
+            
+            <!-- TIME WIDGET -->
+            <time-date-widget></time-date-widget>
+    
+            <div class="top-outer-container-right">       
+                <!-- WEATHER WIDGET -->
+                <weather-widget></weather-widget>
             </div>
         </div>
-        
-        <!-- TIME WIDGET -->
-        <div class="time-container">
-            <h1 id="time">00:00:00</h1>
-            <h2 id="date">Monday, January 1, 2000</h2>
+    
+        <div class="middle-container">
+            <div class="middle-flex-row space-between">
+                <div class="middle-flex-column-start">
+                    <!-- Performance WIDGET -->
+                    <performance-widget></performance-widget>
+    
+                    <!-- STOPWATCH WIDGET -->
+                    <stopwatch-widget></stopwatch-widget>
+                </div>
+                <div class="middle-flex-column-end">
+                    <!-- NOTE WIDGET -->
+                    <note-widget></note-widget> 
+    
+                    <!-- CLIPBOARD WIDGET -->
+                    <clipboard-widget></clipboard-widget>
+                </div>
+            </div>    
         </div>
-        <div class="top-outer-container-right">       
-            <!-- WEATHER WIDGET -->
-            <div class="light-container weather-container">
-                <div id="currentWeather" class="current-weather">
-                    <div>
-                        <span class="weather-icon-main bi bi-cloud-sun-fill"></span>
-                    </div>
-                    <div class="weather-main">
-                        <h2>0°</h2>
-                        <h3>-</h3>
-                    </div>
-                </div>
-                <div id="weatherForecast" class="weather-sub">
-                    <div class="weather-sub-item">
-                        <h4>-</h4>
-                        <span class="weather-icon-sub bi bi-cloud-sun-fill"></span>
-                        <h4>0°</h4>
-                    </div>
-                </div>
-                <div class="weather-edit-location">
-                    <span class="material-icons">edit</span>
-                    <input id="editWeather" type="text"/>
-                </div>
-            </div>
+    
+        <div class="bottom-container">
+            <ul>
+                <li>
+                    <button class="text-button" id="openWebBtn">Web Browser</button>
+                </li>
+                <li>
+                    <button class="text-button error">Discord</button>
+                </li>
+                <li>
+                    <button id="settingsBtn" class="text-button error">Settings</button>
+                </li>
+            </ul>
         </div>
     </div>
+    
+    <div class="settings-page" id="settingsPage">
+        <div class="flex-row flex-start header">
+            <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
+            <h2>Settings</h2>
+        </div>
 
-    <div class="middle-container">
-        <div class="middle-flex-row space-between">
-            <div class="middle-flex-column-start">
-                <!-- Performance WIDGET -->
-                <div class="light-container performance-container">
-                    <div class="widget-header flex-row space-between">
-                        <div class="flex-row flex-start">
-                            <h3>Performance</h3>
-                        </div>
-                    </div>
-                    <div id="performanceStats" class="performance-stats">
-                        <div id="cpuTab" class="performance-tab">
-                            <div class="flex-row space-between">
-                                <p class="title">CPU</p>
-                                <p class="usage"></p>
-                            </div>
-                            <div class="performance-bar"></div>
-                        </div>
-                        <div id="memoryTab" class="performance-tab">
-                            <div class="flex-row space-between">
-                                <p class="title">RAM</p>
-                                <p class="usage"></p>
-                            </div>
-                            <div class="performance-bar"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- STOPWATCH WIDGET -->
-                <div class="light-container clock-container">
-                    <div class="widget-header flex-row space-between">
-                        <div class="flex-row flex-start">
-                            <div class="dropdown">
-                                <button class="material-icons icon-button">
-                                    expand_more
-                                </button>
-                                <div class="dropdown-content">
-                                    <ul>
-                                        <li>
-                                            <button class="text-button">Timer</button>
-                                        </li>
-                                        <li>
-                                            <button class="text-button active">Stopwatch</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <h3>Stopwatch</h3>
-                        </div>
-                        <div class="flex-row flex-buttons">
-                            <button id="resetStopwatch" class="button button-primary">Reset</button>
-                            <button id="setStopwatch" class="button button-primary">Start</button>
-                        </div>
-                    </div>
-                    <h1 id="stopwatchTime">00:00:00</h1>
+        <div class="light-container settings-container">
+            <h2>Background</h2>
+            <div class="setting">
+                <h3>Transparency</h3>
+                <div class="flex-row">
+                    <p class="input-info" id="transparencyInfo">0%</p>
+                    <input type="range" id="transparencyInput" min="0" max="100" value="0">    
                 </div>
             </div>
-            <div class="middle-flex-column-end">
-                <!-- NOTE WIDGET -->
-                <div class="light-container note-container">
-                    <div class="widget-header flex-row space-between">
-                        <h3>Notes</h3>
-                        <div class="flex-row flex-buttons">
-                            <button id="saveNotepad" class="button button-primary">Save</button>
-                            <button id="clearNotepad" class="button button-primary">Clear</button>
-                        </div>
-                    </div>
-                    <textarea id="notepad" cols="30" rows="8"></textarea>
-                </div>
-                
-                <!-- CLIPBOARD WIDGET -->
-                <div class="light-container clipboard-container">
-                    <div class="widget-header flex-row space-between">
-                        <h3>Clipboard</h3>
-                        <div class="flex-row flex-buttons">
-                            <button id="saveClipboard" class="button button-primary">Save</button>
-                            <button id="clearClipboard" class="button button-primary">Clear</button>
-                        </div>
-                    </div>
-                    <div class="clipboard-content" id="clipboard">
-                    </div>
+           
+            <div id="imageSetting" class="setting">
+                <h3>Enable image</h3>
+                <label class="switch">
+                    <input id="enableBackgroundImg" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+                <div id="imageInputDiv" class="file-input">
+                    <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
+                    <input accept="image/*" type="file" id="backgroundImgInput" />
                 </div>
             </div>
-        </div>    
-    </div>
-
-    <div class="bottom-container">
-        <ul>
-            <li>
-                <button class="text-button" id="openWebBtn">Web Browser</button>
-            </li>
-            <li>
-                <button class="text-button error">Discord</button>
-            </li>
-            <li>
-                <button class="text-button error">Settings</button>
-            </li>
-        </ul>
+        </div>
     </div>
 
     <!-- The Modal -->

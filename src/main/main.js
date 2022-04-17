@@ -48,7 +48,7 @@ function createShortcuts() {
 
 // Create the tray with a menu template
 function createTray() {
-    tray = new Tray(path.join(__dirname, "../../resources/electron.png"));
+    tray = new Tray(path.join(__dirname, "../../resources/UnCover.ico"));
     
     const menu = Menu.buildFromTemplate([ 
         {
@@ -113,17 +113,16 @@ ipcMain.handle("open-save-dialog", (e, content, fileType) => {
 
     const timestamp = new Date().getTime();
     const setExtension = (extensions[fileType] ? extensions[fileType] : extensions.default)
-
     // Resolves to a Promise<Object>
     dialog.showSaveDialog(getMainWindow(), {
-        defaultPath : `C:\\${timestamp}_UnCover.${setExtension[0].extensions[0]}`,
+        defaultPath : `${app.getPath("downloads")}\\${timestamp}_UnCover.${setExtension[0].extensions[0]}`,
         filters: setExtension,
         properties: []
     }).then(file => {
         if (!file.canceled) {
             // Creating and Writing to the sample.txt file
             fs.writeFile(file.filePath.toString(), 
-                         content, function (err) {
+                content, function (err) {
                 if (err) throw err;
             });
         }
