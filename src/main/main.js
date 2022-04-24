@@ -134,6 +134,14 @@ ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
     });
 });
 
+ipcMain.handle('set-startup-setting', (e, bool = false) => {
+    if (!app.getLoginItemSettings().openAtLogin == bool) {
+        app.setLoginItemSettings({ openAtLogin: bool });
+    }
+});
+
+ipcMain.handle('get-user-data-path', () => app.getPath("userData"));
+
 // ipcMain.handle("set-ignore-mouse-events", (e, ...args) => {
 //     const win = BrowserWindow.fromWebContents(e.sender);
 //     win.setIgnoreMouseEvents(...args);

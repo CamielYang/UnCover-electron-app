@@ -71,8 +71,36 @@
             <h2>Settings</h2>
         </div>
 
+        <!-- User settings -->
         <div class="light-container settings-container">
-            <h2>Background</h2>
+            <h2>User settings</h2>
+            <div id="#" class="setting">
+                <h3>Run at startup</h3>
+                <label class="switch">
+                    <input id="startupCheckbox" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting">
+                <h3>Scaling</h3>
+                <div class="flex-row">
+                    <p class="input-info" id="scalingInfo">0%</p>
+                    <input type="range" id="scalingInput" min="50" max="150" step="10" value="0">    
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Settings -->
+        <div class="light-container settings-container">
+            <h2>Display settings</h2>
+            <div class="setting">
+                <h3>Blur</h3>
+                <div class="flex-row">
+                    <p class="input-info" id="blurInfo">0px</p>
+                    <input type="range" id="blurInput" min="0" max="50" value="0">    
+                </div>
+            </div>
             <div class="setting">
                 <h3>Transparency</h3>
                 <div class="flex-row">
@@ -80,11 +108,10 @@
                     <input type="range" id="transparencyInput" min="0" max="100" value="0">    
                 </div>
             </div>
-           
             <div id="imageSetting" class="setting">
                 <h3>Enable image</h3>
                 <label class="switch">
-                    <input id="enableBackgroundImg" type="checkbox">
+                    <input id="backgroundImgCheckbox" type="checkbox">
                     <span class="slider"></span>
                 </label>
                 <div id="imageInputDiv" class="file-input">

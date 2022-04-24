@@ -1,4 +1,5 @@
 :root {
+    --blurRadius: 10px;
     --transparency: 50%;
 
     --color1: rgba(60, 60, 60, 0.5);
@@ -333,7 +334,7 @@ input:checked + .slider:before {
 .light-container {
     box-shadow: var(--shadow);
     padding: 20px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(var(--blurRadius));
     background: rgba(255, 255, 255, 0.1);
     margin: 15px 30px;
     width: fit-content;
