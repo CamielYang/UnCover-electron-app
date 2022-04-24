@@ -1,12 +1,19 @@
-const { 
+const {
     contextBridge, 
     ipcRenderer, 
     clipboard,
+    webFrame
 } = require('electron');
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
 const path = require("path");
+const storage = require('electron-json-storage');
+
+ipcRenderer.invoke('get-user-data-path').then(path => {
+    storage.setDataPath(path + "/Storage");
+})
+
 require('dotenv').config({path: path.join(__dirname, "../.env")});
 
 let cityCoords;
@@ -117,4 +124,13 @@ contextBridge.exposeInMainWorld("api", {
         })
         return controllers;
     },
+
+    // Settings
+    getUserSettings: () => storage.getSync("settings"),
+    setUserSettings: (object) => storage.set("settings", object),
+    getZoomFactor: () => webFrame.getZoomFactor(),
+    setZoomFactor: (factor) => webFrame.setZoomFactor(factor),
+    setStartupSetting: (bool) => {
+        ipcRenderer.invoke('set-startup-setting', bool);
+    }
 })
