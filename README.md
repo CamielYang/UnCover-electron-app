@@ -16,4 +16,5 @@ make quick notes and save it as textfile, look at the current weather and weathe
 - Notepad
 - Clipboard
 - Build-in browser
-<img src="https://user-images.githubusercontent.com/70901975/163561636-16ae6047-8144-46b4-bac1-ad17fe47a664.png">
+<img src="https://user-images.githubusercontent.com/70901975/164966613-c65aff3f-3dc5-4b46-a7ca-f667c75efe8a.png">
+
