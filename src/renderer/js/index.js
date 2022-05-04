@@ -9,6 +9,7 @@ import { Performance } from "./widgets/performance.js";
 
 const defaultSettings = {
     runAtStartup: false,
+    runMinimized: true,
     zoomFactor: 1,
     blur: "10px",
     backgroundTransparency: "50%",
@@ -30,6 +31,7 @@ window.onload = () => {
 
     // User Settings
     const startupCheckbox = document.getElementById("startupCheckbox");
+    const minimizedCheckbox = document.getElementById("minimizedCheckbox");
     const scalingInput = document.getElementById("scalingInput");
     const scalingInfo = document.getElementById("scalingInfo");
 
@@ -55,6 +57,7 @@ window.onload = () => {
         document.getElementById("returnOverlayBtn").addEventListener("click", showOverlay);
 
         initializeStartup();
+        initializeMinimized();
         initializeScaling();
         initializeBlur();
         initializeTransparency();
@@ -82,6 +85,26 @@ window.onload = () => {
 
     function updateStartup(bool) {
         api.setStartupSetting(bool);
+    }
+
+
+    /* Minimized */
+    // Initialize values for minimized
+    function initializeMinimized() {
+        const bool = settingsData.runMinimized
+        
+        minimizedCheckbox.addEventListener('change', checkMinimized)
+        minimizedCheckbox.checked = bool;
+        
+        if (!bool) {
+            api.openWindow();
+        }
+    }
+
+    function checkMinimized(event) {
+        const bool = event.target.checked;
+        
+        settingsData.runMinimized = bool;
     }
 
 
