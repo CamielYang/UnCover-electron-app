@@ -70,6 +70,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Exposed methods for the renderer page
 contextBridge.exposeInMainWorld("api", {
+    // Uncover window
+    openWindow: () => ipcRenderer.invoke('open-window', ''),
+
     // Volume control
     getVolume: () => loudness.getVolume(),
     setVolume: (value) => loudness.setVolume(value),

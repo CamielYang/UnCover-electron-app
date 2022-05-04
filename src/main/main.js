@@ -23,6 +23,8 @@ function createWindow() {
         autoHideMenuBar: true,
         transparent: true,
         skipTaskbar: true,
+        alwaysOnTop: true,
+        show: false,
         fullscreen: true,
         webPreferences: {
             preload: path.join(__dirname, "../../src/preload/preloadIndex.js"),
@@ -32,10 +34,29 @@ function createWindow() {
 
     let level = "normal";
 
-    minimizeWindow();
     win.setAlwaysOnTop(true, level);
-    win.setFullScreenable(false);
     win.loadFile("src/renderer/index.html");
+    
+    const splash = new BrowserWindow({
+        width: 256, 
+        height: 256, 
+        transparent: true, 
+        frame: false, 
+        center: true,
+        resizable: false,
+        autoHideMenuBar: true,
+        skipTaskbar: true,
+        alwaysOnTop: true
+    });
+
+    splash.setIgnoreMouseEvents(true)
+    splash.loadFile('src/renderer/splash.html');
+
+    win.once('ready-to-show', () => {
+        splash.close();
+        createShortcuts();
+        createTray();
+    })
 }
 
 // create global shortcuts
@@ -76,7 +97,8 @@ function minimizeWindow() {
 
 // Maximize main window
 function maximizeWindow() {
-    win.restore();
+    win.setFullScreen(true);
+    win.show();
 }
 
 function getMainWindow() {
@@ -85,8 +107,6 @@ function getMainWindow() {
 
 app.whenReady().then(() => {
     createWindow();
-    createShortcuts();
-    createTray();
 });
 
 app.on("window-all-closed", () => {
@@ -95,6 +115,10 @@ app.on("window-all-closed", () => {
 
 ipcMain.handle("close-window", (e, ...args) => {
     minimizeWindow();
+});
+
+ipcMain.handle("open-window", (e, ...args) => {
+    maximizeWindow();
 });
 
 // Event for opening save dialog

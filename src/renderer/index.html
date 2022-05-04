@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <!-- Main Page -->
     <div class="overlay-container" id="overlayPage">
         <div class="fixed-close-button">
             <button class="material-icons icon-button" id="closeWinBtn">close</button>
@@ -59,12 +60,14 @@
                     <button class="text-button error">Discord</button>
                 </li>
                 <li>
-                    <button id="settingsBtn" class="text-button error">Settings</button>
+                    <button id="settingsBtn" class="text-button">Settings</button>
                 </li>
             </ul>
         </div>
     </div>
     
+
+    <!-- Settings Page -->
     <div class="settings-page" id="settingsPage">
         <div class="flex-row flex-start header">
             <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
@@ -74,10 +77,18 @@
         <!-- User settings -->
         <div class="light-container settings-container">
             <h2>User settings</h2>
-            <div id="#" class="setting">
+            <div class="setting">
                 <h3>Run at startup</h3>
                 <label class="switch">
                     <input id="startupCheckbox" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting">
+                <h3>Start minimized</h3>
+                <label class="switch">
+                    <input id="minimizedCheckbox" type="checkbox">
                     <span class="slider"></span>
                 </label>
             </div>
