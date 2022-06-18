@@ -9,7 +9,8 @@ template.innerHTML = `
             <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
             <h2 class="return-head">Applications</h2>
         </div>
-        <div id="applicationsList">
+        <div class="applications-list" id="applicationsList">
+        </div>
     </div>
 `;
 
@@ -35,10 +36,9 @@ class Applications extends HTMLElement {
             console.log('%c ', `padding: 25px; background: url("data:image/png;base64,${app.base64}") no-repeat;`);
         
             this.applicationsListId.innerHTML += `
-            <div style="width: 50px;
-                    height: 50px;
-                    background: url('data:image/png;base64,${app.base64}');
-                    background-size: contain">
+            <div class="app">
+                <img class="app-icon" src="data:image/png;base64,${app.base64}">
+                <span class="app-title">${app.name}</span>
             </div>
             `
         });

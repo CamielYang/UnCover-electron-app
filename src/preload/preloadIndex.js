@@ -14,13 +14,40 @@ require('dotenv').config({path: path.join(__dirname, "../.env")});
 
 const applications = [
     {
-        path: 'C:/xampp/xampp_start.exe'
+        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
     },
     {
         path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
     },
     {
         path: 'C:/Users/camie/Documents/Projects/UnCover-electron-app/out/UnCover-win32-x64/UnCover.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
+    },
+    {
+        path: 'D:/Minecraft Launcher/MinecraftLauncher.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
+    },
+    {
+        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+    },
+    {
+        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
+    },
+    {
+        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
     }
 ]
 
@@ -38,8 +65,13 @@ iconExtractor.emitter.on('icon', function(data){
 });
 
 applications.forEach((app, index) => {
+    applications[index].name = extractAppFileName(app.path);
     iconExtractor.getIcon(index, app.path);
 });
+
+function extractAppFileName(path) {
+    return path.match(/(?<process>[\w\.-]*)\.exe/)[1];
+}
 
 function getApplications() { 
     return new Promise(function (resolve) {

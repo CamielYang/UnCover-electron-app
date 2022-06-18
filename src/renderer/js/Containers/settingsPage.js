@@ -114,9 +114,7 @@ export class Settings extends HTMLElement {
     
     // Load all settings values
     initializeSettings() {
-        console.log(this);
         this.settingsData = this.getSettingsData();
-        console.log(this.settingsData);
         document.getElementById("settingsBtn").addEventListener("click", this.showSettings.bind(this));
         this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay);
 
@@ -327,6 +325,7 @@ export class Settings extends HTMLElement {
     // Display main page
     showOverlay() {
         PageHandler.switchToMainPage();
+        this.saveSettings(this.settingsData);
 
         // Stop the auto save interval
         clearInterval(this.autoSaveInterval);

@@ -139,6 +139,45 @@ h1 {
     margin-bottom: 5px;
 }
 
+/* Applications Page */
+.applications-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 50px 150px;
+    gap: 70px 25px;
+}
+
+.applications-list .app {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-wrap: anywhere;
+    width: 125px;
+}
+
+.applications-list .app .app-title {
+    text-align: center;
+    font-size: 12px;
+    height: 12px;
+    margin-top: 5px;
+}
+
+.applications-list .app .app-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    transition-duration: var(--transitionDuration);
+}
+
+.applications-list .app:hover .app-icon {
+    filter: brightness(0.8);
+}
+
+.applications-list .app:active .app-icon {
+    filter: none;
+}
+
 /* Settings Page */
 .setting:not(:last-child) {
     margin-bottom: 20px;
