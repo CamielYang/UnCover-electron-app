@@ -17,7 +17,7 @@ const applications = [
         path: 'C:/xampp/xampp_start.exe'
     },
     {
-        path: 'C:/Program Files (x86)/Dropbox/Client/Dropboxx.exe'
+        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
     },
     {
         path: 'C:/Users/camie/Documents/Projects/UnCover-electron-app/out/UnCover-win32-x64/UnCover.exe'

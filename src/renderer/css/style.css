@@ -109,33 +109,37 @@ h1 {
     animation-timing-function: cubic-bezier(0,1.36,.46,.95);   
 }
 
+/* General Page */
+.return-head {
+    margin-left: 10px;
+}
 
-/* Settings Page */
-.settings-page {
+.page {
     display: none;
     height: 100vh;
     width: 100vw;
     padding: 30px;
 }
 
-.settings-page .hidden {
+.page .hidden {
     display: none;
 }
 
-.settings-page .header {
+.page .header {
     margin-bottom: 10px;
 }
 
-.light-container.settings-container {
+.light-container.page-container {
     margin: 15px 0;
     width: auto;
 }
 
-.settings-container h2,
-.settings-container h3 {
+.page-container h2,
+.page-container h3 {
     margin-bottom: 5px;
 }
 
+/* Settings Page */
 .setting:not(:last-child) {
     margin-bottom: 20px;
 }

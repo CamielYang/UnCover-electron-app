@@ -1,13 +1,17 @@
+import { PageHandler } from "../Helpers/pageHandler.js";
+
+const pageId = "settingsPage";
+
 const template = document.createElement('template');
 template.innerHTML = `
-    <div class="settings-page" id="settingsPage">
+    <div class="page" id=${pageId}>
         <div class="flex-row flex-start header">
             <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
-            <h2>Settings</h2>
+            <h2 class="return-head">Settings</h2>
         </div>
 
         <!-- User settings -->
-        <div class="light-container settings-container">
+        <div class="light-container page-container">
             <h2>User settings</h2>
             <div class="setting">
                 <h3>Run at startup</h3>
@@ -35,7 +39,7 @@ template.innerHTML = `
         </div>
 
         <!-- Display Settings -->
-        <div class="light-container settings-container">
+        <div class="light-container page-container">
             <h2>Display settings</h2>
             <div class="setting">
                 <h3>Blur</h3>
@@ -66,15 +70,15 @@ template.innerHTML = `
     </div>
 `;
 
-export class SettingsPage extends HTMLElement {
+export class Settings extends HTMLElement {
     constructor() {
         super()
 
         this.appendChild(template.content.cloneNode(true));
 
-        this.templateContainer = this.children[0];
+        this.settingsContainer = this.children[0];
 
-        const defaultSettings = {
+        this.defaultSettings = {
             runAtStartup: false,
             runMinimized: true,
             zoomFactor: 1,
@@ -84,266 +88,265 @@ export class SettingsPage extends HTMLElement {
             imageFile: null
         }
         
-        let settingsData;
+        this.settingsData;
 
         // User Settings
-        const startupCheckbox = document.getElementById("startupCheckbox");
-        const minimizedCheckbox = document.getElementById("minimizedCheckbox");
-        const scalingInput = document.getElementById("scalingInput");
-        const scalingInfo = document.getElementById("scalingInfo");
+        this.startupCheckbox = this.settingsContainer.querySelector("#startupCheckbox");
+        this.minimizedCheckbox = this.settingsContainer.querySelector("#minimizedCheckbox");
+        this.scalingInput = this.settingsContainer.querySelector("#scalingInput");
+        this.scalingInfo = this.settingsContainer.querySelector("#scalingInfo");
         
         // Display Settings
-        const blurInput = document.getElementById("blurInput");
-        const blurInfo = document.getElementById("blurInfo");
+        this.blurInput = this.settingsContainer.querySelector("#blurInput");
+        this.blurInfo = this.settingsContainer.querySelector("#blurInfo");
         
-        const transparencyInput = document.getElementById("transparencyInput");
-        const transparencyInfo = document.getElementById("transparencyInfo");
+        this.transparencyInput = this.settingsContainer.querySelector("#transparencyInput");
+        this.transparencyInfo = this.settingsContainer.querySelector("#transparencyInfo");
         
-        const backgroundImgCheckbox = document.getElementById("backgroundImgCheckbox");
-        const backgroundInputDiv = document.getElementById("imageInputDiv");
-        const backgroundInput = document.getElementById("backgroundImgInput");
-        let autoSaveInterval;
-        let backgroundImgFile;
+        this.backgroundImgCheckbox = this.settingsContainer.querySelector("#backgroundImgCheckbox");
+        this.backgroundInputDiv = this.settingsContainer.querySelector("#imageInputDiv");
+        this.backgroundInput = this.settingsContainer.querySelector("#backgroundImgInput");
+        this.autoSaveInterval;
+        this.backgroundImgFile;
 
-        initializeSettings()
+        this.initializeSettings();
+    }
+    
+    // Load all settings values
+    initializeSettings() {
+        console.log(this);
+        this.settingsData = this.getSettingsData();
+        console.log(this.settingsData);
+        document.getElementById("settingsBtn").addEventListener("click", this.showSettings.bind(this));
+        this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay);
 
-        // Load all settings values
-        function initializeSettings() {
-            settingsData = getSettingsData();
-            
-            document.getElementById("settingsBtn").addEventListener("click", showSettings);
-            document.getElementById("returnOverlayBtn").addEventListener("click", showOverlay);
+        this.initializeStartup();
+        this.initializeMinimized();
+        this.initializeScaling();
+        this.initializeBlur();
+        this.initializeTransparency();
+        this.initializeBackgroundImg();
+    }
 
-            initializeStartup();
-            initializeMinimized();
-            initializeScaling();
-            initializeBlur();
-            initializeTransparency();
-            initializeBackgroundImg();
-        }
-
-        /* STARTUP */
-        // Initialize values for startup
-        function initializeStartup() {
-            const bool = settingsData.runAtStartup
-            
-            startupCheckbox.addEventListener('change', checkStartup)
-            startupCheckbox.checked = bool;
-            
-            updateStartup(bool);
-        }
-
-        function checkStartup(event) {
-            const bool = event.target.checked;
-            
-            settingsData.runAtStartup = bool;
-
-            updateStartup(bool);
-        }
-
-        function updateStartup(bool) {
-            api.setStartupSetting(bool);
-        }
-
-
-        /* Minimized */
-        // Initialize values for minimized
-        function initializeMinimized() {
-            const bool = settingsData.runMinimized
-            
-            minimizedCheckbox.addEventListener('change', checkMinimized)
-            minimizedCheckbox.checked = bool;
-            
-            if (!bool) {
-                api.openWindow();
-            }
-        }
-
-        function checkMinimized(event) {
-            const bool = event.target.checked;
-            
-            settingsData.runMinimized = bool;
-        }
-
-
-        /* SCALING */
-        // Initialize values for scaling
-        function initializeScaling() {
-            const value = settingsData.zoomFactor;
-
-            scalingInput.addEventListener("input", checkScaling); 
-            scalingInput.value = value * 100;
-            
-            updateScaling(value * 100);
-        }
-
-        // Function for event on transparency slider input
-        function checkScaling(event) {      
-            settingsData.zoomFactor = event.target.value / 100;
-            
-            updateScaling(event.target.value);
-        }
-
-        // Update scaling. Value expects a percentage
-        function updateScaling(value) {
-            api.setZoomFactor(value / 100);
-            scalingInfo.innerText = `${value}%`;
-        }
-
-        /* Blur */
-        // Initialize values for container blur
-        function initializeBlur() {
-            const value = settingsData.blur;
-
-            blurInput.addEventListener("input", checkBlur); 
-            blurInput.value = value.replace("px", "");
-            
-            updateBlur(value);
-        }
-
-        // Function for event on blur slider input
-        function checkBlur(event) {
-            const value = `${event.target.value}px`;
-
-            settingsData.blur = value;    
-            updateBlur(value);
-        }
-
-        function updateBlur(value) {
-            document.documentElement.style.setProperty('--blurRadius', value);
-            blurInfo.innerText = value;
-        }
-
-
-        /* TRANPARENCY */
-        // Initialize values for background transparency
-        function initializeTransparency() {
-            const value = settingsData.backgroundTransparency;
-
-            transparencyInput.addEventListener("input", checkTransparency); 
-            transparencyInput.value = value.replace("%", "");
-            
-            updateTransparency(value);
-        }
-
-        // Function for event on transparency slider input
-        function checkTransparency(event) {
-            const value = `${event.target.value}%`;
-
-            settingsData.backgroundTransparency = value;    
-            updateTransparency(value);
-        }
-
-        function updateTransparency(value) {
-            document.documentElement.style.setProperty('--transparency', value);
-            transparencyInfo.innerText = value;
-        }
-
-
-        /* BACKGROUND IMAGE */
-        // Re-initialize background image settings depending on if the checkbox is checked or not.
-        function initializeBackgroundImg() {
-            if (settingsData.enableBackgroundImage) {
-                backgroundImgCheckbox.checked = true;
-                
-                backgroundInputDiv.classList.remove("hidden");
-                setBackgroundImage(settingsData.imageFile);
-            }
-            else {
-                backgroundImgCheckbox.checked = false;
-                
-                backgroundInputDiv.classList.add("hidden")
-                setBackgroundImage(null);
-            }
-
-            backgroundImgCheckbox.addEventListener("change", checkBackgroundImg);
-            addBackgroundInputEvent();
-        }
-
-        // Listen for change in file input of the background
-        function addBackgroundInputEvent() {
-            backgroundInput.addEventListener('change', function(e) {
-                // Convert image file to base64 string
-                // const file = this.files[0];
-                // const reader = new FileReader();
-
-                // reader.addEventListener("load", function () {
-                //     backgroundImgFile = reader.result;
-                //     document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
-                // }, false);
-            
-                // if (file) {
-                //     reader.readAsDataURL(file);
-                // }
-
-                // Use image path location
-                backgroundImgFile = getPathUrl(this.files[0].path);
-                settingsData.imageFile = backgroundImgFile
-                setBackgroundImage(backgroundImgFile);
-            });
-        }
-
-        function checkBackgroundImg(event) {
-            if (event.target.checked) {
-                settingsData.enableBackgroundImage = true
-
-                backgroundInputDiv.classList.remove("hidden");
-                setBackgroundImage(settingsData.imageFile);
-            }
-            else {
-                settingsData.enableBackgroundImage = false
-
-                backgroundInputDiv.classList.add("hidden")
-                setBackgroundImage(null);
-            }
-        }
-
-        function setBackgroundImage(imageFile) {
-            document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
-        }
-
-
-        // Reformat path to return usable path for css
-        function getPathUrl(filePath) {
-            return filePath.replaceAll("\\", "/").replace(/^[^\/]*/, "");
-        }
+    /* STARTUP */
+    // Initialize values for startup
+    initializeStartup() {
+        const bool = this.settingsData.runAtStartup
         
-        // Display settings page
-        function showSettings() {
-            overlayPage.style.display = "none"
-            settingsPage.style.display = "block"
-
-            // Set auto save every second
-            autoSaveInterval = setInterval(() => {
-                saveSettings(settingsData);
-            }, 1000);
-        }
+        this.startupCheckbox.addEventListener('change', this.checkStartup)
+        this.startupCheckbox.checked = bool;
         
-        // Display main page
-        function showOverlay() {
-            overlayPage.style.display = "flex"
-            settingsPage.style.display = "none"
+        this.updateStartup(bool);
+    }
 
-            // Stop the auto save interval
-            clearInterval(autoSaveInterval);
+    checkStartup(event) {
+        const bool = event.target.checked;
+        
+        this.settingsData.runAtStartup = bool;
+
+        this.updateStartup(bool);
+    }
+
+    updateStartup(bool) {
+        api.setStartupSetting(bool);
+    }
+
+
+    /* Minimized */
+    // Initialize values for minimized
+    initializeMinimized() {
+        const bool = this.settingsData.runMinimized
+        
+        this.minimizedCheckbox.addEventListener('change', this.checkMinimized)
+        this.minimizedCheckbox.checked = bool;
+        
+        if (!bool) {
+            api.openWindow();
+        }
+    }
+
+    checkMinimized(event) {
+        const bool = event.target.checked;
+        
+        this.settingsData.runMinimized = bool;
+    }
+
+
+    /* SCALING */
+    // Initialize values for scaling
+    initializeScaling() {
+        const value = this.settingsData.zoomFactor;
+
+        this.scalingInput.addEventListener("input", this.checkScaling.bind(this)); 
+        this.scalingInput.value = value * 100;
+        
+        this.updateScaling(value * 100);
+    }
+
+    // for event on transparency slider input
+    checkScaling(event) {
+        this.settingsData.zoomFactor = event.target.value / 100;
+        
+        this.updateScaling(event.target.value);
+    }
+
+    // Update scaling. Value expects a percentage
+    updateScaling(value) {
+        api.setZoomFactor(value / 100);
+        this.scalingInfo.innerText = `${value}%`;
+    }
+
+    /* Blur */
+    // Initialize values for container blur
+    initializeBlur() {
+        const value = this.settingsData.blur;
+
+        this.blurInput.addEventListener("input", this.checkBlur.bind(this)); 
+        this.blurInput.value = value.replace("px", "");
+        
+        this.updateBlur(value);
+    }
+
+    // for event on blur slider input
+    checkBlur(event) {
+        const value = `${event.target.value}px`;
+
+        this.settingsData.blur = value;    
+        this.updateBlur(value);
+    }
+
+    updateBlur(value) {
+        document.documentElement.style.setProperty('--blurRadius', value);
+        this.blurInfo.innerText = value;
+    }
+
+
+    /* TRANPARENCY */
+    // Initialize values for background transparency
+    initializeTransparency() {
+        const value = this.settingsData.backgroundTransparency;
+
+        this.transparencyInput.addEventListener("input", this.checkTransparency.bind(this)); 
+        this.transparencyInput.value = value.replace("%", "");
+        
+        this.updateTransparency(value);
+    }
+
+    // for event on transparency slider input
+    checkTransparency(event) {
+        const value = `${event.target.value}%`;
+
+        this.settingsData.backgroundTransparency = value;    
+        this.updateTransparency(value);
+    }
+
+    updateTransparency(value) {
+        document.documentElement.style.setProperty('--transparency', value);
+        this.transparencyInfo.innerText = value;
+    }
+
+
+    /* BACKGROUND IMAGE */
+    // Re-initialize background image settings depending on if the checkbox is checked or not.
+    initializeBackgroundImg() {
+        if (this.settingsData.enableBackgroundImage) {
+            this.backgroundImgCheckbox.checked = true;
+            
+            this.backgroundInputDiv.classList.remove("hidden");
+            this.setBackgroundImage(this.settingsData.imageFile);
+        }
+        else {
+            this.backgroundImgCheckbox.checked = false;
+            
+            this.backgroundInputDiv.classList.add("hidden")
+            this.setBackgroundImage(null);
         }
 
-        // Return settings data
-        function getSettingsData() {
-            const settings = api.getUserSettings();
+        this.backgroundImgCheckbox.addEventListener("change", this.checkBackgroundImg.bind(this));
+        this.addBackgroundInputEvent();
+    }
 
-            if (Object.keys(settings).length == 0) {
-                saveSettings(defaultSettings)
-                return defaultSettings
-            }
-            // Combine default settings and user settings to fill up empty values
-            return Object.assign(defaultSettings, settings);
-        }
+    // Listen for change in file input of the background
+    addBackgroundInputEvent() {
+        this.backgroundInput.addEventListener('change', function(e) {
+            // Convert image file to base64 string
+            // const file = this.files[0];
+            // const reader = new FileReader();
 
-        function saveSettings(object) {
-            api.setUserSettings(object)
+            // reader.addEventListener("load", () {
+            //     backgroundImgFile = reader.result;
+            //     document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
+            // }, false);
+        
+            // if (file) {
+            //     reader.readAsDataURL(file);
+            // }
+
+            // Use image path location
+            this.backgroundImgFile = this.getPathUrl(e.target.files[0].path);
+            this.settingsData.imageFile = this.backgroundImgFile;
+            this.setBackgroundImage(this.backgroundImgFile);
+        }.bind(this));
+    }
+
+    checkBackgroundImg(event) {
+        if (event.target.checked) {
+            this.settingsData.enableBackgroundImage = true
+
+            this.backgroundInputDiv.classList.remove("hidden");
+            this.setBackgroundImage(this.settingsData.imageFile);
         }
+        else {
+            this.settingsData.enableBackgroundImage = false
+
+            this.backgroundInputDiv.classList.add("hidden")
+            this.setBackgroundImage(null);
+        }
+    }
+
+    setBackgroundImage(imageFile) {
+        document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
+    }
+
+
+    // Reformat path to return usable path for css
+    getPathUrl(filePath) {
+        return filePath.replaceAll("\\", "/").replace(/^[^\/]*/, "");
+    }
+    
+    // Display settings page
+    showSettings() {
+        PageHandler.switchPage(pageId);
+
+        // Set auto save every second
+        this.autoSaveInterval = setInterval(() => {
+            this.saveSettings(this.settingsData);
+        }, 1000);
+    }
+    
+    // Display main page
+    showOverlay() {
+        PageHandler.switchToMainPage();
+
+        // Stop the auto save interval
+        clearInterval(this.autoSaveInterval);
+    }
+
+    // Return settings data
+    getSettingsData() {
+        const settings = api.getUserSettings();
+
+        if (Object.keys(settings).length == 0) {
+            this.saveSettings(this.defaultSettings)
+            return defaultSettings
+        }
+        // Combine default settings and user settings to fill up empty values
+        return Object.assign(this.defaultSettings, settings);
+    }
+
+    saveSettings(object) {
+        api.setUserSettings(object)
     }
 }
 
-window.customElements.define('settings-page', SettingsPage);
+window.customElements.define('settings-page', Settings);
