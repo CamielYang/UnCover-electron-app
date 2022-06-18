@@ -10,7 +10,7 @@ template.innerHTML = `
 /**
  * Volume widget to manage system volume. You can mute or change the system volume value.
  */
-export class SystemVolume extends HTMLElement {
+class SystemVolume extends HTMLElement {
     constructor() {
         super()
 

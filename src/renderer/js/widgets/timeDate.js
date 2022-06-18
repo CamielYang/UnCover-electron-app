@@ -9,7 +9,7 @@ template.innerHTML = `
 /**
  * Time and date widget to show current time and todays date.
  */
-export class TimeDate extends HTMLElement {
+class TimeDate extends HTMLElement {
     constructor() {
         super()
 

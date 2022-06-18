@@ -28,7 +28,7 @@ template.innerHTML = `
 /**
  * Performance widget to keep track of system information
  */
-export class Performance extends HTMLElement {
+class Performance extends HTMLElement {
     constructor() {
         super()
 

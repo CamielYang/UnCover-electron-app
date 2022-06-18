@@ -9,17 +9,54 @@ const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
 const path = require("path");
 const storage = require('electron-json-storage');
-
-ipcRenderer.invoke('get-user-data-path').then(path => {
-    storage.setDataPath(path + "/Storage");
-})
-
+const iconExtractor = require('icon-extractor');
 require('dotenv').config({path: path.join(__dirname, "../.env")});
+
+const applications = [
+    {
+        path: 'C:/xampp/xampp_start.exe'
+    },
+    {
+        path: 'C:/Program Files (x86)/Dropbox/Client/Dropboxx.exe'
+    },
+    {
+        path: 'C:/Users/camie/Documents/Projects/UnCover-electron-app/out/UnCover-win32-x64/UnCover.exe'
+    }
+]
 
 let cityCoords;
 let weatherData;
 
 clipboardListener.startListening();
+
+ipcRenderer.invoke('get-user-data-path').then(path => {
+    storage.setDataPath(path + "/Storage");
+})
+
+iconExtractor.emitter.on('icon', function(data){
+    applications[data.Context].base64 = data.Base64ImageData;
+});
+
+applications.forEach((app, index) => {
+    iconExtractor.getIcon(index, app.path);
+});
+
+function getApplications() { 
+    return new Promise(function (resolve) {
+        (function waitForCompletion(){
+            if (applications.every((app)=> app.base64)) return resolve(applications);
+            setTimeout(waitForCompletion, 300);
+        })();
+    });
+}
+
+function addApplication(path) {
+    const appIndex = applications.push({
+        path: path
+    }) - 1;
+
+    iconExtractor.getIcon(appIndex, path)
+}
 
 function removeImageUrlPrefix(dataUrl) {
     let data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
@@ -127,6 +164,10 @@ contextBridge.exposeInMainWorld("api", {
         })
         return controllers;
     },
+
+    // Application Manager
+    getApplications: () => getApplications(),
+    addApplication: (path) => addApplication(path),
 
     // Settings
     getUserSettings: () => storage.getSync("settings"),

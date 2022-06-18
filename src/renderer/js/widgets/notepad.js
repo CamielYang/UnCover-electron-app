@@ -15,7 +15,7 @@ template.innerHTML = `
 /**
  * Notepad widget to write simple notes.
 */
-export class Notepad extends HTMLElement {
+class Notepad extends HTMLElement {
     constructor() {
         super()
 

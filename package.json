@@ -23,6 +23,7 @@
     "dotenv": "^16.0.0",
     "electron-json-storage": "^4.5.0",
     "electron-squirrel-startup": "^1.0.0",
+    "icon-extractor": "^1.0.3",
     "loudness": "^0.4.1",
     "systeminformation": "^5.11.9"
   },

@@ -29,7 +29,7 @@ template.innerHTML = `
     </div>
 `;
 
-export class Stopwatch extends HTMLElement {
+class Stopwatch extends HTMLElement {
     constructor() {
         super()
 

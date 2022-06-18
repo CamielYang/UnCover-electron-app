@@ -15,7 +15,7 @@ template.innerHTML = `
     </div>
 `;
 
-export class Clipboard extends HTMLElement {
+class Clipboard extends HTMLElement {
     constructor() {
         super()
 

@@ -28,7 +28,7 @@
     
             <div class="top-outer-container-right">       
                 <!-- WEATHER WIDGET -->
-                <weather-widget></weather-widget>
+                <!-- <weather-widget></weather-widget> -->
             </div>
         </div>
     
@@ -57,7 +57,7 @@
                     <button class="text-button" id="openWebBtn">Web Browser</button>
                 </li>
                 <li>
-                    <button class="text-button error">Discord</button>
+                    <button class="text-button error" id="testBtn">Applications</button>
                 </li>
                 <li>
                     <button id="settingsBtn" class="text-button">Settings</button>
@@ -68,70 +68,7 @@
     
 
     <!-- Settings Page -->
-    <div class="settings-page" id="settingsPage">
-        <div class="flex-row flex-start header">
-            <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
-            <h2>Settings</h2>
-        </div>
-
-        <!-- User settings -->
-        <div class="light-container settings-container">
-            <h2>User settings</h2>
-            <div class="setting">
-                <h3>Run at startup</h3>
-                <label class="switch">
-                    <input id="startupCheckbox" type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="setting">
-                <h3>Start minimized</h3>
-                <label class="switch">
-                    <input id="minimizedCheckbox" type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <div class="setting">
-                <h3>Scaling</h3>
-                <div class="flex-row">
-                    <p class="input-info" id="scalingInfo">0%</p>
-                    <input type="range" id="scalingInput" min="50" max="150" step="10" value="0">    
-                </div>
-            </div>
-        </div>
-
-        <!-- Display Settings -->
-        <div class="light-container settings-container">
-            <h2>Display settings</h2>
-            <div class="setting">
-                <h3>Blur</h3>
-                <div class="flex-row">
-                    <p class="input-info" id="blurInfo">0px</p>
-                    <input type="range" id="blurInput" min="0" max="50" value="0">    
-                </div>
-            </div>
-            <div class="setting">
-                <h3>Transparency</h3>
-                <div class="flex-row">
-                    <p class="input-info" id="transparencyInfo">0%</p>
-                    <input type="range" id="transparencyInput" min="0" max="100" value="0">    
-                </div>
-            </div>
-            <div id="imageSetting" class="setting">
-                <h3>Enable image</h3>
-                <label class="switch">
-                    <input id="backgroundImgCheckbox" type="checkbox">
-                    <span class="slider"></span>
-                </label>
-                <div id="imageInputDiv" class="file-input">
-                    <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
-                    <input accept="image/*" type="file" id="backgroundImgInput" />
-                </div>
-            </div>
-        </div>
-    </div>
+    <settings-page></settings-page>
 
     <!-- The Modal -->
     <div id="myModal" class="modal hidden">

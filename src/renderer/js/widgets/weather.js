@@ -27,7 +27,7 @@ template.innerHTML = `
 /**
  * Weather widget to show current weather and weather forecast.
  */
-export class Weather extends HTMLElement {
+class Weather extends HTMLElement {
     static weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
     constructor() {
