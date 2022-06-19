@@ -4,55 +4,19 @@ const {
     clipboard,
     webFrame
 } = require('electron');
+const child = require('child_process').execFile;
+const path = require("path");
+require('dotenv').config({path: path.join(__dirname, "../.env")});
+
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
-const path = require("path");
 const storage = require('electron-json-storage');
 const iconExtractor = require('icon-extractor');
-require('dotenv').config({path: path.join(__dirname, "../.env")});
-
-const applications = [
-    {
-        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
-    },
-    {
-        path: 'C:/Users/camie/Documents/Projects/UnCover-electron-app/out/UnCover-win32-x64/UnCover.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/Minecraft Launcher/MinecraftLauncher.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
-    }
-]
 
 let cityCoords;
 let weatherData;
+let applications;
 
 clipboardListener.startListening();
 
@@ -61,33 +25,51 @@ ipcRenderer.invoke('get-user-data-path').then(path => {
 })
 
 iconExtractor.emitter.on('icon', function(data){
-    applications[data.Context].base64 = data.Base64ImageData;
+    applications.data[data.Context].base64 = data.Base64ImageData;
 });
 
-applications.forEach((app, index) => {
-    applications[index].name = extractAppFileName(app.path);
-    iconExtractor.getIcon(index, app.path);
-});
+function getApplications() {
+    applications = storage.getSync("applications");
 
-function extractAppFileName(path) {
-    return path.match(/(?<process>[\w\.-]*)\.exe/)[1];
-}
+    if (!applications.data) {
+        applications = {
+            data: []
+        };
 
-function getApplications() { 
+        return {
+            data: []
+        }
+    }
+
+    applications.data.forEach((app, index) => {
+        setApplicationData(index, app.path);
+    });
+
     return new Promise(function (resolve) {
         (function waitForCompletion(){
-            if (applications.every((app)=> app.base64)) return resolve(applications);
+            if (applications.data.every((app)=> app.base64)) return resolve(applications);
             setTimeout(waitForCompletion, 300);
         })();
     });
 }
 
-function addApplication(path) {
-    const appIndex = applications.push({
-        path: path
-    }) - 1;
+function extractAppFileName(path) {
+    return path.match(/(?<process>[\w\.-]*)\.exe/)[1];
+}
 
-    iconExtractor.getIcon(appIndex, path)
+function addApplication(path) {
+    getApplications();
+    
+    applications.data.push({
+        path: path
+    });
+
+    storage.set("applications", applications);
+}
+
+function setApplicationData(index, path) {
+    applications.data[index].name = extractAppFileName(path);
+    iconExtractor.getIcon(index, path);
 }
 
 function removeImageUrlPrefix(dataUrl) {
@@ -200,6 +182,18 @@ contextBridge.exposeInMainWorld("api", {
     // Application Manager
     getApplications: () => getApplications(),
     addApplication: (path) => addApplication(path),
+    openApplication: (path) => {
+        ipcRenderer.invoke('close-window', '');
+
+        child(path, function(err, data) {
+            if(err){
+               console.error(err);
+               return;
+            }
+    
+            console.log(data.toString());
+        })
+    },
 
     // Settings
     getUserSettings: () => storage.getSync("settings"),

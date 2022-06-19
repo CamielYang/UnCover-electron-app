@@ -61,7 +61,7 @@ template.innerHTML = `
                     <input id="backgroundImgCheckbox" type="checkbox">
                     <span class="slider"></span>
                 </label>
-                <div id="imageInputDiv" class="file-input">
+                <div id="imageInputDiv" class="file-input m-top">
                     <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
                     <input accept="image/*" type="file" id="backgroundImgInput" />
                 </div>
@@ -116,7 +116,7 @@ export class Settings extends HTMLElement {
     initializeSettings() {
         this.settingsData = this.getSettingsData();
         document.getElementById("settingsBtn").addEventListener("click", this.showSettings.bind(this));
-        this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay);
+        this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay.bind(this));
 
         this.initializeStartup();
         this.initializeMinimized();
@@ -309,7 +309,7 @@ export class Settings extends HTMLElement {
 
     // Reformat path to return usable path for css
     getPathUrl(filePath) {
-        return filePath.replaceAll("\\", "/").replace(/^[^\/]*/, "");
+        return filePath.replaceAll("\\", "/");
     }
     
     // Display settings page
@@ -344,7 +344,7 @@ export class Settings extends HTMLElement {
     }
 
     saveSettings(object) {
-        api.setUserSettings(object)
+        api.setUserSettings(object);
     }
 }
 

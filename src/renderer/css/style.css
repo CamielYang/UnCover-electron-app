@@ -64,6 +64,10 @@ h1 {
     margin: 0;
 }
 
+.m-top {
+    margin-top: 10px;
+}
+
 
 /* Modal background */
 .modal {
@@ -116,13 +120,10 @@ h1 {
 
 .page {
     display: none;
+    flex-direction: column;
     height: 100vh;
     width: 100vw;
     padding: 30px;
-}
-
-.page .hidden {
-    display: none;
 }
 
 .page .header {
@@ -140,6 +141,14 @@ h1 {
 }
 
 /* Applications Page */
+.applications-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    overflow: scroll;
+}
+
 .applications-list {
     display: flex;
     flex-wrap: wrap;
@@ -153,6 +162,7 @@ h1 {
     align-items: center;
     flex-direction: column;
     overflow-wrap: anywhere;
+    cursor: pointer;
     width: 125px;
 }
 
@@ -161,6 +171,7 @@ h1 {
     font-size: 12px;
     height: 12px;
     margin-top: 5px;
+    transition-duration: var(--transitionDuration);
 }
 
 .applications-list .app .app-icon {
@@ -185,10 +196,6 @@ h1 {
 
 .input-info {
     margin-right: 10px;
-}
-
-.file-input {
-    margin-top: 10px;
 }
 
 .file-input input[type=file] {
@@ -356,6 +363,10 @@ input:checked + .slider:before {
 .button-primary:active {
     background: var(--color2);
     color: var(--textColor);
+}
+
+.button-icon-left :first-child {
+    margin-right: 5px;
 }
 
 .text-button {
