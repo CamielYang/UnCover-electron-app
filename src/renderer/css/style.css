@@ -135,6 +135,10 @@ h1 {
     width: auto;
 }
 
+.light-container.page-container:last-of-type {
+    margin: 15px 0 0;
+}
+
 .page-container h2,
 .page-container h3 {
     margin-bottom: 5px;
@@ -153,7 +157,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 50px 150px;
+    margin: 50px 0px;
     gap: 70px 25px;
 }
 
