@@ -1,4 +1,5 @@
 import { PageHandler } from "../Helpers/pageHandler.js";
+import { convertPathUrl } from "../Helpers/convertPathUrl.js";
 
 const pageId = "applicationsPage";
 
@@ -41,13 +42,12 @@ class Applications extends HTMLElement {
 
     async initializeApplications() {
         api.getApplications().then(applicationsList => {
-            console.log(applicationsList)
             this.applicationsListId.innerHTML = "";
 
             applicationsList.data.forEach(app => {     
                 this.applicationsListId.innerHTML += `
                 <div onclick="api.openApplication('${app.path}')" class="app">
-                    <img class="app-icon" src="data:image/png;base64,${app.base64}">
+                    <img class="app-icon" src="${app.dataUrl}">
                     <span class="app-title">${app.name}</span>
                 </div>
                 `
@@ -57,22 +57,8 @@ class Applications extends HTMLElement {
 
     addApplicationInputEvent() {
         this.applicationInput.addEventListener('change', function(e) {
-            // Convert image file to base64 string
-            // const file = this.files[0];
-            // const reader = new FileReader();
+            const path = convertPathUrl(e.target.files[0].path);
 
-            // reader.addEventListener("load", () {
-            //     backgroundImgFile = reader.result;
-            //     document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
-            // }, false);
-        
-            // if (file) {
-            //     reader.readAsDataURL(file);
-            // }
-
-            // Use image path location
-            const path = this.getPathUrl(e.target.files[0].path);
-            console.log(path);
             api.addApplication(path).then(() => {
                 this.initializeApplications();
             });
@@ -89,11 +75,6 @@ class Applications extends HTMLElement {
         });
 
         this.addApplicationInputEvent();
-    }
-
-    // Reformat path to return usable path for css
-    getPathUrl(filePath) {
-        return filePath.replaceAll("\\", "/");
     }
 }
 

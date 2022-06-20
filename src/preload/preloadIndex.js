@@ -12,7 +12,10 @@ const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
 const storage = require('electron-json-storage');
-const iconExtractor = require('icon-extractor');
+
+const emptyApplicationStorage = {
+    data: []
+};
 
 let cityCoords;
 let weatherData;
@@ -24,10 +27,6 @@ ipcRenderer.invoke('get-user-data-path').then(path => {
     storage.setDataPath(path + "/Storage");
 })
 
-iconExtractor.emitter.on('icon', function(data){
-    applications.data[data.Context].base64 = data.Base64ImageData;
-});
-
 function getApplications() {
     if (!applications) {
         applications = storage.getSync("applications");
@@ -36,22 +35,16 @@ function getApplications() {
     return new Promise(function (resolve) {
         (function waitForCompletion(){
             if (!applications.data) {
-                applications = {
-                    data: []
-                };
+                applications = emptyApplicationStorage;
 
-                resolve({
-                    data: []
-                });
+                resolve(emptyApplicationStorage);
             }
 
             applications.data.forEach((app, index) => {
                 setApplicationData(index, app.path);
             });
 
-            if (applications.data.every(app => {
-                return app.base64 != undefined
-            })) {
+            if (applications.data.every(app => Object.values(app).length == 3)) {
                 resolve(applications)
             } else {
                 setTimeout(waitForCompletion, 300);
@@ -70,13 +63,27 @@ function addApplication(path) {
             path: path
         });
     
-        storage.set("applications", applications);
+        saveApplications(applications);
     });
+}
+
+function saveApplications(applications) {
+    const storageList = emptyApplicationStorage;
+
+    applications.data.forEach(app => {
+        storageList.data.push({
+            path: app.path
+        });
+    });
+
+    storage.set("applications", storageList);
 }
 
 function setApplicationData(index, path) {
     applications.data[index].name = extractAppFileName(path);
-    iconExtractor.getIcon(index, path);
+    ipcRenderer.invoke('get-file-icon', path).then(dataUrl => {
+        applications.data[index].dataUrl = dataUrl;
+    });
 }
 
 function removeImageUrlPrefix(dataUrl) {

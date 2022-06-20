@@ -1,4 +1,5 @@
 import { PageHandler } from "../Helpers/pageHandler.js";
+import { convertPathUrl } from "../Helpers/convertPathUrl.js";
 
 const pageId = "settingsPage";
 
@@ -281,7 +282,7 @@ export class Settings extends HTMLElement {
             // }
 
             // Use image path location
-            this.backgroundImgFile = this.getPathUrl(e.target.files[0].path);
+            this.backgroundImgFile = convertPathUrl(e.target.files[0].path);
             this.settingsData.imageFile = this.backgroundImgFile;
             this.setBackgroundImage(this.backgroundImgFile);
         }.bind(this));
@@ -304,12 +305,6 @@ export class Settings extends HTMLElement {
 
     setBackgroundImage(imageFile) {
         document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
-    }
-
-
-    // Reformat path to return usable path for css
-    getPathUrl(filePath) {
-        return filePath.replaceAll("\\", "/");
     }
     
     // Display settings page

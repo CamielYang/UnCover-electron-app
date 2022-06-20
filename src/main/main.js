@@ -166,6 +166,10 @@ ipcMain.handle('set-startup-setting', (e, bool = false) => {
 
 ipcMain.handle('get-user-data-path', () => app.getPath("userData"));
 
+ipcMain.handle('get-file-icon', (e, path) => {
+    return app.getFileIcon(path, { size: "large" }).then(icon => icon.toDataURL());
+});
+
 // ipcMain.handle("set-ignore-mouse-events", (e, ...args) => {
 //     const win = BrowserWindow.fromWebContents(e.sender);
 //     win.setIgnoreMouseEvents(...args);
