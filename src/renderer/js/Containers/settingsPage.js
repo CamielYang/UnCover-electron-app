@@ -132,7 +132,7 @@ export class Settings extends HTMLElement {
     initializeStartup() {
         const bool = this.settingsData.runAtStartup
         
-        this.startupCheckbox.addEventListener('change', this.checkStartup)
+        this.startupCheckbox.addEventListener('change', this.checkStartup.bind(this))
         this.startupCheckbox.checked = bool;
         
         this.updateStartup(bool);
@@ -156,7 +156,7 @@ export class Settings extends HTMLElement {
     initializeMinimized() {
         const bool = this.settingsData.runMinimized
         
-        this.minimizedCheckbox.addEventListener('change', this.checkMinimized)
+        this.minimizedCheckbox.addEventListener('change', this.checkMinimized.bind(this))
         this.minimizedCheckbox.checked = bool;
         
         if (!bool) {
