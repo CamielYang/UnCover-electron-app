@@ -29,26 +29,33 @@ iconExtractor.emitter.on('icon', function(data){
 });
 
 function getApplications() {
-    applications = storage.getSync("applications");
-
-    if (!applications.data) {
-        applications = {
-            data: []
-        };
-
-        return {
-            data: []
-        }
+    if (!applications) {
+        applications = storage.getSync("applications");
     }
-
-    applications.data.forEach((app, index) => {
-        setApplicationData(index, app.path);
-    });
 
     return new Promise(function (resolve) {
         (function waitForCompletion(){
-            if (applications.data.every((app)=> app.base64)) return resolve(applications);
-            setTimeout(waitForCompletion, 300);
+            if (!applications.data) {
+                applications = {
+                    data: []
+                };
+
+                resolve({
+                    data: []
+                });
+            }
+
+            applications.data.forEach((app, index) => {
+                setApplicationData(index, app.path);
+            });
+
+            if (applications.data.every(app => {
+                return app.base64 != undefined
+            })) {
+                resolve(applications)
+            } else {
+                setTimeout(waitForCompletion, 300);
+            }
         })();
     });
 }
@@ -58,13 +65,13 @@ function extractAppFileName(path) {
 }
 
 function addApplication(path) {
-    getApplications();
+    return getApplications().then(applications => {
+        applications.data.push({
+            path: path
+        });
     
-    applications.data.push({
-        path: path
+        storage.set("applications", applications);
     });
-
-    storage.set("applications", applications);
 }
 
 function setApplicationData(index, path) {

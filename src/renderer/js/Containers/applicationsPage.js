@@ -33,24 +33,25 @@ class Applications extends HTMLElement {
 
         this.applicationInput = this.applicationsContainer.querySelector("#applicationInput");
         this.applicationsListId = this.applicationsContainer.querySelector("#applicationsList");
-
+        
         this.initializeApplications();
 
-        this.addEvents();   
+        this.addEvents();
     }
 
     async initializeApplications() {
-        this.applicationsList = await api.getApplications();
-        console.log(this.applicationsList);
-        this.applicationsListId.innerHTML = "";
+        api.getApplications().then(applicationsList => {
+            console.log(applicationsList)
+            this.applicationsListId.innerHTML = "";
 
-        this.applicationsList.data.forEach(app => {     
-            this.applicationsListId.innerHTML += `
-            <div onclick="api.openApplication('${app.path}')" class="app">
-                <img class="app-icon" src="data:image/png;base64,${app.base64}">
-                <span class="app-title">${app.name}</span>
-            </div>
-            `
+            applicationsList.data.forEach(app => {     
+                this.applicationsListId.innerHTML += `
+                <div onclick="api.openApplication('${app.path}')" class="app">
+                    <img class="app-icon" src="data:image/png;base64,${app.base64}">
+                    <span class="app-title">${app.name}</span>
+                </div>
+                `
+            });
         });
     }
 
@@ -72,7 +73,7 @@ class Applications extends HTMLElement {
             // Use image path location
             const path = this.getPathUrl(e.target.files[0].path);
             console.log(path);
-            api.addApplication(path).then(data => {
+            api.addApplication(path).then(() => {
                 this.initializeApplications();
             });
         }.bind(this));
