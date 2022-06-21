@@ -35,9 +35,9 @@ function getApplications() {
     return new Promise(function (resolve) {
         (function waitForCompletion(){
             if (!applications.data) {
-                applications = emptyApplicationStorage;
+                applications = JSON.parse(JSON.stringify(emptyApplicationStorage));
 
-                resolve(emptyApplicationStorage);
+                resolve(JSON.parse(JSON.stringify(emptyApplicationStorage)));
             }
 
             applications.data.forEach((app, index) => {
@@ -62,16 +62,15 @@ function addApplication(path) {
         applications.data.push({
             path: path
         });
-    
         saveApplications(applications);
     });
 }
 
 function saveApplications(applications) {
-    const storageList = emptyApplicationStorage;
+    const storageList = JSON.parse(JSON.stringify(emptyApplicationStorage));
 
     applications.data.forEach(app => {
-        storageList.data.push({
+    storageList.data.push({
             path: app.path
         });
     });

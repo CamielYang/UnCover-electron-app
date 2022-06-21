@@ -21,6 +21,17 @@ template.innerHTML = /*html*/`
             <div class="applications-list" id="applicationsList">
             </div>
         </div>
+
+        <div id="contextMenu" class="app-context-menu">
+            <ul>
+                <li>
+                    <button id="deleteApp" class="text-button">Delete</button>
+                </li>
+                <li>
+                    <button id="renameApp" class="text-button">Rename</button>
+                </li>
+            </ul>
+        </div>
     </div>
 `;
 
@@ -33,25 +44,39 @@ class Applications extends HTMLElement {
         this.applicationsContainer = this.children[0];
 
         this.applicationInput = this.applicationsContainer.querySelector("#applicationInput");
-        this.applicationsListId = this.applicationsContainer.querySelector("#applicationsList");
+        this.applicationsList = this.applicationsContainer.querySelector("#applicationsList");
+        this.contextMenu = this.applicationsContainer.querySelector("#contextMenu");
+        this.selectedApp;
+
+        this.applicationsContainer.addEventListener('mouseup', (e) => {
+            this.hideMenu();
+        });
         
         this.initializeApplications();
-
+        
         this.addEvents();
+        this.addContextMenuEvents();
+        this.addApplicationInputEvent();
     }
 
-    async initializeApplications() {
-        api.getApplications().then(applicationsList => {
-            this.applicationsListId.innerHTML = "";
+    addEvents() {
+        document.getElementById("applicationBtn").addEventListener("click", () => {
+            PageHandler.switchPage(pageId);
+        });
 
-            applicationsList.data.forEach(app => {     
-                this.applicationsListId.innerHTML += `
-                <div onclick="api.openApplication('${app.path}')" class="app">
-                    <img class="app-icon" src="${app.dataUrl}">
-                    <span class="app-title">${app.name}</span>
-                </div>
-                `
-            });
+        this.applicationsContainer.querySelector("#returnOverlayBtn").addEventListener("click", () => {
+            PageHandler.switchToMainPage()
+        });
+    }
+
+
+    addContextMenuEvents() {
+        this.contextMenu.querySelector("#deleteApp").addEventListener('click', (e) => {
+            this.deleteApp();
+        });
+
+        this.contextMenu.querySelector("#renameApp").addEventListener('click', (e) => {
+            this.renameApp();
         });
     }
 
@@ -65,16 +90,60 @@ class Applications extends HTMLElement {
         }.bind(this));
     }
 
-    addEvents() {
-        document.getElementById("applicationBtn").addEventListener("click", () => {
-            PageHandler.switchPage(pageId);
-        });
+    async initializeApplications() {
+        api.getApplications().then(applicationsList => {
+            this.applicationsList.innerHTML = "";
 
-        this.applicationsContainer.querySelector("#returnOverlayBtn").addEventListener("click", () => {
-            PageHandler.switchToMainPage()
-        });
+            applicationsList.data.forEach((app, key) => {     
+                const appDiv = document.createElement("div");
+                appDiv.classList = "app";
+                appDiv.key = key;
+                
+                appDiv.onclick = function () {  
+                    api.openApplication(app.path);
+                };
+                
+                appDiv.oncontextmenu = function (e) {
+                    this.openMenu(e);
+                }.bind(this);
+                
+                const appImg = document.createElement("img");
+                appImg.classList = "app-icon";
+                appImg.src = app.dataUrl;
 
-        this.addApplicationInputEvent();
+                const appSpan = document.createElement("span");
+                appSpan.classList = "app-title";
+                appSpan.textContent = app.name;
+
+                appDiv.appendChild(appImg);
+                appDiv.appendChild(appSpan);
+
+                this.applicationsList.appendChild(appDiv);
+            });
+        });
+    }
+
+    hideMenu() { 
+        this.contextMenu.style.display = "none" 
+    } 
+    
+    openMenu(e) { 
+        e.preventDefault(); 
+
+        this.selectedApp = e.currentTarget.key;
+
+        var menu = this.contextMenu;      
+        menu.style.display = 'block'; 
+        menu.style.left = e.pageX + "px"; 
+        menu.style.top = e.pageY + "px"; 
+    }
+
+    deleteApp() {
+        console.log("delete " + this.selectedApp);
+    }
+
+    renameApp() {
+        console.log("rename " + this.selectedApp);
     }
 }
 

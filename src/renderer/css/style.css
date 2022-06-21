@@ -193,6 +193,20 @@ h1 {
     filter: none;
 }
 
+.app-context-menu {
+    position: fixed;
+    left: 80px;
+    top: 80px;
+    display: none;
+    background: var(--color4);
+    padding: 10px;
+    box-shadow: var(--shadow);
+}
+
+.app-context-menu ul {
+    list-style-type: none;
+}
+
 /* Settings Page */
 .setting:not(:last-child) {
     margin-bottom: 20px;

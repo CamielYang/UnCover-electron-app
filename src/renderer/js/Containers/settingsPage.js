@@ -332,7 +332,7 @@ export class Settings extends HTMLElement {
 
         if (Object.keys(settings).length == 0) {
             this.saveSettings(this.defaultSettings)
-            return defaultSettings
+            return this.defaultSettings;
         }
         // Combine default settings and user settings to fill up empty values
         return Object.assign(this.defaultSettings, settings);
