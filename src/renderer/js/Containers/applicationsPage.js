@@ -1,5 +1,5 @@
-import { PageHandler } from "../Helpers/pageHandler.js";
-import { convertPathUrl } from "../Helpers/convertPathUrl.js";
+import { PageHandler } from "../helpers/pageHandler.js";
+import { convertPathUrl } from "../helpers/convertPathUrl.js";
 
 const pageId = "applicationsPage";
 
@@ -82,11 +82,13 @@ class Applications extends HTMLElement {
 
     addApplicationInputEvent() {
         this.applicationInput.addEventListener('change', function(e) {
-            const path = convertPathUrl(e.target.files[0].path);
+            const path = convertPathUrl(e.target.files[0]?.path);
 
-            api.addApplication(path).then(() => {
-                this.initializeApplications();
-            });
+            if (path) {
+                api.addApplication(path).then(() => {
+                    this.initializeApplications();
+                });
+            }
         }.bind(this));
     }
 
@@ -99,7 +101,7 @@ class Applications extends HTMLElement {
                 appDiv.classList = "app";
                 appDiv.key = key;
                 
-                appDiv.onclick = function () {  
+                appDiv.ondblclick = function () {  
                     api.openApplication(app.path);
                 };
                 
@@ -114,6 +116,10 @@ class Applications extends HTMLElement {
                 const appSpan = document.createElement("span");
                 appSpan.classList = "app-title";
                 appSpan.textContent = app.name;
+                appSpan.addEventListener("focusout", (e) => {
+                    api.renameApplication(this.selectedApp.key, e.currentTarget.textContent);
+                    e.currentTarget.setAttribute("contenteditable", false);
+                })
 
                 appDiv.appendChild(appImg);
                 appDiv.appendChild(appSpan);
@@ -130,7 +136,7 @@ class Applications extends HTMLElement {
     openMenu(e) { 
         e.preventDefault(); 
 
-        this.selectedApp = e.currentTarget.key;
+        this.selectedApp = e.currentTarget;
 
         var menu = this.contextMenu;      
         menu.style.display = 'block'; 
@@ -139,10 +145,22 @@ class Applications extends HTMLElement {
     }
 
     deleteApp() {
-        console.log("delete " + this.selectedApp);
+        api.deleteApplication(this.selectedApp.key).then(() => {
+            this.initializeApplications();
+        });
     }
 
     renameApp() {
+        const textSpan = this.selectedApp.children[1];
+        textSpan.setAttribute("contenteditable", true);
+
+        const selection = window.getSelection();  
+        const range = document.createRange();  
+        selection.removeAllRanges();  
+        range.selectNodeContents(textSpan);  
+        selection.addRange(range); 
+
+        this.selectedApp.children[1].focus();
         console.log("rename " + this.selectedApp);
     }
 }

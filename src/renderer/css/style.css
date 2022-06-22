@@ -168,14 +168,19 @@ h1 {
     overflow-wrap: anywhere;
     cursor: pointer;
     width: 125px;
+    height: 67px;
 }
 
 .applications-list .app .app-title {
     text-align: center;
     font-size: 12px;
-    height: 12px;
     margin-top: 5px;
     transition-duration: var(--transitionDuration);
+}
+
+.applications-list .app .app-title:focus-visible {
+    outline: none;
+    background-color: var(--color2);
 }
 
 .applications-list .app .app-icon {
@@ -198,7 +203,7 @@ h1 {
     left: 80px;
     top: 80px;
     display: none;
-    background: var(--color4);
+    background-color: var(--color4);
     padding: 10px;
     box-shadow: var(--shadow);
 }

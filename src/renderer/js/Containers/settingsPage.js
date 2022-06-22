@@ -1,5 +1,5 @@
-import { PageHandler } from "../Helpers/pageHandler.js";
-import { convertPathUrl } from "../Helpers/convertPathUrl.js";
+import { PageHandler } from "../helpers/pageHandler.js";
+import { convertPathUrl } from "../helpers/convertPathUrl.js";
 
 const pageId = "settingsPage";
 
@@ -108,7 +108,6 @@ export class Settings extends HTMLElement {
         this.backgroundInputDiv = this.settingsContainer.querySelector("#imageInputDiv");
         this.backgroundInput = this.settingsContainer.querySelector("#backgroundImgInput");
         this.autoSaveInterval;
-        this.backgroundImgFile;
 
         this.initializeSettings();
     }
@@ -282,9 +281,12 @@ export class Settings extends HTMLElement {
             // }
 
             // Use image path location
-            this.backgroundImgFile = convertPathUrl(e.target.files[0].path);
-            this.settingsData.imageFile = this.backgroundImgFile;
-            this.setBackgroundImage(this.backgroundImgFile);
+            const backgroundImgFile = convertPathUrl(e.target.files[0]?.path);
+            
+            if (backgroundImgFile) {
+                this.settingsData.imageFile = backgroundImgFile;
+                this.setBackgroundImage(backgroundImgFile);
+            }
         }.bind(this));
     }
 

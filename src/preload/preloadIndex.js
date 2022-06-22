@@ -32,17 +32,20 @@ function getApplications() {
         applications = storage.getSync("applications");
     }
 
+    if (!applications.data) {
+        applications = JSON.parse(JSON.stringify(emptyApplicationStorage));
+
+        Promise.resolve(JSON.parse(JSON.stringify(emptyApplicationStorage)));
+    }
+
+    if (!applications.data.every(app => Object.values(app).length == 3)) {
+        applications.data.forEach((app, index) => {
+            setApplicationData(index, app.path);
+        });
+    }
+
     return new Promise(function (resolve) {
         (function waitForCompletion(){
-            if (!applications.data) {
-                applications = JSON.parse(JSON.stringify(emptyApplicationStorage));
-
-                resolve(JSON.parse(JSON.stringify(emptyApplicationStorage)));
-            }
-
-            applications.data.forEach((app, index) => {
-                setApplicationData(index, app.path);
-            });
 
             if (applications.data.every(app => Object.values(app).length == 3)) {
                 resolve(applications)
@@ -60,8 +63,23 @@ function extractAppFileName(path) {
 function addApplication(path) {
     return getApplications().then(applications => {
         applications.data.push({
+            name: extractAppFileName(path),
             path: path
         });
+        saveApplications(applications);
+    });
+}
+
+function deleteApplication(index) {
+    return getApplications().then(applications => {
+        applications.data.splice(index, 1)
+        saveApplications(applications);
+    });
+}
+
+function renameApplication(index, name) {
+    return getApplications().then(applications => {
+        applications.data[index].name = name;
         saveApplications(applications);
     });
 }
@@ -71,6 +89,7 @@ function saveApplications(applications) {
 
     applications.data.forEach(app => {
     storageList.data.push({
+            name: app.name,
             path: app.path
         });
     });
@@ -79,7 +98,9 @@ function saveApplications(applications) {
 }
 
 function setApplicationData(index, path) {
-    applications.data[index].name = extractAppFileName(path);
+    if (!applications.data[index].name) {
+        applications.data[index].name = extractAppFileName(path);
+    }
     ipcRenderer.invoke('get-file-icon', path).then(dataUrl => {
         applications.data[index].dataUrl = dataUrl;
     });
@@ -195,6 +216,8 @@ contextBridge.exposeInMainWorld("api", {
     // Application Manager
     getApplications: () => getApplications(),
     addApplication: (path) => addApplication(path),
+    deleteApplication: (index) => deleteApplication(index),
+    renameApplication: (index, name) => renameApplication(index, name),
     openApplication: (path) => {
         ipcRenderer.invoke('close-window', '');
 
