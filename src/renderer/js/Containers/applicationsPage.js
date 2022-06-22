@@ -160,8 +160,7 @@ class Applications extends HTMLElement {
         range.selectNodeContents(textSpan);  
         selection.addRange(range); 
 
-        this.selectedApp.children[1].focus();
-        console.log("rename " + this.selectedApp);
+        textSpan.focus();
     }
 }
 
