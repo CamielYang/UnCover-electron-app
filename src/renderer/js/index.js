@@ -9,8 +9,8 @@ import "./widgets/stopwatch.js";
 import "./widgets/performance.js";
 
 // Containers
-import "./Containers/applicationsPage.js";
-import "./Containers/settingsPage.js";
+import "./containers/applicationsPage.js";
+import "./containers/settingsPage.js";
 
 // Modal
 Modal.setModalId("myModal");

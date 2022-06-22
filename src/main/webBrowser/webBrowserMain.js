@@ -1,4 +1,5 @@
 const {
+    app,
     BrowserWindow,
     ipcMain,
 } = require("electron");
@@ -6,6 +7,8 @@ const main = require("../main");
 
 let browser;
 let parent;
+
+app.commandLine.appendSwitch('disable-features', 'CrossOriginOpenerPolicy');
 
 function createWebWindow() {
     parent = main.getMainWindow();

@@ -134,7 +134,7 @@ class Performance extends HTMLElement {
     }
 
     // Convert byte value to GB. Value will be round to the given decimals.
-    static byteUnitToGb(size, decimals, unit = "Byte") {
+    static byteUnitToGb(size, decimals, unit = "B") {
         const units = {
             B: 3,
             KB: 2,

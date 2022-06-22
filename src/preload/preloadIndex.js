@@ -4,55 +4,22 @@ const {
     clipboard,
     webFrame
 } = require('electron');
+const child = require('child_process').execFile;
+const path = require("path");
+require('dotenv').config({path: path.join(__dirname, "../.env")});
+
 const loudness = require('loudness')
 const clipboardListener = require('clipboard-event');
 const si = require('systeminformation');
-const path = require("path");
 const storage = require('electron-json-storage');
-const iconExtractor = require('icon-extractor');
-require('dotenv').config({path: path.join(__dirname, "../.env")});
 
-const applications = [
-    {
-        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
-    },
-    {
-        path: 'C:/Users/camie/Documents/Projects/UnCover-electron-app/out/UnCover-win32-x64/UnCover.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/Minecraft Launcher/MinecraftLauncher.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-    },
-    {
-        path: 'C:/Program Files (x86)/Dropbox/Client/Dropbox.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/rocketleague/Binaries/Win64/RocketLeague.exe'
-    },
-    {
-        path: 'D:/SteamLibrary/steamapps/common/Apex Legends/r5Apex.exe'
-    }
-]
+const emptyApplicationStorage = {
+    data: []
+};
 
 let cityCoords;
 let weatherData;
+let applications;
 
 clipboardListener.startListening();
 
@@ -60,34 +27,83 @@ ipcRenderer.invoke('get-user-data-path').then(path => {
     storage.setDataPath(path + "/Storage");
 })
 
-iconExtractor.emitter.on('icon', function(data){
-    applications[data.Context].base64 = data.Base64ImageData;
-});
+function getApplications() {
+    if (!applications) {
+        applications = storage.getSync("applications");
+    }
 
-applications.forEach((app, index) => {
-    applications[index].name = extractAppFileName(app.path);
-    iconExtractor.getIcon(index, app.path);
-});
+    if (!applications.data) {
+        applications = JSON.parse(JSON.stringify(emptyApplicationStorage));
+
+        Promise.resolve(JSON.parse(JSON.stringify(emptyApplicationStorage)));
+    }
+
+    if (!applications.data.every(app => Object.values(app).length == 3)) {
+        applications.data.forEach((app, index) => {
+            setApplicationData(index, app.path);
+        });
+    }
+
+    return new Promise(function (resolve) {
+        (function waitForCompletion(){
+
+            if (applications.data.every(app => Object.values(app).length == 3)) {
+                resolve(applications)
+            } else {
+                setTimeout(waitForCompletion, 300);
+            }
+        })();
+    });
+}
 
 function extractAppFileName(path) {
     return path.match(/(?<process>[\w\.-]*)\.exe/)[1];
 }
 
-function getApplications() { 
-    return new Promise(function (resolve) {
-        (function waitForCompletion(){
-            if (applications.every((app)=> app.base64)) return resolve(applications);
-            setTimeout(waitForCompletion, 300);
-        })();
+function addApplication(path) {
+    return getApplications().then(applications => {
+        applications.data.push({
+            name: extractAppFileName(path),
+            path: path
+        });
+        saveApplications(applications);
     });
 }
 
-function addApplication(path) {
-    const appIndex = applications.push({
-        path: path
-    }) - 1;
+function deleteApplication(index) {
+    return getApplications().then(applications => {
+        applications.data.splice(index, 1)
+        saveApplications(applications);
+    });
+}
 
-    iconExtractor.getIcon(appIndex, path)
+function renameApplication(index, name) {
+    return getApplications().then(applications => {
+        applications.data[index].name = name;
+        saveApplications(applications);
+    });
+}
+
+function saveApplications(applications) {
+    const storageList = JSON.parse(JSON.stringify(emptyApplicationStorage));
+
+    applications.data.forEach(app => {
+    storageList.data.push({
+            name: app.name,
+            path: app.path
+        });
+    });
+
+    storage.set("applications", storageList);
+}
+
+function setApplicationData(index, path) {
+    if (!applications.data[index].name) {
+        applications.data[index].name = extractAppFileName(path);
+    }
+    ipcRenderer.invoke('get-file-icon', path).then(dataUrl => {
+        applications.data[index].dataUrl = dataUrl;
+    });
 }
 
 function removeImageUrlPrefix(dataUrl) {
@@ -200,6 +216,20 @@ contextBridge.exposeInMainWorld("api", {
     // Application Manager
     getApplications: () => getApplications(),
     addApplication: (path) => addApplication(path),
+    deleteApplication: (index) => deleteApplication(index),
+    renameApplication: (index, name) => renameApplication(index, name),
+    openApplication: (path) => {
+        ipcRenderer.invoke('close-window', '');
+
+        child(path, function(err, data) {
+            if(err){
+               console.error(err);
+               return;
+            }
+    
+            console.log(data.toString());
+        })
+    },
 
     // Settings
     getUserSettings: () => storage.getSync("settings"),

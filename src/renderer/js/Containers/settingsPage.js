@@ -1,4 +1,5 @@
-import { PageHandler } from "../Helpers/pageHandler.js";
+import { PageHandler } from "../helpers/pageHandler.js";
+import { convertPathUrl } from "../helpers/convertPathUrl.js";
 
 const pageId = "settingsPage";
 
@@ -61,7 +62,7 @@ template.innerHTML = `
                     <input id="backgroundImgCheckbox" type="checkbox">
                     <span class="slider"></span>
                 </label>
-                <div id="imageInputDiv" class="file-input">
+                <div id="imageInputDiv" class="file-input m-top">
                     <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
                     <input accept="image/*" type="file" id="backgroundImgInput" />
                 </div>
@@ -107,7 +108,6 @@ export class Settings extends HTMLElement {
         this.backgroundInputDiv = this.settingsContainer.querySelector("#imageInputDiv");
         this.backgroundInput = this.settingsContainer.querySelector("#backgroundImgInput");
         this.autoSaveInterval;
-        this.backgroundImgFile;
 
         this.initializeSettings();
     }
@@ -116,7 +116,7 @@ export class Settings extends HTMLElement {
     initializeSettings() {
         this.settingsData = this.getSettingsData();
         document.getElementById("settingsBtn").addEventListener("click", this.showSettings.bind(this));
-        this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay);
+        this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay.bind(this));
 
         this.initializeStartup();
         this.initializeMinimized();
@@ -131,7 +131,7 @@ export class Settings extends HTMLElement {
     initializeStartup() {
         const bool = this.settingsData.runAtStartup
         
-        this.startupCheckbox.addEventListener('change', this.checkStartup)
+        this.startupCheckbox.addEventListener('change', this.checkStartup.bind(this))
         this.startupCheckbox.checked = bool;
         
         this.updateStartup(bool);
@@ -155,7 +155,7 @@ export class Settings extends HTMLElement {
     initializeMinimized() {
         const bool = this.settingsData.runMinimized
         
-        this.minimizedCheckbox.addEventListener('change', this.checkMinimized)
+        this.minimizedCheckbox.addEventListener('change', this.checkMinimized.bind(this))
         this.minimizedCheckbox.checked = bool;
         
         if (!bool) {
@@ -281,9 +281,12 @@ export class Settings extends HTMLElement {
             // }
 
             // Use image path location
-            this.backgroundImgFile = this.getPathUrl(e.target.files[0].path);
-            this.settingsData.imageFile = this.backgroundImgFile;
-            this.setBackgroundImage(this.backgroundImgFile);
+            const backgroundImgFile = convertPathUrl(e.target.files[0]?.path);
+            
+            if (backgroundImgFile) {
+                this.settingsData.imageFile = backgroundImgFile;
+                this.setBackgroundImage(backgroundImgFile);
+            }
         }.bind(this));
     }
 
@@ -304,12 +307,6 @@ export class Settings extends HTMLElement {
 
     setBackgroundImage(imageFile) {
         document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
-    }
-
-
-    // Reformat path to return usable path for css
-    getPathUrl(filePath) {
-        return filePath.replaceAll("\\", "/").replace(/^[^\/]*/, "");
     }
     
     // Display settings page
@@ -337,14 +334,14 @@ export class Settings extends HTMLElement {
 
         if (Object.keys(settings).length == 0) {
             this.saveSettings(this.defaultSettings)
-            return defaultSettings
+            return this.defaultSettings;
         }
         // Combine default settings and user settings to fill up empty values
         return Object.assign(this.defaultSettings, settings);
     }
 
     saveSettings(object) {
-        api.setUserSettings(object)
+        api.setUserSettings(object);
     }
 }
 

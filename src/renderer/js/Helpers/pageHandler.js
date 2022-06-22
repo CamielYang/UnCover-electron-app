@@ -4,7 +4,7 @@ export const PageHandler = (function() {
 
     function switchPage(pageId) {
         $(currentPageId).style.display = "none"
-        $(pageId).style.display = "block"
+        $(pageId).style.display = "flex"
 
         currentPageId = pageId;
     }
