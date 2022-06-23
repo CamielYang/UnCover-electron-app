@@ -58,7 +58,7 @@ function loadURL(url) {
 
 // Check url for save for secure address protocol
 function checkURL(url) {
-    const search = url.match(/^(.*?:\/\/)?(www\.)?(.*)?\/?(.)*/)[3];
+    const search = url.match(/^(.*?:\/\/)?(www\.)?(.*)?\/?(.)*$/)[3];
 
     if (!search.includes(".")) {
         return `https://www.google.com/search?q=${search}`
