@@ -23,6 +23,9 @@ function createWebWindow() {
         show: false,
         autoHideMenuBar: true,
         webPreferences: {
+            sandbox: true,
+            nodeIntegration: false,
+            contextIsolation: true,
             webviewTag: true,
         }
     })

@@ -58,5 +58,5 @@ function loadURL(url) {
 
 // Check url for save for secure address protocol
 function checkURL(url) {
-    return 'https://' + url.match(/^.*?:\/\/(www\.)?(.*)?\/?(.)*/)[2];
+    return 'https://' + url.match(/^(.*?:\/\/)?(www\.)?(.*)?\/?(.)*/)[3];
 }
