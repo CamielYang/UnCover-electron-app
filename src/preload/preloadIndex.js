@@ -4,7 +4,7 @@ const {
     clipboard,
     webFrame
 } = require('electron');
-const child = require('child_process').execFile;
+const child = require('child_process').exec;
 const path = require("path");
 require('dotenv').config({path: path.join(__dirname, "../.env")});
 
@@ -57,13 +57,12 @@ function getApplications() {
 }
 
 function extractAppFileName(path) {
-    return path.match(/(?<process>[\w\.-]*)\.exe/)[1];
+    return path.match(/(?<process>[\w\.-]*)\.exe/i)[1];
 }
 
 function addApplication(path) {
     return getApplications().then(applications => {
         applications.data.push({
-            name: extractAppFileName(path),
             path: path
         });
         saveApplications(applications);
@@ -221,13 +220,13 @@ contextBridge.exposeInMainWorld("api", {
     openApplication: (path) => {
         ipcRenderer.invoke('close-window', '');
 
-        child(path, function(err, data) {
+        child(`"${path}"`, (err, stdout, stderr) => {
             if(err){
                console.error(err);
                return;
             }
     
-            console.log(data.toString());
+            console.log(stdout);
         })
     },
 

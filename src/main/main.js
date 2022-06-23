@@ -13,6 +13,7 @@ require("./webBrowser/webBrowserMain");
 
 let win;
 let tray;
+let errorTimeout;
 
 // Create main window
 function createWindow() {
@@ -52,8 +53,16 @@ function createWindow() {
     splash.setIgnoreMouseEvents(true)
     splash.loadFile('src/renderer/splash.html');
 
-    win.once('ready-to-show', () => {
-        splash.close();
+    errorTimeout = setTimeout(() => {
+        win.destroy();
+        splash.destroy();
+        dialog.showErrorBox("Error loading", "UnCover was unable to load in time and killed the process. Please try again.");
+        app.quit();
+    }, 20000);
+
+    win.webContents.once('did-finish-load', () => {
+        clearTimeout(errorTimeout);
+        splash.destroy();
         createShortcuts();
         createTray();
     })
