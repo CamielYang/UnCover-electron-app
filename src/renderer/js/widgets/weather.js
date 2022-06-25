@@ -37,9 +37,9 @@ class Weather extends HTMLElement {
 
         // Default values
         const defaults = {
-            location: "Hoogeveen", 
+            location: "Hoogeveen",
             forecastDays: 3,
-            delay: 3600000 
+            delay: 3600000
         };
 
         this.weatherContainer = this.children[0];
@@ -64,13 +64,13 @@ class Weather extends HTMLElement {
         else {
             this.forecastDays = 5;
         }
-    } 
+    }
 
     addEditEvent() {
         this.editWeatherId.addEventListener("change", () => {
             let location = this.editWeatherId.value;
             location = location.charAt(0).toUpperCase() + location.slice(1);
-            
+
             this.updateWeather(location);
 
             // Reset interval
@@ -93,11 +93,11 @@ class Weather extends HTMLElement {
         let weatherData;
         if (location) {
             this.#setLocation(location);
-            weatherData = await api.getWeatherData(location, true);
+            weatherData = await window.api.weather.getWeatherData(location, true);
         }
         else {
-            weatherData = await api.getWeatherData(this.location, false);
-        } 
+            weatherData = await window.api.weather.getWeatherData(this.location, false);
+        }
 
         this.updateCurrentWeather(weatherData.current);
         this.updateForecastWeather(weatherData.daily);

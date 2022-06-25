@@ -8,12 +8,12 @@ export const Modal = (function() {
     function setModal() {
         modal.classList.remove("hidden");
     }
-    
+
     // Hide modal
     function unsetModal() {
         modal.classList.add("hidden");
     }
-    
+
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -22,12 +22,12 @@ export const Modal = (function() {
     }
 
     // Load modal content by fetching a template
-    async function loadModal(file) {  
+    async function loadModal(file) {
         let request = await fetch(baseTempPath + file);
         let response = await request.text();
 
         modal.innerHTML = response;
-        
+
         setModal();
     }
 

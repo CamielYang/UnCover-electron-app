@@ -34,7 +34,7 @@ template.innerHTML = `
                 <h3>Scaling</h3>
                 <div class="flex-row">
                     <p class="input-info" id="scalingInfo">0%</p>
-                    <input type="range" id="scalingInput" min="50" max="150" step="10" value="0">    
+                    <input type="range" id="scalingInput" min="50" max="150" step="10" value="0">
                 </div>
             </div>
         </div>
@@ -46,14 +46,14 @@ template.innerHTML = `
                 <h3>Blur</h3>
                 <div class="flex-row">
                     <p class="input-info" id="blurInfo">0px</p>
-                    <input type="range" id="blurInput" min="0" max="50" value="0">    
+                    <input type="range" id="blurInput" min="0" max="50" value="0">
                 </div>
             </div>
             <div class="setting">
                 <h3>Transparency</h3>
                 <div class="flex-row">
                     <p class="input-info" id="transparencyInfo">0%</p>
-                    <input type="range" id="transparencyInput" min="0" max="100" value="0">    
+                    <input type="range" id="transparencyInput" min="0" max="100" value="0">
                 </div>
             </div>
             <div id="imageSetting" class="setting">
@@ -88,7 +88,7 @@ export class Settings extends HTMLElement {
             enableBackgroundImage: false,
             imageFile: null
         }
-        
+
         this.settingsData;
 
         // User Settings
@@ -96,14 +96,14 @@ export class Settings extends HTMLElement {
         this.minimizedCheckbox = this.settingsContainer.querySelector("#minimizedCheckbox");
         this.scalingInput = this.settingsContainer.querySelector("#scalingInput");
         this.scalingInfo = this.settingsContainer.querySelector("#scalingInfo");
-        
+
         // Display Settings
         this.blurInput = this.settingsContainer.querySelector("#blurInput");
         this.blurInfo = this.settingsContainer.querySelector("#blurInfo");
-        
+
         this.transparencyInput = this.settingsContainer.querySelector("#transparencyInput");
         this.transparencyInfo = this.settingsContainer.querySelector("#transparencyInfo");
-        
+
         this.backgroundImgCheckbox = this.settingsContainer.querySelector("#backgroundImgCheckbox");
         this.backgroundInputDiv = this.settingsContainer.querySelector("#imageInputDiv");
         this.backgroundInput = this.settingsContainer.querySelector("#backgroundImgInput");
@@ -111,7 +111,7 @@ export class Settings extends HTMLElement {
 
         this.initializeSettings();
     }
-    
+
     // Load all settings values
     initializeSettings() {
         this.settingsData = this.getSettingsData();
@@ -130,23 +130,23 @@ export class Settings extends HTMLElement {
     // Initialize values for startup
     initializeStartup() {
         const bool = this.settingsData.runAtStartup
-        
+
         this.startupCheckbox.addEventListener('change', this.checkStartup.bind(this))
         this.startupCheckbox.checked = bool;
-        
+
         this.updateStartup(bool);
     }
 
     checkStartup(event) {
         const bool = event.target.checked;
-        
+
         this.settingsData.runAtStartup = bool;
 
         this.updateStartup(bool);
     }
 
     updateStartup(bool) {
-        api.setStartupSetting(bool);
+        window.api.settings.setStartupSetting(bool);
     }
 
 
@@ -154,18 +154,18 @@ export class Settings extends HTMLElement {
     // Initialize values for minimized
     initializeMinimized() {
         const bool = this.settingsData.runMinimized
-        
+
         this.minimizedCheckbox.addEventListener('change', this.checkMinimized.bind(this))
         this.minimizedCheckbox.checked = bool;
-        
+
         if (!bool) {
-            api.openWindow();
+            window.api.general.openWindow();
         }
     }
 
     checkMinimized(event) {
         const bool = event.target.checked;
-        
+
         this.settingsData.runMinimized = bool;
     }
 
@@ -175,22 +175,22 @@ export class Settings extends HTMLElement {
     initializeScaling() {
         const value = this.settingsData.zoomFactor;
 
-        this.scalingInput.addEventListener("input", this.checkScaling.bind(this)); 
+        this.scalingInput.addEventListener("input", this.checkScaling.bind(this));
         this.scalingInput.value = value * 100;
-        
+
         this.updateScaling(value * 100);
     }
 
     // for event on transparency slider input
     checkScaling(event) {
         this.settingsData.zoomFactor = event.target.value / 100;
-        
+
         this.updateScaling(event.target.value);
     }
 
     // Update scaling. Value expects a percentage
     updateScaling(value) {
-        api.setZoomFactor(value / 100);
+        window.api.settings.setZoomFactor(value / 100);
         this.scalingInfo.innerText = `${value}%`;
     }
 
@@ -199,9 +199,9 @@ export class Settings extends HTMLElement {
     initializeBlur() {
         const value = this.settingsData.blur;
 
-        this.blurInput.addEventListener("input", this.checkBlur.bind(this)); 
+        this.blurInput.addEventListener("input", this.checkBlur.bind(this));
         this.blurInput.value = value.replace("px", "");
-        
+
         this.updateBlur(value);
     }
 
@@ -209,7 +209,7 @@ export class Settings extends HTMLElement {
     checkBlur(event) {
         const value = `${event.target.value}px`;
 
-        this.settingsData.blur = value;    
+        this.settingsData.blur = value;
         this.updateBlur(value);
     }
 
@@ -224,9 +224,9 @@ export class Settings extends HTMLElement {
     initializeTransparency() {
         const value = this.settingsData.backgroundTransparency;
 
-        this.transparencyInput.addEventListener("input", this.checkTransparency.bind(this)); 
+        this.transparencyInput.addEventListener("input", this.checkTransparency.bind(this));
         this.transparencyInput.value = value.replace("%", "");
-        
+
         this.updateTransparency(value);
     }
 
@@ -234,7 +234,7 @@ export class Settings extends HTMLElement {
     checkTransparency(event) {
         const value = `${event.target.value}%`;
 
-        this.settingsData.backgroundTransparency = value;    
+        this.settingsData.backgroundTransparency = value;
         this.updateTransparency(value);
     }
 
@@ -249,13 +249,13 @@ export class Settings extends HTMLElement {
     initializeBackgroundImg() {
         if (this.settingsData.enableBackgroundImage) {
             this.backgroundImgCheckbox.checked = true;
-            
+
             this.backgroundInputDiv.classList.remove("hidden");
             this.setBackgroundImage(this.settingsData.imageFile);
         }
         else {
             this.backgroundImgCheckbox.checked = false;
-            
+
             this.backgroundInputDiv.classList.add("hidden")
             this.setBackgroundImage(null);
         }
@@ -275,14 +275,14 @@ export class Settings extends HTMLElement {
             //     backgroundImgFile = reader.result;
             //     document.body.parentElement.style.backgroundImage = `url("${backgroundImgFile}")`;
             // }, false);
-        
+
             // if (file) {
             //     reader.readAsDataURL(file);
             // }
 
             // Use image path location
             const backgroundImgFile = convertPathUrl(e.target.files[0]?.path);
-            
+
             if (backgroundImgFile) {
                 this.settingsData.imageFile = backgroundImgFile;
                 this.setBackgroundImage(backgroundImgFile);
@@ -308,7 +308,7 @@ export class Settings extends HTMLElement {
     setBackgroundImage(imageFile) {
         document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
     }
-    
+
     // Display settings page
     showSettings() {
         PageHandler.switchPage(pageId);
@@ -318,7 +318,7 @@ export class Settings extends HTMLElement {
             this.saveSettings(this.settingsData);
         }, 1000);
     }
-    
+
     // Display main page
     showOverlay() {
         PageHandler.switchToMainPage();
@@ -330,7 +330,7 @@ export class Settings extends HTMLElement {
 
     // Return settings data
     getSettingsData() {
-        const settings = api.getUserSettings();
+        const settings = window.api.settings.getUserSettings();
 
         if (Object.keys(settings).length == 0) {
             this.saveSettings(this.defaultSettings)
@@ -341,7 +341,7 @@ export class Settings extends HTMLElement {
     }
 
     saveSettings(object) {
-        api.setUserSettings(object);
+        window.api.settings.setUserSettings(object);
     }
 }
 

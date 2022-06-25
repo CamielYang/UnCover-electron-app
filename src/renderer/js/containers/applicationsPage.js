@@ -17,7 +17,7 @@ template.innerHTML = /*html*/`
                     <strong>Add application</strong>
                 </label>
                 <input accept=".exe" type="file" id="applicationInput" />
-            </div>   
+            </div>
             <div class="applications-list" id="applicationsList">
             </div>
         </div>
@@ -48,12 +48,12 @@ class Applications extends HTMLElement {
         this.contextMenu = this.applicationsContainer.querySelector("#contextMenu");
         this.selectedApp;
 
-        this.applicationsContainer.addEventListener('mouseup', (e) => {
+        this.applicationsContainer.addEventListener('mouseup', () => {
             this.hideMenu();
         });
-        
+
         this.initializeApplications();
-        
+
         this.addEvents();
         this.addContextMenuEvents();
         this.addApplicationInputEvent();
@@ -71,11 +71,11 @@ class Applications extends HTMLElement {
 
 
     addContextMenuEvents() {
-        this.contextMenu.querySelector("#deleteApp").addEventListener('click', (e) => {
+        this.contextMenu.querySelector("#deleteApp").addEventListener('click', () => {
             this.deleteApp();
         });
 
-        this.contextMenu.querySelector("#renameApp").addEventListener('click', (e) => {
+        this.contextMenu.querySelector("#renameApp").addEventListener('click', () => {
             this.renameApp();
         });
     }
@@ -85,7 +85,7 @@ class Applications extends HTMLElement {
             const path = convertPathUrl(e.target.files[0]?.path);
 
             if (path) {
-                api.addApplication(path).then(() => {
+                window.window.api.applications.addApplication(path).then(() => {
                     this.initializeApplications();
                 });
             }
@@ -93,22 +93,22 @@ class Applications extends HTMLElement {
     }
 
     async initializeApplications() {
-        api.getApplications().then(applicationsList => {
+        window.window.api.applications.getApplications().then(applicationsList => {
             this.applicationsList.innerHTML = "";
 
-            applicationsList.data.forEach((app, key) => {     
+            applicationsList.data.forEach((app, key) => {
                 const appDiv = document.createElement("div");
                 appDiv.classList = "app";
                 appDiv.key = key;
-                
-                appDiv.ondblclick = function () {  
-                    api.openApplication(app.path);
+
+                appDiv.ondblclick = function () {
+                    window.window.api.applications.openApplication(app.path);
                 };
-                
+
                 appDiv.oncontextmenu = function (e) {
                     this.openMenu(e);
                 }.bind(this);
-                
+
                 const appImg = document.createElement("img");
                 appImg.classList = "app-icon";
                 appImg.src = app.dataUrl;
@@ -117,7 +117,7 @@ class Applications extends HTMLElement {
                 appSpan.classList = "app-title";
                 appSpan.textContent = app.name;
                 appSpan.addEventListener("focusout", (e) => {
-                    api.renameApplication(this.selectedApp.key, e.currentTarget.textContent);
+                    window.window.api.applications.renameApplication(this.selectedApp.key, e.currentTarget.textContent);
                     e.currentTarget.setAttribute("contenteditable", false);
                 })
 
@@ -129,23 +129,23 @@ class Applications extends HTMLElement {
         });
     }
 
-    hideMenu() { 
-        this.contextMenu.style.display = "none" 
-    } 
-    
-    openMenu(e) { 
-        e.preventDefault(); 
+    hideMenu() {
+        this.contextMenu.style.display = "none"
+    }
+
+    openMenu(e) {
+        e.preventDefault();
 
         this.selectedApp = e.currentTarget;
 
-        var menu = this.contextMenu;      
-        menu.style.display = 'block'; 
-        menu.style.left = e.pageX + "px"; 
-        menu.style.top = e.pageY + "px"; 
+        var menu = this.contextMenu;
+        menu.style.display = 'block';
+        menu.style.left = e.pageX + "px";
+        menu.style.top = e.pageY + "px";
     }
 
     deleteApp() {
-        api.deleteApplication(this.selectedApp.key).then(() => {
+        window.window.api.applications.deleteApplication(this.selectedApp.key).then(() => {
             this.initializeApplications();
         });
     }
@@ -154,11 +154,11 @@ class Applications extends HTMLElement {
         const textSpan = this.selectedApp.children[1];
         textSpan.setAttribute("contenteditable", true);
 
-        const selection = window.getSelection();  
-        const range = document.createRange();  
-        selection.removeAllRanges();  
-        range.selectNodeContents(textSpan);  
-        selection.addRange(range); 
+        const selection = window.getSelection();
+        const range = document.createRange();
+        selection.removeAllRanges();
+        range.selectNodeContents(textSpan);
+        selection.addRange(range);
 
         textSpan.focus();
     }

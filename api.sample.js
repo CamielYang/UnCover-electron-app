@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Sample API Calls
 let cityCoords = [
     {

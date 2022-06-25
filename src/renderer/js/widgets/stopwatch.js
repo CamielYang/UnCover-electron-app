@@ -39,7 +39,7 @@ class Stopwatch extends HTMLElement {
 
         this.startTime;
         this.stopwatchInterval;
-        this.elapsed;       
+        this.elapsed;
         this.stopwatchStarted = false;
 
         this.stopWatchResetButton = this.stopwatchContainer.querySelector("#resetStopwatch");
@@ -55,7 +55,7 @@ class Stopwatch extends HTMLElement {
         this.stopWatchResetButton.addEventListener("click", () => {
             this.resetStopwatch();
         })
-    
+
         // Add event on start and stop button
         this.stopWatchSetButton.addEventListener("click", () => {
             this.stopwatchStarted ? this.stopStopWatch() : this.startStopwatch();
@@ -68,25 +68,25 @@ class Stopwatch extends HTMLElement {
 
         this.stopWatchSetButton.innerText = "Stop";
         this.stopwatchStarted = true;
-        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000)    
+        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000)
     }
-    
+
     // Reset stopwatch values and text
     resetStopwatch() {
         this.startTime = undefined;
         this.elapsed = 0;
         this.stopwatchTime.innerHTML = "00:00:00";
     }
-    
+
     // Pause stopwatch timer
     stopStopWatch() {
         this.elapsed = new Date() - this.startTime;
         this.stopWatchSetButton.innerText = "Start";
         this.stopwatchStarted = false;
 
-        clearInterval(this.stopwatchInterval);    
+        clearInterval(this.stopwatchInterval);
     }
-    
+
     // Update elapsed stopwatch time
     updateStopwatch() {
         this.checkStartTime();
@@ -96,7 +96,7 @@ class Stopwatch extends HTMLElement {
         let h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let s = Math.floor((distance % (1000 * 60)) / 1000);
-    
+
         h = Stopwatch.checkTime(h);
         m = Stopwatch.checkTime(m);
         s = Stopwatch.checkTime(s);
@@ -110,7 +110,7 @@ class Stopwatch extends HTMLElement {
             this.startTime = new Date();
         }
     }
-    
+
     // Format time
     static checkTime(i) {
         // add zero in front of numbers < 10

@@ -33,7 +33,7 @@ class Notepad extends HTMLElement {
     createEvents() {
         // Save Notepad content
         this.saveButtonId.addEventListener("click", () => {
-            api.saveDialog(this.notepadId.value, "text");
+            window.api.general.saveDialog(this.notepadId.value, "text");
         })
 
         // Clear Notepad content

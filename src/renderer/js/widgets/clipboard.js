@@ -36,39 +36,39 @@ class Clipboard extends HTMLElement {
     createEvents() {
         // Save Notepad content
         this.saveClipboardId.addEventListener("click", () => {
-            const availableFormats = api.getClipboardAvailableFormats();
+            const availableFormats = window.api.clipboard.getClipboardAvailableFormats();
 
             if (availableFormats.includes("text/plain")) {
-                api.saveDialog(this.text, "text");
-            } 
+                window.api.general.saveDialog(this.text, "text");
+            }
             else if (availableFormats.includes("image/png") || availableFormats.includes("image/jpg")) {
-                api.saveDialog(api.removeImageUrlPrefix(this.image), "image");
-            } 
+                window.api.general.saveDialog(window.api.clipboard.removeImageUrlPrefix(this.image), "image");
+            }
         })
-        
+
         // Event for clearing clipboard
         this.clearClipboardId.addEventListener("click", () => {
-            api.clearClipboard();
+            window.api.clipboard.clearClipboard();
         });
 
         // Update clipboard when clipboard change event is fired
-        api.onClipboardChanged('change', () => {
+        window.api.clipboard.onClipboardChanged('change', () => {
             this.updateClipboard();
         });
     }
 
     // Update cllipboard content
-    updateClipboard() {        
-        const availableFormats = api.getClipboardAvailableFormats();
+    updateClipboard() {
+        const availableFormats = window.api.clipboard.getClipboardAvailableFormats();
 
         if (availableFormats.includes("text/plain")) {
-            this.text = api.readClipboardText();
+            this.text = window.api.clipboard.readClipboardText();
             this.setClipboardText(this.text);
-        } 
+        }
         else if (availableFormats.includes("image/png") || availableFormats.includes("image/jpeg")) {
-            this.image = api.readClipboardImage();    
+            this.image = window.api.clipboard.readClipboardImage();
             this.setClipboardImage(this.image);
-        } 
+        }
         else {
             this.setClipboardEmpty();
         }
@@ -77,7 +77,7 @@ class Clipboard extends HTMLElement {
     // Set the image in the clipboard content
     setClipboardImage(image) {
         this.contentId.innerHTML = `<img class="clipboard-image" id="clipboardImg" src="${image}">`;
-        
+
         const clipboardImage = document.getElementById("clipboardImg");
         clipboardImage.onclick = () => {
             this.loadImageModal(image);
@@ -109,14 +109,14 @@ class Clipboard extends HTMLElement {
             '"': '&quot;',
             "'": '&#039;'
         };
-        
+
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }  
+    }
 
     // Load modal that previews the image
     async loadImageModal(image) {
         await Modal.loadModal("imageModal.html");
-        
+
         const modal = document.getElementById("modalImage");
         modal.src = image;
     }

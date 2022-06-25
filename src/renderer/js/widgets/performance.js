@@ -36,7 +36,7 @@ class Performance extends HTMLElement {
 
         // Default values
         const defaults = {
-            delay: 2000, 
+            delay: 2000,
             maxDrives: 4
         };
 
@@ -48,7 +48,7 @@ class Performance extends HTMLElement {
         this.delay = this.getAttribute("interval") ?? defaults.delay;
         this.setMaxDrives = this.getAttribute("max-drives");
 
-        this.clearPerformanceStats().then(e => {
+        this.clearPerformanceStats().then(() => {
             this.updateStatistics();
             setInterval(this.updateStatistics.bind(this), this.delay)
 
@@ -65,13 +65,13 @@ class Performance extends HTMLElement {
         else {
             this.maxDrives = 4;
         }
-    } 
+    }
 
     // Update all performance stats information
     updateStatistics() {
         this.updateCpu();
         this.updateMemory();
-        
+
         // Disabled because of performance issues
         // this.updateGpu();
     }
@@ -81,7 +81,7 @@ class Performance extends HTMLElement {
             this.updatePerformanceStat(this.cpuId, "CPU");
             this.updatePerformanceStat(this.memoryId, "RAM", 0, "0 / 0 GB (0%)");
 
-            const load = await api.diskSpace();
+            const load = await window.api.systemInformation.diskSpace();
             load.slice(0, this.maxDrives).forEach(disk => {
                 this.addDiskSpaceTab(Performance.getDiskId(disk.fs))
                 this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, 0, "0 / 0 GB available");
@@ -89,27 +89,27 @@ class Performance extends HTMLElement {
     }
 
     async updateCpu() {
-        const load = await api.cpuLoad();
+        const load = await window.api.systemInformation.cpuLoad();
         this.updatePerformanceStat(this.cpuId, "CPU", load)
     }
 
     async updateMemory() {
-        const load = await api.memoryLoad();
+        const load = await window.api.systemInformation.memoryLoad();
         this.updatePerformanceStat(this.memoryId, "RAM", load.usage, `${Performance.byteUnitToGb(load.used, 1, "KB")} / ${Performance.byteUnitToGb(load.total, 1, "KB")} GB (${load.usage}%)`);
     }
 
     async updateDiskSpace() {
-        const load = await api.diskSpace();
+        const load = await window.api.systemInformation.diskSpace();
         load.slice(0, this.maxDrives).forEach(disk => {
             this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, disk.use, `${Performance.byteUnitToGb(disk.available, 2, "B")} / ${Performance.byteUnitToGb(disk.size, 0, "B")} GB available`);
         });
     }
 
     async updateGpu() {
-        const load = await api.gpuLoad()
+        const load = await window.api.systemInformation.gpuLoad()
         this.updatePerformanceStat("gpuTab", "GPU", load[0].usage)
     }
-    
+
     // General function for updating performance stat.
     // Id is passed to identify the stat div. Name, load and info can be changed for each of those stats.
     updatePerformanceStat(id, name, load = 0, info = load + "%") {
@@ -127,7 +127,7 @@ class Performance extends HTMLElement {
     getInfoElemById(id) {
         return this.performanceContainer.querySelector("#" + id).children[0].children[1];
     }
-    
+
     // Return progress bar element of the given performance stat Id
     getBarElemById(id) {
         return this.performanceContainer.querySelector("#" + id).children[1];
@@ -139,7 +139,7 @@ class Performance extends HTMLElement {
             B: 3,
             KB: 2,
             MB: 1
-        }; 
+        };
         return (decimals) ? (size / Math.pow(1024, units[unit])).toFixed(decimals) : Math.floor(size / Math.pow(1024, units[unit]));
     }
 
