@@ -29,7 +29,7 @@ function getApplications() {
         (function waitForCompletion(){
 
             if (applications.data.every(app => Object.values(app).length == 3)) {
-                resolve(applications)
+                resolve(applications);
             } else {
                 setTimeout(waitForCompletion, 300);
             }
@@ -52,7 +52,7 @@ function addApplication(path) {
 
 function deleteApplication(index) {
     return getApplications().then(applications => {
-        applications.data.splice(index, 1)
+        applications.data.splice(index, 1);
         saveApplications(applications);
     });
 }
@@ -101,10 +101,10 @@ const contextBridge = {
             }
 
             console.log(stdout);
-        })
+        });
     },
-}
+};
 
 module.exports = {
     applications: contextBridge
-}
+};

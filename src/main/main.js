@@ -50,7 +50,7 @@ function createWindow() {
         alwaysOnTop: true
     });
 
-    splash.setIgnoreMouseEvents(true)
+    splash.setIgnoreMouseEvents(true);
     splash.loadFile('src/renderer/splash.html');
 
     errorTimeout = setTimeout(() => {
@@ -65,7 +65,7 @@ function createWindow() {
         splash.destroy();
         createShortcuts();
         createTray();
-    })
+    });
 }
 
 // create global shortcuts
@@ -101,7 +101,7 @@ function createTray() {
 
 // Minimize main window
 function minimizeWindow() {
-    win.minimize()
+    win.minimize();
 }
 
 // Maximize main window
@@ -163,7 +163,7 @@ ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
             });
         }
     }).catch(err => {
-        console.log(err)
+        console.log(err);
     });
 });
 

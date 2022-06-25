@@ -7,7 +7,7 @@ template.innerHTML = `
 
 class Template extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 

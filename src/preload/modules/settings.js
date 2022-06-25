@@ -12,8 +12,8 @@ const contextBridge = {
     setStartupSetting: (bool) => {
         ipcRenderer.invoke('set-startup-setting', bool);
     }
-}
+};
 
 module.exports = {
     settings: contextBridge
-}
+};

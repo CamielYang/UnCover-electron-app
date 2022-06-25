@@ -1,4 +1,4 @@
-import { Modal } from "./modal.js"
+import { Modal } from "./modal.js";
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -17,7 +17,7 @@ template.innerHTML = `
 
 class Clipboard extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -44,7 +44,7 @@ class Clipboard extends HTMLElement {
             else if (availableFormats.includes("image/png") || availableFormats.includes("image/jpg")) {
                 window.api.general.saveDialog(window.api.clipboard.removeImageUrlPrefix(this.image), "image");
             }
-        })
+        });
 
         // Event for clearing clipboard
         this.clearClipboardId.addEventListener("click", () => {
@@ -81,7 +81,7 @@ class Clipboard extends HTMLElement {
         const clipboardImage = document.getElementById("clipboardImg");
         clipboardImage.onclick = () => {
             this.loadImageModal(image);
-        }
+        };
     }
 
     // Set the text in the clipboard content

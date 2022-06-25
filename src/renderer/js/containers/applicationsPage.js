@@ -37,7 +37,7 @@ template.innerHTML = /*html*/`
 
 class Applications extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -65,7 +65,7 @@ class Applications extends HTMLElement {
         });
 
         this.applicationsContainer.querySelector("#returnOverlayBtn").addEventListener("click", () => {
-            PageHandler.switchToMainPage()
+            PageHandler.switchToMainPage();
         });
     }
 
@@ -119,7 +119,7 @@ class Applications extends HTMLElement {
                 appSpan.addEventListener("focusout", (e) => {
                     window.window.api.applications.renameApplication(this.selectedApp.key, e.currentTarget.textContent);
                     e.currentTarget.setAttribute("contenteditable", false);
-                })
+                });
 
                 appDiv.appendChild(appImg);
                 appDiv.appendChild(appSpan);
@@ -130,7 +130,7 @@ class Applications extends HTMLElement {
     }
 
     hideMenu() {
-        this.contextMenu.style.display = "none"
+        this.contextMenu.style.display = "none";
     }
 
     openMenu(e) {

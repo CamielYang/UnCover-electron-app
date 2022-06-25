@@ -12,7 +12,7 @@ template.innerHTML = `
  */
 class SystemVolume extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -69,7 +69,7 @@ class SystemVolume extends HTMLElement {
 
         this.updateVolumeText(this.volumeValue);
         this.volumebarId.value = this.volumeValue;
-        this.updateVolumeIcon(this.volumeValue, this.mute)
+        this.updateVolumeIcon(this.volumeValue, this.mute);
 
         setTimeout(this.updateAllVolume.bind(this), 2000);
     }

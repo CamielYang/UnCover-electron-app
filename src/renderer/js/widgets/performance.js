@@ -30,7 +30,7 @@ template.innerHTML = `
  */
 class Performance extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -50,10 +50,10 @@ class Performance extends HTMLElement {
 
         this.clearPerformanceStats().then(() => {
             this.updateStatistics();
-            setInterval(this.updateStatistics.bind(this), this.delay)
+            setInterval(this.updateStatistics.bind(this), this.delay);
 
             // Exception update every minute for cpu usage reasons
-            this.updateDiskSpace()
+            this.updateDiskSpace();
             setInterval(this.updateDiskSpace.bind(this), 60000);
         });
     }
@@ -83,14 +83,14 @@ class Performance extends HTMLElement {
 
             const load = await window.api.systemInformation.diskSpace();
             load.slice(0, this.maxDrives).forEach(disk => {
-                this.addDiskSpaceTab(Performance.getDiskId(disk.fs))
+                this.addDiskSpaceTab(Performance.getDiskId(disk.fs));
                 this.updatePerformanceStat(Performance.getDiskId(disk.fs), disk.fs, 0, "0 / 0 GB available");
             });
     }
 
     async updateCpu() {
         const load = await window.api.systemInformation.cpuLoad();
-        this.updatePerformanceStat(this.cpuId, "CPU", load)
+        this.updatePerformanceStat(this.cpuId, "CPU", load);
     }
 
     async updateMemory() {
@@ -106,8 +106,8 @@ class Performance extends HTMLElement {
     }
 
     async updateGpu() {
-        const load = await window.api.systemInformation.gpuLoad()
-        this.updatePerformanceStat("gpuTab", "GPU", load[0].usage)
+        const load = await window.api.systemInformation.gpuLoad();
+        this.updatePerformanceStat("gpuTab", "GPU", load[0].usage);
     }
 
     // General function for updating performance stat.
@@ -153,7 +153,7 @@ class Performance extends HTMLElement {
                 </div>
                 <div class="performance-bar"></div>
             </div>
-        `
+        `;
     }
 
     static getDiskId(diskName) {

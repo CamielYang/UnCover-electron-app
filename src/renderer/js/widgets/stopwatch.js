@@ -31,7 +31,7 @@ template.innerHTML = `
 
 class Stopwatch extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -54,12 +54,12 @@ class Stopwatch extends HTMLElement {
         // Add event on reset button
         this.stopWatchResetButton.addEventListener("click", () => {
             this.resetStopwatch();
-        })
+        });
 
         // Add event on start and stop button
         this.stopWatchSetButton.addEventListener("click", () => {
             this.stopwatchStarted ? this.stopStopWatch() : this.startStopwatch();
-        })
+        });
     }
 
     // Start stopwatch
@@ -68,7 +68,7 @@ class Stopwatch extends HTMLElement {
 
         this.stopWatchSetButton.innerText = "Stop";
         this.stopwatchStarted = true;
-        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000)
+        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000);
     }
 
     // Reset stopwatch values and text

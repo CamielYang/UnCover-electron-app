@@ -17,7 +17,7 @@ const { settings } = require('./modules/settings');
 
 ipcRenderer.invoke('get-user-data-path').then(path => {
     storage.setDataPath(path + "/Storage");
-})
+});
 
 // Waits until the view is completely loaded
 window.addEventListener("DOMContentLoaded", () => {
@@ -42,4 +42,4 @@ contextBridge.exposeInMainWorld("api", {
     systemInformation,
     applications,
     settings
-})
+});

@@ -13,6 +13,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "no-trailing-spaces": "error"
+        "no-trailing-spaces": "error",
+        "semi": ["error", "always"]
     }
-}
+};

@@ -28,22 +28,22 @@ function createWebWindow() {
             contextIsolation: true,
             webviewTag: true,
         }
-    })
+    });
 
     browser.on('closed', () => {
         browser = null;
-    })
+    });
 
     browser.once('ready-to-show', () => {
         browser.show();
-    })
+    });
 
     browser.webContents.on('did-attach-webview', (e, content) => {
         content.setWindowOpenHandler(({ url }) => {
             createNewWindow(url);
-            return { action: 'deny' }
-        })
-    })
+            return { action: 'deny' };
+        });
+    });
 
     browser.loadFile("src/renderer/components/webBrowser.html");
 }
@@ -57,12 +57,12 @@ function createNewWindow(url) {
         minHeight: 100,
         show: false,
         autoHideMenuBar: true,
-    })
+    });
 
 
     newWindow.once('ready-to-show', () => {
-        newWindow.show()
-    })
+        newWindow.show();
+    });
 
     newWindow.loadURL(url);
 }

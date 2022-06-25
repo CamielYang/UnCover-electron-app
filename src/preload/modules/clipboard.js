@@ -17,9 +17,9 @@ const contextBridge = {
     readClipboardImage: () => clipboard.readImage().toDataURL(),
     removeImageUrlPrefix: (dataUrl) => removeImageUrlPrefix(dataUrl),
     imageIsEmpty: () => {
-        return clipboard.readImage().isEmpty()
+        return clipboard.readImage().isEmpty();
     },
-}
+};
 
 module.exports = {
     clipboard: contextBridge

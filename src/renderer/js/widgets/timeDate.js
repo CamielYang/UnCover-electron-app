@@ -11,7 +11,7 @@ template.innerHTML = `
  */
 class TimeDate extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 

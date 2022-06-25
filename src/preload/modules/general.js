@@ -8,8 +8,8 @@ async function saveDialog(content, fileType) {
 const contextBridge = {
     openWindow: () => ipcRenderer.invoke('open-window', ''),
     saveDialog: (content, fileType) => saveDialog(content, fileType),
-}
+};
 
 module.exports = {
     general: contextBridge
-}
+};

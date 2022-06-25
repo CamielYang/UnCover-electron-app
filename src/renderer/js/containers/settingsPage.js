@@ -73,7 +73,7 @@ template.innerHTML = `
 
 export class Settings extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -87,7 +87,7 @@ export class Settings extends HTMLElement {
             backgroundTransparency: "50%",
             enableBackgroundImage: false,
             imageFile: null
-        }
+        };
 
         this.settingsData;
 
@@ -129,9 +129,9 @@ export class Settings extends HTMLElement {
     /* STARTUP */
     // Initialize values for startup
     initializeStartup() {
-        const bool = this.settingsData.runAtStartup
+        const bool = this.settingsData.runAtStartup;
 
-        this.startupCheckbox.addEventListener('change', this.checkStartup.bind(this))
+        this.startupCheckbox.addEventListener('change', this.checkStartup.bind(this));
         this.startupCheckbox.checked = bool;
 
         this.updateStartup(bool);
@@ -153,9 +153,9 @@ export class Settings extends HTMLElement {
     /* Minimized */
     // Initialize values for minimized
     initializeMinimized() {
-        const bool = this.settingsData.runMinimized
+        const bool = this.settingsData.runMinimized;
 
-        this.minimizedCheckbox.addEventListener('change', this.checkMinimized.bind(this))
+        this.minimizedCheckbox.addEventListener('change', this.checkMinimized.bind(this));
         this.minimizedCheckbox.checked = bool;
 
         if (!bool) {
@@ -256,7 +256,7 @@ export class Settings extends HTMLElement {
         else {
             this.backgroundImgCheckbox.checked = false;
 
-            this.backgroundInputDiv.classList.add("hidden")
+            this.backgroundInputDiv.classList.add("hidden");
             this.setBackgroundImage(null);
         }
 
@@ -292,15 +292,15 @@ export class Settings extends HTMLElement {
 
     checkBackgroundImg(event) {
         if (event.target.checked) {
-            this.settingsData.enableBackgroundImage = true
+            this.settingsData.enableBackgroundImage = true;
 
             this.backgroundInputDiv.classList.remove("hidden");
             this.setBackgroundImage(this.settingsData.imageFile);
         }
         else {
-            this.settingsData.enableBackgroundImage = false
+            this.settingsData.enableBackgroundImage = false;
 
-            this.backgroundInputDiv.classList.add("hidden")
+            this.backgroundInputDiv.classList.add("hidden");
             this.setBackgroundImage(null);
         }
     }
@@ -333,7 +333,7 @@ export class Settings extends HTMLElement {
         const settings = window.api.settings.getUserSettings();
 
         if (Object.keys(settings).length == 0) {
-            this.saveSettings(this.defaultSettings)
+            this.saveSettings(this.defaultSettings);
             return this.defaultSettings;
         }
         // Combine default settings and user settings to fill up empty values

@@ -19,7 +19,7 @@ export const Modal = (function() {
         if (event.target == modal) {
             unsetModal();
         }
-    }
+    };
 
     // Load modal content by fetching a template
     async function loadModal(file) {
@@ -43,5 +43,5 @@ export const Modal = (function() {
         loadModal,
         setModalId,
         setBaseTemplatePath
-    }
+    };
 })();
