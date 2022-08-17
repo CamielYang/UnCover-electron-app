@@ -42,6 +42,7 @@ export const Modal = (function() {
     return {
         loadModal,
         setModalId,
-        setBaseTemplatePath
+        setBaseTemplatePath,
+        modal
     };
 })();

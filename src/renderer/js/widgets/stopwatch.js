@@ -1,24 +1,12 @@
+import { Dropdown } from "../helpers/dropdown.js";
+
 const template = document.createElement('template');
 template.innerHTML = `
     <div class="light-container clock-container">
         <div class="widget-header flex-row space-between">
             <div class="flex-row">
-                <div class="dropdown">
-                    <button class="material-icons icon-button">
-                        expand_more
-                    </button>
-                    <div class="dropdown-content">
-                        <ul>
-                            <li>
-                                <button class="text-button error">Timer</button>
-                            </li>
-                            <li>
-                                <button class="text-button active">Stopwatch</button>
-                            </li>
-                        </ul>
-                    </div>
+                <div id="stopWatchList" class="dropdown">
                 </div>
-                <h3>Stopwatch</h3>
             </div>
             <div class="flex-row flex-buttons">
                 <button id="resetStopwatch" class="button button-primary">Reset</button>
@@ -46,11 +34,12 @@ class Stopwatch extends HTMLElement {
         this.stopWatchSetButton = this.stopwatchContainer.querySelector("#setStopwatch");
         this.stopwatchTime = this.stopwatchContainer.querySelector("#stopwatchTime");
 
+        this.renderDropdown();
         this.resetStopwatch();
-        this.createEvents();
+        this.createStopwatchEvents();
     }
 
-    createEvents() {
+    createStopwatchEvents() {
         // Add event on reset button
         this.stopWatchResetButton.addEventListener("click", () => {
             this.resetStopwatch();
@@ -118,6 +107,21 @@ class Stopwatch extends HTMLElement {
             i = "0" + i;
         }
         return i;
+    }
+
+    renderDropdown() {
+        const dropdown = this.stopwatchContainer.querySelector("#stopWatchList");
+
+        const dropdownItems = [
+            {
+                "name": "Timer"
+            },
+            {
+                "name": "Stopwatch"
+            }
+        ];
+
+        Dropdown.createDropdownList(dropdown, dropdownItems, 1);
     }
 }
 

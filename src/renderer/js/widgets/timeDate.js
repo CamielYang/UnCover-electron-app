@@ -57,7 +57,7 @@ class TimeDate extends HTMLElement {
         this.clockMinute = this.timeContainer.querySelector("#clockMinute");
         this.clockSecond = this.timeContainer.querySelector("#clockSecond");
 
-        this.setMode(clockMode.Analog);
+        this.setMode(clockMode.Digital);
         this.startTime();
         this.getDate();
     }

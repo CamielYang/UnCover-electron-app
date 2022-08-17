@@ -2,7 +2,7 @@
 <html>
 <head>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../dist/css/style.css">
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,6 +12,10 @@
 </head>
 
 <body>
+    <video autoplay muted loop id="backgroundVideo" class="bg-vid">
+        <source>
+    </video>
+
     <!-- Main Page -->
     <div class="overlay-container" id="overlayPage">
         <div class="fixed-close-button">
@@ -20,7 +24,7 @@
         <div class="top-container">
             <div class="top-outer-container-left">
                 <!-- VOLUME WIDGET -->
-                <system-volume-widget></system-volume-widget>
+                <!-- <system-volume-widget></system-volume-widget> -->
             </div>
 
             <!-- TIME WIDGET -->
@@ -28,7 +32,7 @@
 
             <div class="top-outer-container-right">
                 <!-- WEATHER WIDGET -->
-                <weather-widget></weather-widget>
+                <!-- <weather-widget></weather-widget> -->
             </div>
         </div>
 
@@ -36,7 +40,7 @@
             <div class="middle-flex-row space-between">
                 <div class="middle-flex-column-start">
                     <!-- Performance WIDGET -->
-                    <performance-widget></performance-widget>
+                    <!-- <performance-widget></performance-widget> -->
 
                     <!-- STOPWATCH WIDGET -->
                     <stopwatch-widget></stopwatch-widget>
@@ -76,6 +80,6 @@
     <div id="myModal" class="modal hidden">
     </div>
 
-    <script type="module" src="js/index.js"></script>
+    <script type="module" src="../../dist/js/index.js"></script>
 </body>
 </html>

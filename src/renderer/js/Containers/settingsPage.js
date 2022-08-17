@@ -64,7 +64,7 @@ template.innerHTML = `
                 </label>
                 <div id="imageInputDiv" class="file-input m-top">
                     <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
-                    <input accept="image/*" type="file" id="backgroundImgInput" />
+                    <input accept="image/*,video/*" type="file" id="backgroundImgInput" />
                 </div>
             </div>
         </div>
@@ -281,13 +281,26 @@ export class Settings extends HTMLElement {
             // }
 
             // Use image path location
-            const backgroundImgFile = convertPathUrl(e.target.files[0]?.path);
+            const backgroundImgFile = e.target.files[0];
+            const fileObjectType = this.getFileObjectType(backgroundImgFile);
 
-            if (backgroundImgFile) {
-                this.settingsData.imageFile = backgroundImgFile;
-                this.setBackgroundImage(backgroundImgFile);
+            if (backgroundImgFile
+                && fileObjectType == "image"
+                || fileObjectType == "video") {
+                const path = convertPathUrl(backgroundImgFile.path);
+
+                this.settingsData.imageFile = path;
+                this.setBackgroundImage(path);
             }
         }.bind(this));
+    }
+
+    getFileObjectType(file) {
+        if (!file) {
+            return;
+        }
+
+        return file['type'].split('/')[0];
     }
 
     checkBackgroundImg(event) {
@@ -305,8 +318,27 @@ export class Settings extends HTMLElement {
         }
     }
 
-    setBackgroundImage(imageFile) {
-        document.body.parentElement.style.backgroundImage = imageFile ? `url("${imageFile}")` : "";
+    setBackgroundImage(path) {
+        const video = document.getElementById("backgroundVideo");
+
+        document.body.parentElement.style.backgroundImage = "";
+        video.src = "";
+        video.load();
+
+        if (!path) {
+            return;
+        }
+
+        const file = window.api.settings.getFileObjectFromPath(path);
+        const fileObjectType = this.getFileObjectType(file);
+
+        if (fileObjectType == "image") {
+            document.body.parentElement.style.backgroundImage = path ? `url("${path}")` : "";
+        }
+        else if (fileObjectType == "video") {
+            video.src = path ? path : "";
+            video.load();
+        }
     }
 
     // Display settings page

@@ -42,6 +42,15 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+.bg-vid {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -10;
+    filter: brightness(calc(100% - var(--transparency)));
+}
+
 .overlay-container {
     display: flex;
     flex-direction: column;
@@ -534,7 +543,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background-color: var(--textColor);
+    background-color: var(--textColorGray);
 }
 
 .clock-analog span {
@@ -798,6 +807,7 @@ textarea:focus {
 .dropdown {
     display: flex;
     position: relative;
+    align-items: center;
 }
 
 .dropdown-content {
