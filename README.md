@@ -5,7 +5,7 @@
 UnCover is a overlay application where you can quickly access several widgets 
 build into the application. With UnCover you can quickly get access to a build-in browser, 
 make quick notes and save it as textfile, look at the current weather and weather forecast of your location and much more!
-<!-- <img src="https://user-images.githubusercontent.com/70901975/163557943-b113905e-7b53-4658-a47e-34fab6f1769b.png"> -->
+<img src="https://user-images.githubusercontent.com/70901975/163557943-b113905e-7b53-4658-a47e-34fab6f1769b.png">
 <h2>Current Features:</h2>
 
 - Time and Date
