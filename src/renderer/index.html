@@ -2,7 +2,8 @@
 <html>
 <head>
 
-    <link rel="stylesheet" href="../../dist/css/style.css">
+    <!-- <link rel="stylesheet" href="../../dist/css/style.css"> -->
+    <link rel="stylesheet" href="../renderer/css/style.css">
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -20,11 +21,12 @@
     <div class="overlay-container" id="overlayPage">
         <div class="fixed-close-button">
             <button class="material-icons icon-button" id="closeWinBtn">close</button>
+            <button class="material-icons icon-button" id="editWidgetBtn">edit</button>
         </div>
         <div class="top-container">
             <div class="top-outer-container-left">
                 <!-- VOLUME WIDGET -->
-                <!-- <system-volume-widget></system-volume-widget> -->
+                <system-volume-widget></system-volume-widget>
             </div>
 
             <!-- TIME WIDGET -->
@@ -40,7 +42,7 @@
             <div class="middle-flex-row space-between">
                 <div class="middle-flex-column-start">
                     <!-- Performance WIDGET -->
-                    <!-- <performance-widget></performance-widget> -->
+                    <performance-widget></performance-widget>
 
                     <!-- STOPWATCH WIDGET -->
                     <stopwatch-widget></stopwatch-widget>
@@ -80,6 +82,7 @@
     <div id="myModal" class="modal hidden">
     </div>
 
-    <script type="module" src="../../dist/js/index.js"></script>
+    <!-- <script type="module" src="../../dist/js/index.js"></script> -->
+    <script type="module" src="../renderer/js/index.js"></script>
 </body>
 </html>

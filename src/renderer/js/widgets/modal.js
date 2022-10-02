@@ -41,6 +41,7 @@ export const Modal = (function() {
 
     return {
         loadModal,
+        unsetModal,
         setModalId,
         setBaseTemplatePath,
         modal

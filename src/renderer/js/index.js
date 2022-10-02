@@ -15,3 +15,6 @@ import "./containers/settingsPage.js";
 // Modal
 Modal.setModalId("myModal");
 Modal.setBaseTemplatePath("templates/");
+
+// Code Logic
+import "./helpers/editWidgets.js";
