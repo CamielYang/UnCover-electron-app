@@ -134,16 +134,22 @@ ipcMain.handle("open-window", () => {
 ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
     // Json of extensions fore different file types. Chosen extension will be determined by the fileType that is passed
     const extensions = {
-        default : [
+        default: [
             { name: 'All Files', extensions: ['*'] }
         ],
-        text : [
+        text: [
             { name: 'Text Files', extensions: ['txt', 'docx'] },
             { name: 'All Files', extensions: ['*'] }
         ],
-        image : [
+        image: [
             {name: 'Images', extensions: ['png', 'jpg']},
-        ]
+        ],
+        recording: [
+            {name: 'Recordings', extensions: ['webm']},
+        ],
+        video: [
+            {name: 'Videos', extensions: ['mp4', 'webm']},
+        ],
     };
 
     const timestamp = new Date().getTime();

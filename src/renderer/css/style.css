@@ -929,6 +929,23 @@ textarea:focus {
 .performance-tab:hover .performance-bar {
     background-color: var(--color1);
 }
+
+
+/* Screen Recorder Widget */
+.screen-recorder-container {
+    flex: 1;
+    display: flex;
+    width: 375px;
+    height: 250px;
+    flex-direction: column
+}
+
+.screen-recorder-content {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: var(--color3);
+}
 /* ============================= */
 
 

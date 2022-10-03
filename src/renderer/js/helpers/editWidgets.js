@@ -35,6 +35,7 @@ const widgets = [
 ];
 
 let editMode = false;
+const editWidgetButton = document.getElementById('editWidgetBtn');
 
 // Edit container
 const editContainer = document.createElement("div");
@@ -83,7 +84,7 @@ function renderEditMode() {
     });
 }
 
-document.getElementById('editWidgetBtn').addEventListener('click', () => {
+editWidgetButton.addEventListener('click', () => {
     editMode = !editMode;
 
     if (editMode) {
