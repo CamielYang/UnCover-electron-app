@@ -35,10 +35,10 @@ address.addEventListener("keydown", function(event) {
 });
 
 // Event on webview page load
-webview.addEventListener('load-commit', (e) => {
-    updateAddressBar(webview.getURL())
+webview.addEventListener('load-commit', () => {
+    updateAddressBar(webview.getURL());
     updateNavbar();
-})
+});
 
 // Update AddressBar text value
 function updateAddressBar(url) {
@@ -61,7 +61,7 @@ function checkURL(url) {
     const search = url.match(/^(.*?:\/\/)?(www\.)?(.*)?\/?(.)*$/)[3];
 
     if (!search.includes(".")) {
-        return `https://www.google.com/search?q=${search}`
+        return `https://www.google.com/search?q=${search}`;
     }
 
     return 'https://' + search;

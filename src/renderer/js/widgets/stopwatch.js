@@ -1,24 +1,12 @@
+import { Dropdown } from "../helpers/dropdown.js";
+
 const template = document.createElement('template');
 template.innerHTML = `
     <div class="light-container clock-container">
         <div class="widget-header flex-row space-between">
             <div class="flex-row">
-                <div class="dropdown">
-                    <button class="material-icons icon-button">
-                        expand_more
-                    </button>
-                    <div class="dropdown-content">
-                        <ul>
-                            <li>
-                                <button class="text-button error">Timer</button>
-                            </li>
-                            <li>
-                                <button class="text-button active">Stopwatch</button>
-                            </li>
-                        </ul>
-                    </div>
+                <div id="stopWatchList" class="dropdown">
                 </div>
-                <h3>Stopwatch</h3>
             </div>
             <div class="flex-row flex-buttons">
                 <button id="resetStopwatch" class="button button-primary">Reset</button>
@@ -31,7 +19,7 @@ template.innerHTML = `
 
 class Stopwatch extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -39,27 +27,28 @@ class Stopwatch extends HTMLElement {
 
         this.startTime;
         this.stopwatchInterval;
-        this.elapsed;       
+        this.elapsed;
         this.stopwatchStarted = false;
 
         this.stopWatchResetButton = this.stopwatchContainer.querySelector("#resetStopwatch");
         this.stopWatchSetButton = this.stopwatchContainer.querySelector("#setStopwatch");
         this.stopwatchTime = this.stopwatchContainer.querySelector("#stopwatchTime");
 
+        this.renderDropdown();
         this.resetStopwatch();
-        this.createEvents();
+        this.createStopwatchEvents();
     }
 
-    createEvents() {
+    createStopwatchEvents() {
         // Add event on reset button
         this.stopWatchResetButton.addEventListener("click", () => {
             this.resetStopwatch();
-        })
-    
+        });
+
         // Add event on start and stop button
         this.stopWatchSetButton.addEventListener("click", () => {
             this.stopwatchStarted ? this.stopStopWatch() : this.startStopwatch();
-        })
+        });
     }
 
     // Start stopwatch
@@ -68,25 +57,25 @@ class Stopwatch extends HTMLElement {
 
         this.stopWatchSetButton.innerText = "Stop";
         this.stopwatchStarted = true;
-        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000)    
+        this.stopwatchInterval = setInterval(this.updateStopwatch.bind(this), 1000);
     }
-    
+
     // Reset stopwatch values and text
     resetStopwatch() {
         this.startTime = undefined;
         this.elapsed = 0;
         this.stopwatchTime.innerHTML = "00:00:00";
     }
-    
+
     // Pause stopwatch timer
     stopStopWatch() {
         this.elapsed = new Date() - this.startTime;
         this.stopWatchSetButton.innerText = "Start";
         this.stopwatchStarted = false;
 
-        clearInterval(this.stopwatchInterval);    
+        clearInterval(this.stopwatchInterval);
     }
-    
+
     // Update elapsed stopwatch time
     updateStopwatch() {
         this.checkStartTime();
@@ -96,7 +85,7 @@ class Stopwatch extends HTMLElement {
         let h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let s = Math.floor((distance % (1000 * 60)) / 1000);
-    
+
         h = Stopwatch.checkTime(h);
         m = Stopwatch.checkTime(m);
         s = Stopwatch.checkTime(s);
@@ -110,7 +99,7 @@ class Stopwatch extends HTMLElement {
             this.startTime = new Date();
         }
     }
-    
+
     // Format time
     static checkTime(i) {
         // add zero in front of numbers < 10
@@ -118,6 +107,21 @@ class Stopwatch extends HTMLElement {
             i = "0" + i;
         }
         return i;
+    }
+
+    renderDropdown() {
+        const dropdown = this.stopwatchContainer.querySelector("#stopWatchList");
+
+        const dropdownItems = [
+            {
+                "name": "Timer"
+            },
+            {
+                "name": "Stopwatch"
+            }
+        ];
+
+        Dropdown.createDropdownList(dropdown, dropdownItems, 1);
     }
 }
 

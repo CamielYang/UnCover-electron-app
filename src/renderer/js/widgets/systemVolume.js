@@ -12,7 +12,7 @@ template.innerHTML = `
  */
 class SystemVolume extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -36,20 +36,20 @@ class SystemVolume extends HTMLElement {
         this.volumeIconId.addEventListener("click", async () => {
             this.mute = !this.mute;
             this.updateVolumeIcon(this.volumeValue, this.mute);
-            
-            await api.setMuted(this.mute);
+
+            await window.window.api.volume.setMuted(this.mute);
         });
     }
 
     async updateVolumebar() {
         this.mute = false;
         this.volumeValue = this.volumebarId.value;
-        
+
         this.updateVolumeText(this.volumeValue);
         this.updateVolumeIcon(this.volumeValue);
 
-        await api.setVolume(this.volumeValue);
-        await api.setMuted(this.mute);
+        await window.window.api.volume.setVolume(this.volumeValue);
+        await window.window.api.volume.setMuted(this.mute);
     }
 
     // Update the text that represents the volume level
@@ -64,18 +64,18 @@ class SystemVolume extends HTMLElement {
 
     // Update everything related to volume
     async updateAllVolume() {
-        this.volumeValue = await api.getVolume();
-        this.mute = await api.getMuted();
+        this.volumeValue = await window.window.api.volume.getVolume();
+        this.mute = await window.window.api.volume.getMuted();
 
         this.updateVolumeText(this.volumeValue);
         this.volumebarId.value = this.volumeValue;
-        this.updateVolumeIcon(this.volumeValue, this.mute)
+        this.updateVolumeIcon(this.volumeValue, this.mute);
 
         setTimeout(this.updateAllVolume.bind(this), 2000);
     }
 
     // Update icon based on it's value
-    updateVolumeIcon(value, mute) {    
+    updateVolumeIcon(value, mute) {
         switch (!mute) {
             case (value <= 0):
                 this.setVolumeIcon('volume_off');

@@ -37,12 +37,12 @@ function createWindow() {
 
     win.setAlwaysOnTop(true, level);
     win.loadFile("src/renderer/index.html");
-    
+
     const splash = new BrowserWindow({
-        width: 256, 
-        height: 256, 
-        transparent: true, 
-        frame: false, 
+        width: 256,
+        height: 256,
+        transparent: true,
+        frame: false,
         center: true,
         resizable: false,
         autoHideMenuBar: true,
@@ -50,7 +50,7 @@ function createWindow() {
         alwaysOnTop: true
     });
 
-    splash.setIgnoreMouseEvents(true)
+    splash.setIgnoreMouseEvents(true);
     splash.loadFile('src/renderer/splash.html');
 
     errorTimeout = setTimeout(() => {
@@ -65,7 +65,7 @@ function createWindow() {
         splash.destroy();
         createShortcuts();
         createTray();
-    })
+    });
 }
 
 // create global shortcuts
@@ -79,8 +79,8 @@ function createShortcuts() {
 // Create the tray with a menu template
 function createTray() {
     tray = new Tray(path.join(__dirname, "../../resources/UnCover.ico"));
-    
-    const menu = Menu.buildFromTemplate([ 
+
+    const menu = Menu.buildFromTemplate([
         {
             label: 'Show',
             click() { maximizeWindow(); },
@@ -94,14 +94,14 @@ function createTray() {
           click() { app.quit(); }
         }
     ]);
-    
+
     tray.setToolTip('UnCover');
     tray.setContextMenu(menu);
 }
 
 // Minimize main window
 function minimizeWindow() {
-    win.minimize()
+    win.minimize();
 }
 
 // Maximize main window
@@ -122,11 +122,11 @@ app.on("window-all-closed", () => {
     if (process.platform !== "darwin") app.quit();
 });
 
-ipcMain.handle("close-window", (e, ...args) => {
+ipcMain.handle("close-window", () => {
     minimizeWindow();
 });
 
-ipcMain.handle("open-window", (e, ...args) => {
+ipcMain.handle("open-window", () => {
     maximizeWindow();
 });
 
@@ -138,13 +138,13 @@ ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
             { name: 'All Files', extensions: ['*'] }
         ],
         text : [
-            { name: 'Text Files', extensions: ['txt', 'docx'] }, 
+            { name: 'Text Files', extensions: ['txt', 'docx'] },
             { name: 'All Files', extensions: ['*'] }
         ],
         image : [
             {name: 'Images', extensions: ['png', 'jpg']},
         ]
-    }; 
+    };
 
     const timestamp = new Date().getTime();
     const setExtension = extensions[fileType];
@@ -157,13 +157,13 @@ ipcMain.handle("open-save-dialog", (e, content, fileType = "default") => {
     }).then(file => {
         if (!file.canceled) {
             // Write file to the set path
-            fs.writeFile(file.filePath.toString(), 
+            fs.writeFile(file.filePath.toString(),
                 content, function (err) {
                 if (err) throw err;
             });
         }
     }).catch(err => {
-        console.log(err)
+        console.log(err);
     });
 });
 
@@ -185,4 +185,3 @@ ipcMain.handle('get-file-icon', (e, path) => {
 // });
 
 exports.getMainWindow = getMainWindow;
-

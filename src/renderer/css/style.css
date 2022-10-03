@@ -42,6 +42,15 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+.bg-vid {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -10;
+    filter: brightness(calc(100% - var(--transparency)));
+}
+
 .overlay-container {
     display: flex;
     flex-direction: column;
@@ -89,6 +98,48 @@ h1 {
     opacity: 0;
 }
 
+/* Select Widget Modal */
+.select-widget-modal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    padding: 30px;
+    width: 70%;
+    height: 60%;
+    background: var(--color4);
+    backdrop-filter: blur(var(--blurRadius));
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    overflow-y: scroll;
+    flex-wrap: wrap;
+}
+
+.select-widget-modal .select-widget-item {
+    position: relative;
+    background-color: var(--color3);
+    height: 200px;
+}
+
+.select-widget-modal .select-widget-item img {
+    image-rendering: -webkit-optimize-contrast;
+    object-fit: contain;
+    max-height: 100%;
+    max-width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    transition-duration: var(--transitionDuration);
+}
+
+.select-widget-modal .select-widget-item:hover img {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+/* Image Modal */
 .image-modal {
     position: absolute;
     left: 50%;
@@ -96,21 +147,19 @@ h1 {
     transform: translate(-50%, -50%);
 }
 
-
-/* Image Animation */
 .modal.hidden .image-modal img {
     max-width: 0;
     max-height: 0;
 }
 
-.image-modal img { 
+.image-modal img {
     max-width: 80vw;
-    max-height: 80vh; 
+    max-height: 80vh;
     image-rendering: -webkit-optimize-contrast;
     transition-duration: var(--transitionDuration);
     animation-name: img-fade-in;
     animation-duration: var(--transitionDuration);
-    animation-timing-function: cubic-bezier(0,1.36,.46,.95);   
+    animation-timing-function: cubic-bezier(0,1.36,.46,.95);
 }
 
 /* General Page */
@@ -235,13 +284,13 @@ h1 {
 .switch:active .slider:before {
     width: 35px;
 }
-  
-.switch input { 
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-  
+
 .slider {
     position: absolute;
     cursor: pointer;
@@ -252,7 +301,7 @@ h1 {
     transition: .2s;
     border: 2px solid var(--textColorGray);
 }
-  
+
 .slider:before {
     position: absolute;
     content: "";
@@ -268,7 +317,7 @@ h1 {
 input:checked + .slider {
     border: 2px solid var(--textColor);
 }
-  
+
 input:checked + .slider:before {
     background-color: var(--textColor);
     left: calc(100% - 2px);
@@ -298,19 +347,19 @@ input:checked + .slider:before {
     width: 10px;
     height: 10px;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
-   
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--color2); 
+    background: var(--color2);
     border-radius: 5px;
 }
-  
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color4);
@@ -347,7 +396,7 @@ input:checked + .slider:before {
     animation-direction: alternate;
 }
 
-@keyframes blink {    
+@keyframes blink {
     100% {
         color: var(--errorColor);
     }
@@ -424,6 +473,23 @@ input:checked + .slider:before {
     background: rgba(255, 255, 255, 0.065);
 }
 
+.light-container .edit-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color4);
+    transition-duration: var(--transitionDuration);
+    cursor: pointer;
+}
+
+.light-container .edit-container:hover button {
+    color: var(--textColor);
+}
+
 input[type=range] {
     -webkit-appearance: none;
     width: 100%;
@@ -434,7 +500,7 @@ input[type=range] {
     -webkit-transition: .2s;
     transition: opacity .2s;
 }
-  
+
 input[type=range]:hover,
 input[type=range]:focus-visible {
     opacity: 1;
@@ -502,6 +568,80 @@ input[type=range]::-webkit-slider-thumb {
     align-items: center;
     margin: 0 30px;
     width: 400px;
+}
+
+.clock-digital {
+    flex-direction: column;
+    align-items: center;
+}
+
+.clock-analog {
+    position: absolute;
+    margin-top: 15px;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(var(--blurRadius));
+    transition-duration: var(--transitionDuration);
+}
+
+.clock-analog:hover {
+    background: rgba(255, 255, 255, 0.065);
+}
+
+.clock-analog::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--textColorGray);
+}
+
+.clock-analog span {
+    position: absolute;
+    font-size: 0.75em;
+    inset: 10px;
+    text-align: center;
+    transform: rotate(calc(var(--i) * 30deg));
+}
+
+.clock-analog span b {
+    display: inline-block;
+    transform: rotate(calc(var(--i) * -30deg));
+}
+
+.clock-analog span:not(:nth-of-type(3n)) b {
+    opacity: 0.3;
+}
+
+.clock-analog .hand{
+    position: absolute;
+    transform-origin: bottom;
+    bottom: 50%;
+    border-radius: 5px;
+    transform: rotate(calc(var(--rotation) * 1deg));
+    background-color: var(--color2);
+}
+
+.clock-analog .hand.hour{
+    width: 3px;
+    height: 20%;
+}
+
+.clock-analog .hand.minute{
+    width: 3px;
+    height: 35%;
+}
+
+.clock-analog .hand.second{
+    width: 2px;
+    height: 40%;
 }
 
 
@@ -724,6 +864,7 @@ textarea:focus {
 .dropdown {
     display: flex;
     position: relative;
+    align-items: center;
 }
 
 .dropdown-content {

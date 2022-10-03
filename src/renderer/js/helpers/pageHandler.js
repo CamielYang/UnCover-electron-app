@@ -3,15 +3,15 @@ export const PageHandler = (function() {
     let currentPageId = mainPageId;
 
     function switchPage(pageId) {
-        $(currentPageId).style.display = "none"
-        $(pageId).style.display = "flex"
+        $(currentPageId).style.display = "none";
+        $(pageId).style.display = "flex";
 
         currentPageId = pageId;
     }
 
     function switchToMainPage() {
-        $(currentPageId).style.display = "none"
-        $(mainPageId).style.display = "flex"
+        $(currentPageId).style.display = "none";
+        $(mainPageId).style.display = "flex";
 
         currentPageId = mainPageId;
     }
@@ -23,5 +23,5 @@ export const PageHandler = (function() {
     return {
         switchPage,
         switchToMainPage
-    }
+    };
 })();

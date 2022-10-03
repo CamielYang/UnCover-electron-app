@@ -31,15 +31,15 @@ class Weather extends HTMLElement {
     static weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
         // Default values
         const defaults = {
-            location: "Hoogeveen", 
+            location: "Hoogeveen",
             forecastDays: 3,
-            delay: 3600000 
+            delay: 3600000
         };
 
         this.weatherContainer = this.children[0];
@@ -64,13 +64,13 @@ class Weather extends HTMLElement {
         else {
             this.forecastDays = 5;
         }
-    } 
+    }
 
     addEditEvent() {
         this.editWeatherId.addEventListener("change", () => {
             let location = this.editWeatherId.value;
             location = location.charAt(0).toUpperCase() + location.slice(1);
-            
+
             this.updateWeather(location);
 
             // Reset interval
@@ -85,7 +85,7 @@ class Weather extends HTMLElement {
 
     // Convert Kelvin temperature to Celcius
     static kelvinToCelcius(kelvin) {
-        return parseInt(kelvin - 273.15)
+        return parseInt(kelvin - 273.15);
     }
 
     // Update weather content
@@ -93,11 +93,11 @@ class Weather extends HTMLElement {
         let weatherData;
         if (location) {
             this.#setLocation(location);
-            weatherData = await api.getWeatherData(location, true);
+            weatherData = await window.api.weather.getWeatherData(location, true);
         }
         else {
-            weatherData = await api.getWeatherData(this.location, false);
-        } 
+            weatherData = await window.api.weather.getWeatherData(this.location, false);
+        }
 
         this.updateCurrentWeather(weatherData.current);
         this.updateForecastWeather(weatherData.daily);
@@ -112,7 +112,7 @@ class Weather extends HTMLElement {
         <div class="weather-main"">
             <h2 id="currentWeatherTemp">${Weather.kelvinToCelcius(weatherData.temp)}°</h2>
             <h3 id="currentWeatherCity">${this.location}</h3>
-        </div>`
+        </div>`;
     }
 
     // Update the weather forecast section
@@ -126,7 +126,7 @@ class Weather extends HTMLElement {
                 <h4>${Weather.weekday[date.getDay()]}</h4>
                 <span class="weather-icon-sub bi ${Weather.getWeatherIcon(weatherData[day].weather[0].icon)}"></span>
                 <h4>${Weather.kelvinToCelcius(weatherData[day].temp.day)}°</h4>
-            </div>`
+            </div>`;
         }
 
         this.weatherForecastId.innerHTML = forecastInfo;
@@ -138,25 +138,25 @@ class Weather extends HTMLElement {
         const iconCode = icon.substring(0, 2);
         switch (iconCode) {
             case '01':
-                return 'bi-sun-fill'
+                return 'bi-sun-fill';
             case '02':
-                return 'bi-cloud-sun-fill'
+                return 'bi-cloud-sun-fill';
             case '03':
-                return 'bi-cloudy-fill'
+                return 'bi-cloudy-fill';
             case '04':
-                return 'bi-clouds-fill'
+                return 'bi-clouds-fill';
             case '09':
-                return 'bi-cloud-rain-heavy-fill'
+                return 'bi-cloud-rain-heavy-fill';
             case '10':
-                return 'bi-cloud-drizzle-fill'
+                return 'bi-cloud-drizzle-fill';
             case '11':
-                return 'bi-cloud-lightning-fill'
+                return 'bi-cloud-lightning-fill';
             case '13':
-                return 'bi-cloud-snow-fill'
+                return 'bi-cloud-snow-fill';
             case '50':
-                return 'bi-cloud-haze-fill'
+                return 'bi-cloud-haze-fill';
             default:
-                return 'bi-sun-fill'
+                return 'bi-sun-fill';
         }
     }
 }

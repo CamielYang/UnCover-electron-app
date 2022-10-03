@@ -17,7 +17,7 @@ template.innerHTML = `
 */
 class Notepad extends HTMLElement {
     constructor() {
-        super()
+        super();
 
         this.appendChild(template.content.cloneNode(true));
 
@@ -27,19 +27,19 @@ class Notepad extends HTMLElement {
         this.saveButtonId = this.noteContainer.querySelector("#saveNotepad");
         this.clearButtonId = this.noteContainer.querySelector("#clearNotepad");
 
-        this.createEvents()
+        this.createEvents();
     }
 
     createEvents() {
         // Save Notepad content
         this.saveButtonId.addEventListener("click", () => {
-            api.saveDialog(this.notepadId.value, "text");
-        })
+            window.api.general.saveDialog(this.notepadId.value, "text");
+        });
 
         // Clear Notepad content
         this.clearButtonId.addEventListener("click", () => {
             this.notepadId.value = '';
-        })
+        });
     }
 }
 
