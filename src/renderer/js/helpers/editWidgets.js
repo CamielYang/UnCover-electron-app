@@ -2,6 +2,11 @@ import { createWidgetNode } from "./createWidgetNode.js";
 import { widgetsTags } from "../constants/widgetsTags.js";
 import { Modal } from "../widgets/modal.js";
 
+import Performance from "../../images/widgets/Performance.png";
+import Notepad from "../../images/widgets/Notepad.png";
+import Stopwatch from "../../images/widgets/Stopwatch.png";
+import Clipboard from "../../images/widgets/Clipboard.png";
+
 const widgets = [
     // These do not work properly yet.
     // {
@@ -18,19 +23,19 @@ const widgets = [
     // },
     {
         widgetTag: widgetsTags.Performance,
-        src: "images/widgets/Performance.png"
+        src: Performance
     },
     {
         widgetTag: widgetsTags.Notepad,
-        src: "images/widgets/Notepad.png"
+        src: Notepad
     },
     {
         widgetTag: widgetsTags.Stopwatch,
-        src: "images/widgets/Stopwatch.png"
+        src: Stopwatch
     },
     {
         widgetTag: widgetsTags.Clipboard,
-        src: "images/widgets/Clipboard.png"
+        src: Clipboard
     }
 ];
 

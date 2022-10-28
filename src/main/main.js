@@ -28,7 +28,7 @@ function createWindow() {
         show: false,
         fullscreen: true,
         webPreferences: {
-            preload: path.join(__dirname, "../../src/preload/preloadIndex.js"),
+            preload: path.join(__dirname, "/preload.js"),
         },
     });
     //win.setIgnoreMouseEvents(true, { forward: true });
@@ -36,7 +36,7 @@ function createWindow() {
     let level = "normal";
 
     win.setAlwaysOnTop(true, level);
-    win.loadFile("src/renderer/index.html");
+    win.loadFile("dist/index.html");
 
     const splash = new BrowserWindow({
         width: 256,
@@ -51,7 +51,7 @@ function createWindow() {
     });
 
     splash.setIgnoreMouseEvents(true);
-    splash.loadFile('src/renderer/splash.html');
+    splash.loadFile('dist/splash.html');
 
     errorTimeout = setTimeout(() => {
         win.destroy();
@@ -78,7 +78,7 @@ function createShortcuts() {
 
 // Create the tray with a menu template
 function createTray() {
-    tray = new Tray(path.join(__dirname, "../../resources/UnCover.ico"));
+    tray = new Tray(path.join(__dirname, "resources/UnCover.ico"));
 
     const menu = Menu.buildFromTemplate([
         {

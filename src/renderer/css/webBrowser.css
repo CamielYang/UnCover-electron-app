@@ -1,5 +1,5 @@
 @media (prefers-color-scheme: dark) {
-    :root { 
+    :root {
         --addressBarColor: hsl(0, 0%, 10%);
         --navbarColor: hsl(0, 0%, 20%);
         --colorDark: hsl(0, 0%, 60%);
@@ -7,9 +7,9 @@
         --textColor: hsl(0, 0%, 100%);
     }
   }
-  
+
   @media (prefers-color-scheme: light) {
-    :root { 
+    :root {
         --addressBarColor: rgb(255, 255, 255);
         --navbarColor: hsl(0, 0%, 95%);
         --colorDark: rgb(128, 128, 128);
@@ -77,7 +77,8 @@ webview {
     height: 25px;
     border: 1px solid transparent;
     border-radius: 25px;
-    transition-duration: 0.2s;
+    transition-property: border-color, color;
+    transition-duration:  0.2s;
     color: var(--colorDark);
 }
 
@@ -95,9 +96,9 @@ webview {
 .icon-button {
     background: none;
     border: none;
-    font-size: 36px;
     cursor: pointer;
     color: var(--colorDark);
+    transition-property: color!important;
     transition: 0.2s;
 }
 

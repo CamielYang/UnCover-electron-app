@@ -2,26 +2,29 @@
   "name": "UnCover",
   "version": "1.0.0",
   "description": "my-electron-app",
-  "main": "src/main/main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack && electron-forge start",
+    "start": "cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge start",
     "package": "electron-forge package",
-    "make": "webpack electron-forge make",
-    "build": "cross-env NODE_ENV=production webpack"
+    "make": "cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.dev.js"
   },
   "author": "Camiel Yang",
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-env": "^7.19.3",
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "copy-webpack-plugin": "^11.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
     "electron": "^16.0.7",
     "eslint": "^8.18.0",
+    "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "webpack": "^5.73.0",
     "webpack-cli": "^4.10.0",
@@ -39,7 +42,18 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "resources/UnCover.ico"
+        "icon": "resources/UnCover.ico",
+        "ignore": [
+          "^/src$",
+          ".editorconfig",
+          ".eslintrc.js",
+          ".gitignore",
+          "api.sample.js",
+          "package-lock.json",
+          "README.md",
+          "webpack.config.js",
+          "webpack.dev.js"
+        ]
       },
       "makers": [
         {

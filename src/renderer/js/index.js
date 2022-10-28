@@ -1,3 +1,6 @@
+// Css
+import "../css/style.css";
+
 // Widgets
 import { Modal } from "./widgets/modal.js";
 import "./widgets.js";

@@ -1,3 +1,5 @@
+import "../css/webBrowser.css";
+
 const back = document.getElementById('backBtn');
 const forward = document.getElementById('forwardBtn');
 const reload = document.getElementById('reloadBtn');

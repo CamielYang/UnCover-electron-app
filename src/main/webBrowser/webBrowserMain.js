@@ -45,7 +45,7 @@ function createWebWindow() {
         });
     });
 
-    browser.loadFile("src/renderer/components/webBrowser.html");
+    browser.loadFile("dist/webBrowser.html");
 }
 
 function createNewWindow(url) {

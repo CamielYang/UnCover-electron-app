@@ -31,6 +31,12 @@ html {
     background-size: cover;
     min-height: 100vh;
     user-select: none;
+    animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 html, body {
@@ -405,7 +411,6 @@ input:checked + .slider:before {
 .icon-button {
     background: none;
     border: none;
-    font-size: 36px;
     cursor: pointer;
     color: var(--textColorGray);
     transition: var(--transitionDuration);
