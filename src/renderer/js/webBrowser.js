@@ -4,6 +4,7 @@ const back = document.getElementById('backBtn');
 const forward = document.getElementById('forwardBtn');
 const reload = document.getElementById('reloadBtn');
 const home = document.getElementById('homeBtn');
+const pictureInPicture = document.getElementById('pictureInPictureBtn');
 const address = document.getElementById('addressBar');
 const webview = document.querySelector('webview');
 
@@ -27,6 +28,11 @@ reload.addEventListener('click', function() {
 // Event on home button
 home.addEventListener('click', function() {
     loadURL(homeUrl);
+});
+
+// Event on picture-in-picture button
+pictureInPicture.addEventListener('click', function() {
+    webview.send("picture-in-picture");
 });
 
 // Event on address bar

@@ -25,6 +25,7 @@ const preloadConfig = [
     {
         entry: {
             preload: './src/preload/preloadIndex.js',
+            browserPreload: './src/preload/browserPreload.js',
         },
         externals: externals,
         target: 'electron-preload',

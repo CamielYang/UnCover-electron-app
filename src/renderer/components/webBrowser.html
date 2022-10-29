@@ -20,11 +20,14 @@
             <li>
                 <button id="homeBtn" class="material-icons icon-button">home</button>
             </li>
+            <li>
+                <button id="pictureInPictureBtn" class="material-icons icon-button">picture_in_picture_alt</button>
+            </li>
             <li class="li-flex-one">
               <input id="addressBar" class="address-bar" type="url">
             </li>
         </ul>
     </div>
-    <webview src="https://www.google.com" allowpopups></webview>
+    <webview src="https://www.google.com" allowpopups preload="browserPreload.js"></webview>
 </body>
 </html>
