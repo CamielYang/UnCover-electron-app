@@ -6,4 +6,5 @@ export const widgetsTags = {
     SystemVolume: "system-volume-widget",
     TimeDate: "time-date-widget",
     Weather: "weather-widget",
+    ScreenRecorder: "screen-recorder-widget",
 };

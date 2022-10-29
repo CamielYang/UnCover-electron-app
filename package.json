@@ -4,7 +4,7 @@
   "description": "my-electron-app",
   "main": "dist/main.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge start",
+    "start": "cross-env NODE_ENV=development webpack --config webpack.dev.js && electron-forge start",
     "package": "electron-forge package",
     "make": "cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
     "build": "cross-env NODE_ENV=production webpack --config webpack.dev.js"

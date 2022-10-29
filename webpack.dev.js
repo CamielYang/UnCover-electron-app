@@ -33,6 +33,7 @@ const preloadConfig = [
 
 const rendererConfig = [
     {
+        devtool: process.env.NODE_ENV === 'production' ? false : 'eval-source-map',
         entry: {
             index: './src/renderer/js/index.js',
             webBrowser: './src/renderer/js/webBrowser.js',

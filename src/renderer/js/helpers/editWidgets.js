@@ -6,6 +6,7 @@ import Performance from "../../images/widgets/Performance.png";
 import Notepad from "../../images/widgets/Notepad.png";
 import Stopwatch from "../../images/widgets/Stopwatch.png";
 import Clipboard from "../../images/widgets/Clipboard.png";
+import ScreenRecorder from "../../images/widgets/ScreenRecorder.png";
 
 const widgets = [
     // These do not work properly yet.
@@ -36,6 +37,10 @@ const widgets = [
     {
         widgetTag: widgetsTags.Clipboard,
         src: Clipboard
+    },
+    {
+        widgetTag: widgetsTags.ScreenRecorder,
+        src: ScreenRecorder
     }
 ];
 

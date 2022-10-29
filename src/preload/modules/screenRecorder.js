@@ -3,10 +3,16 @@ const {
     ipcRenderer
 } = require('electron');
 
+// https://github.com/muaz-khan/RecordRTC
+// getSeekableBlob
 let mediaRecorder;
+let videoElement;
 const recordedChunks = [];
+let blob;
 
 async function startRecording() {
+    recordedChunks.length = 0;
+    blob = null;
     const sources = await desktopCapturer.getSources({ types: ['screen'] });
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -37,22 +43,35 @@ function handleDataAvailable(e) {
 }
 
 async function handleStop() {
-    const blob = new Blob(recordedChunks, {
+    blob = new Blob(recordedChunks, {
         type: 'video/webm'
     });
 
-    const buffer = Buffer.from(await blob.arrayBuffer());
-    ipcRenderer.invoke('open-save-dialog', buffer, "recording");
+    videoElement.src = URL.createObjectURL(blob);
+	videoElement.load();
+	videoElement.onloadeddata = function() {
+        videoElement.classList.add("is--visible");
+		videoElement.play();
+	};
 }
 
-function stopRecording() {
+async function saveRecording() {
+    if (blob) {
+        const buffer = Buffer.from(await blob.arrayBuffer());
+        ipcRenderer.invoke('open-save-dialog', buffer, "recording");
+    }
+}
+
+function stopRecording(recordedVideo) {
+    videoElement = recordedVideo;
     mediaRecorder.stop();
 }
 
 
 const contextBridge = {
     startRecording: () => startRecording(),
-    stopRecording: () => stopRecording(),
+    stopRecording: (recordedVideo) => stopRecording(recordedVideo),
+    saveRecording: () => saveRecording()
 };
 
 module.exports = {
