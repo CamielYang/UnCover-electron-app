@@ -4,10 +4,11 @@
   "description": "my-electron-app",
   "main": "dist/main.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack --config webpack.dev.js && electron-forge start",
+    "clean": "if exist dist\\ (rmdir /s /q dist)",
+    "start": "npm run clean && cross-env NODE_ENV=development webpack --config webpack.dev.js && electron-forge start",
     "package": "electron-forge package",
-    "make": "cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.dev.js"
+    "make": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js"
   },
   "author": "Camiel Yang",
   "license": "MIT",
