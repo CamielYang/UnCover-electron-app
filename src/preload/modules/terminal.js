@@ -40,8 +40,12 @@ function sendCommand(command) {
 
     if (startSeparate.includes(command.split(' ')[0])) {
         createCommand = "start cmd /k " + createCommand;
+    }
+
+    if (createCommand.startsWith("start")) {
         ipcRenderer.invoke('close-window', '');
     }
+
     terminal.stdin.write(createCommand);
 }
 
