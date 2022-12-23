@@ -66,6 +66,7 @@ const rendererConfig = [
                 patterns: [
                     { from: "./src/renderer/templates", to: "templates" },
                     { from: "./resources", to: "resources" },
+                    { from: "./src/.env", to: "." },
                 ],
             }),
         ],

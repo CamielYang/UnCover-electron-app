@@ -36,7 +36,7 @@ function createWindow() {
     let level = "normal";
 
     win.setAlwaysOnTop(true, level);
-    win.loadFile("dist/index.html");
+    win.loadFile(path.join(__dirname,  "/index.html"));
 
     const splash = new BrowserWindow({
         width: 256,
@@ -51,7 +51,7 @@ function createWindow() {
     });
 
     splash.setIgnoreMouseEvents(true);
-    splash.loadFile('dist/splash.html');
+    splash.loadFile(path.join(__dirname,  "/splash.html"));
 
     errorTimeout = setTimeout(() => {
         win.destroy();
