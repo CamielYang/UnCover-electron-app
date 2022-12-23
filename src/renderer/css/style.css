@@ -1018,8 +1018,8 @@ textarea:focus {
 
 .terminal-container button {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 20px;
+    top: 20px;
 }
 
 /* ============================= */
