@@ -10,6 +10,7 @@ template.innerHTML = /*html*/`
             <h2 class="return-head">Terminal</h2>
         </div>
         <div class="light-container page-container terminal-container">
+            <button class="button button-primary" id="restartTerminal">Restart</button>
             <div class="terminal-output" id="terminalOutput">
             </div>
             <input type="text" id="terminalInput" />
@@ -27,6 +28,7 @@ class Terminal extends HTMLElement {
 
         this.terminalInput = this.terminalContainer.querySelector("#terminalInput");
         this.terminalOutput = this.terminalContainer.querySelector("#terminalOutput");
+        this.restartTerminal = this.terminalContainer.querySelector("#restartTerminal");
 
         this.addEvents();
     }
@@ -47,8 +49,13 @@ class Terminal extends HTMLElement {
             }
         });
 
+        this.restartTerminal.addEventListener("click", () => {
+            window.api.terminal.restartTerminal();
+            this.terminalOutput.innerHTML = "";
+        });
+
         document.addEventListener("terminal-data", (e) => {
-            if (e.detail.stdout == "clear\n") {
+            if (e.detail.stdout == "cls\n") {
                 this.terminalOutput.innerHTML = "";
                 return;
             }

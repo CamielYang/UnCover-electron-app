@@ -1,3 +1,4 @@
+import { escapeHtml } from "../helpers/escapeHtml.js";
 import { Modal } from "./modal.js";
 
 const template = document.createElement('template');
@@ -88,7 +89,7 @@ class Clipboard extends HTMLElement {
     setClipboardText(text) {
         this.contentId.innerHTML = `
         <div class="clipboard-text">
-            <p >${Clipboard.escapeHtml(text)}</p>
+            <p >${escapeHtml(text)}</p>
         </div>`;
     }
 
@@ -98,19 +99,6 @@ class Clipboard extends HTMLElement {
         <p class="clipboard-empty">
             Clipboard is empty
         </p>`;
-    }
-
-    // Convert plain html to html entities to prevent xss injection and html interruption
-    static escapeHtml(text) {
-        var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-
-        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
 
     // Load modal that previews the image

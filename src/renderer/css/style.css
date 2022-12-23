@@ -824,6 +824,7 @@ textarea:focus {
     position: absolute;
     height: 100%;
     width: 100%;
+    user-select: text;
 }
 
 .clipboard-text p {
@@ -1003,6 +1004,7 @@ textarea:focus {
     overflow-y: scroll;
     height: 100%;
     width: 100%;
+    user-select: text;
 }
 
 .terminal-container input[type=text] {
@@ -1014,6 +1016,11 @@ textarea:focus {
     font-size: 16px;
 }
 
+.terminal-container button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
 
 /* ============================= */
 
