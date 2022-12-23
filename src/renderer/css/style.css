@@ -984,6 +984,37 @@ textarea:focus {
     color: var(--errorColor);
 }
 
+/* TERMINAL PAGE */
+.terminal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+    background: none;
+}
+
+.terminal-output {
+    color: #efefef;
+    white-space: pre-line;
+    background-color: var(--color4);
+    padding: 10px;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+}
+
+.terminal-container input[type=text] {
+    background: var(--color3);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+}
+
+
 /* ============================= */
 
 

@@ -1,95 +1,97 @@
 {
-  "name": "UnCover",
-  "version": "1.0.0",
-  "description": "my-electron-app",
-  "main": "dist/main.js",
-  "scripts": {
-    "clean": "if exist dist\\ (rmdir /s /q dist)",
-    "start": "npm run clean && cross-env NODE_ENV=development webpack --config webpack.dev.js && electron-forge start",
-    "package": "electron-forge package",
-    "make": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js"
-  },
-  "author": "Camiel Yang",
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/preset-env": "^7.19.3",
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "copy-webpack-plugin": "^11.0.0",
-    "cross-env": "^7.0.3",
-    "css-loader": "^6.7.1",
-    "css-minimizer-webpack-plugin": "^4.0.0",
-    "electron": "^16.0.7",
-    "eslint": "^8.18.0",
-    "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.6.1",
-    "webpack": "^5.73.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-remove-empty-scripts": "^0.8.1"
-  },
-  "dependencies": {
-    "clipboard-event": "^1.5.0",
-    "dotenv": "^16.0.0",
-    "electron-json-storage": "^4.5.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "get-file-object-from-local-path": "^1.0.2",
-    "loudness": "^0.4.1",
-    "systeminformation": "^5.11.9"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "resources/UnCover.ico",
-        "ignore": [
-          "^/src$",
-          ".editorconfig",
-          ".eslintrc.js",
-          ".gitignore",
-          "api.sample.js",
-          "package-lock.json",
-          "README.md",
-          "webpack.config.js",
-          "webpack.dev.js"
-        ]
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "UnCover"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
+    "name": "UnCover",
+    "version": "1.0.0",
+    "description": "my-electron-app",
+    "main": "dist/main.js",
+    "scripts": {
+        "clean": "if exist dist\\ (rmdir /s /q dist)",
+        "start": "concurrently \"npm:clean\" \"npm:watch\" \"electron-forge start\"",
+        "watch": "cross-env NODE_ENV=development webpack --watch --config webpack.dev.js",
+        "package": "electron-forge package",
+        "make": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js && electron-forge make",
+        "build": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.dev.js"
+    },
+    "author": "Camiel Yang",
+    "license": "MIT",
+    "devDependencies": {
+        "@babel/preset-env": "^7.19.3",
+        "@electron-forge/cli": "^6.0.0-beta.63",
+        "@electron-forge/maker-deb": "^6.0.0-beta.63",
+        "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+        "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+        "@electron-forge/maker-zip": "^6.0.0-beta.63",
+        "concurrently": "^7.5.0",
+        "copy-webpack-plugin": "^11.0.0",
+        "cross-env": "^7.0.3",
+        "css-loader": "^6.7.1",
+        "css-minimizer-webpack-plugin": "^4.0.0",
+        "electron": "^16.0.7",
+        "eslint": "^8.18.0",
+        "html-webpack-plugin": "^5.5.0",
+        "mini-css-extract-plugin": "^2.6.1",
+        "webpack": "^5.73.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-remove-empty-scripts": "^0.8.1"
+    },
+    "dependencies": {
+        "clipboard-event": "^1.5.0",
+        "dotenv": "^16.0.0",
+        "electron-json-storage": "^4.5.0",
+        "electron-squirrel-startup": "^1.0.0",
+        "get-file-object-from-local-path": "^1.0.2",
+        "loudness": "^0.4.1",
+        "systeminformation": "^5.11.9"
+    },
+    "config": {
+        "forge": {
+            "packagerConfig": {
+                "icon": "resources/UnCover.ico",
+                "ignore": [
+                    "^/src$",
+                    ".editorconfig",
+                    ".eslintrc.js",
+                    ".gitignore",
+                    "api.sample.js",
+                    "package-lock.json",
+                    "README.md",
+                    "webpack.config.js",
+                    "webpack.dev.js"
+                ]
+            },
+            "makers": [
+                {
+                    "name": "@electron-forge/maker-squirrel",
+                    "config": {
+                        "name": "UnCover"
+                    }
+                },
+                {
+                    "name": "@electron-forge/maker-zip",
+                    "platforms": [
+                        "darwin"
+                    ]
+                },
+                {
+                    "name": "@electron-forge/maker-deb",
+                    "config": {}
+                },
+                {
+                    "name": "@electron-forge/maker-rpm",
+                    "config": {}
+                }
+            ]
         }
-      ]
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CamielYang/UnCover-electron-app.git"
-  },
-  "keywords": [
-    "Overlay",
-    "App"
-  ],
-  "bugs": {
-    "url": "https://github.com/CamielYang/UnCover-electron-app/issues"
-  },
-  "homepage": "https://github.com/CamielYang/UnCover-electron-app#readme"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/CamielYang/UnCover-electron-app.git"
+    },
+    "keywords": [
+        "Overlay",
+        "App"
+    ],
+    "bugs": {
+        "url": "https://github.com/CamielYang/UnCover-electron-app/issues"
+    },
+    "homepage": "https://github.com/CamielYang/UnCover-electron-app#readme"
 }

@@ -7,6 +7,7 @@ import "./widgets.js";
 
 // Containers
 import "./containers/applicationsPage.js";
+import "./containers/terminalPage.js";
 import "./containers/settingsPage.js";
 
 // Modal

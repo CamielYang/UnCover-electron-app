@@ -100,5 +100,5 @@ const rendererConfig = [
 module.exports = [
     mainConfig,
     preloadConfig,
-    rendererConfig
+    rendererConfig,
 ].flat();

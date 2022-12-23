@@ -329,8 +329,16 @@ export class Settings extends HTMLElement {
             return;
         }
 
-        const file = window.api.settings.getFileObjectFromPath(path);
-        const fileObjectType = this.getFileObjectType(file);
+        let fileObjectType;
+
+        try {
+            const file = window.api.settings.getFileObjectFromPath(path);
+            fileObjectType = this.getFileObjectType(file);
+        }
+        catch (e) {
+            console.error(e);
+            return;
+        }
 
         if (fileObjectType == "image") {
             document.body.parentElement.style.backgroundImage = path ? `url("${path}")` : "";

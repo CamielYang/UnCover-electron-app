@@ -15,6 +15,7 @@ const { systemInformation } = require('./modules/systemInformation');
 const { applications } = require('./modules/applications');
 const { settings } = require('./modules/settings');
 const { screenRecorder } = require('./modules/screenRecorder');
+const terminal = require('./modules/terminal').default;
 
 ipcRenderer.invoke('get-user-data-path').then(path => {
     storage.setDataPath(path + "/Storage");
@@ -43,5 +44,6 @@ contextBridge.exposeInMainWorld("api", {
     systemInformation,
     applications,
     settings,
-    screenRecorder
+    screenRecorder,
+    terminal
 });

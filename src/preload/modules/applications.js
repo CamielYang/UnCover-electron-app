@@ -94,7 +94,7 @@ const contextBridge = {
     openApplication: (path) => {
         ipcRenderer.invoke('close-window', '');
 
-        child(`"${path}"`, (err, stdout) => {
+        child(path, (err, stdout) => {
             if(err){
                console.error(err);
                return;
