@@ -4,7 +4,7 @@ import { convertPathUrl } from "../helpers/convertPathUrl.js";
 const pageId = "settingsPage";
 
 const template = document.createElement('template');
-template.innerHTML = `
+template.innerHTML = /* html */`
     <div class="page" id=${pageId}>
         <div class="flex-row flex-start header">
             <button id="returnOverlayBtn" class="material-icons icon-button">arrow_back</button>
@@ -13,7 +13,7 @@ template.innerHTML = `
 
         <!-- User settings -->
         <div class="light-container page-container">
-            <h2>User settings</h2>
+            <h2>User</h2>
             <div class="setting">
                 <h3>Run at startup</h3>
                 <label class="switch">
@@ -41,7 +41,7 @@ template.innerHTML = `
 
         <!-- Display Settings -->
         <div class="light-container page-container">
-            <h2>Display settings</h2>
+            <h2>Display</h2>
             <div class="setting">
                 <h3>Blur</h3>
                 <div class="flex-row">
@@ -57,15 +57,24 @@ template.innerHTML = `
                 </div>
             </div>
             <div id="imageSetting" class="setting">
-                <h3>Enable image</h3>
+                <h3>Enable background</h3>
                 <label class="switch">
                     <input id="backgroundImgCheckbox" type="checkbox">
                     <span class="slider"></span>
                 </label>
                 <div id="imageInputDiv" class="file-input m-top">
-                    <label for="backgroundImgInput" class="button button-primary"><strong>Choose an image</strong></label>
+                    <label for="backgroundImgInput" class="button button-primary"><strong>Choose background</strong></label>
                     <input accept="image/*,video/*" type="file" id="backgroundImgInput" />
                 </div>
+            </div>
+        </div>
+
+        <!-- API keys Settings -->
+        <div class="light-container page-container">
+            <h2>API keys</h2>
+            <div class="setting">
+                <h3>Open Weather</h3>
+                <input type="text" class="text-blurred" id="openWeatherKeyInput">
             </div>
         </div>
     </div>
@@ -78,16 +87,6 @@ export class Settings extends HTMLElement {
         this.appendChild(template.content.cloneNode(true));
 
         this.settingsContainer = this.children[0];
-
-        this.defaultSettings = {
-            runAtStartup: false,
-            runMinimized: true,
-            zoomFactor: 1,
-            blur: "10px",
-            backgroundTransparency: "50%",
-            enableBackgroundImage: false,
-            imageFile: null
-        };
 
         this.settingsData;
 
@@ -109,12 +108,22 @@ export class Settings extends HTMLElement {
         this.backgroundInput = this.settingsContainer.querySelector("#backgroundImgInput");
         this.autoSaveInterval;
 
+        // API keys
+        this.openWeatherKeyInput = this.settingsContainer.querySelector("#openWeatherKeyInput");
+
         this.initializeSettings();
+    }
+
+    dispatchSettingsEvent() {
+        const settingsEvent = new CustomEvent('settings-update', { detail: { settingsData: this.settingsData }});
+        document.dispatchEvent(settingsEvent);
     }
 
     // Load all settings values
     initializeSettings() {
-        this.settingsData = this.getSettingsData();
+        this.settingsData = window.api.settings.getUserSettings();
+        this.dispatchSettingsEvent();
+
         document.getElementById("settingsBtn").addEventListener("click", this.showSettings.bind(this));
         this.settingsContainer.querySelector("#returnOverlayBtn").addEventListener("click", this.showOverlay.bind(this));
 
@@ -124,6 +133,7 @@ export class Settings extends HTMLElement {
         this.initializeBlur();
         this.initializeTransparency();
         this.initializeBackgroundImg();
+        this.initializeOpenWeather();
     }
 
     /* STARTUP */
@@ -349,6 +359,21 @@ export class Settings extends HTMLElement {
         }
     }
 
+    /* Open Weather */
+    initializeOpenWeather() {
+        const value = this.settingsData.openWeatherApiKey;
+
+        this.openWeatherKeyInput.addEventListener("change", this.checkOpenWeather.bind(this));
+        this.openWeatherKeyInput.value = value;
+    }
+
+    // for event on transparency slider input
+    checkOpenWeather(event) {
+        const value = event.target.value;
+
+        this.settingsData.openWeatherApiKey = value;
+    }
+
     // Display settings page
     showSettings() {
         PageHandler.switchPage(pageId);
@@ -364,20 +389,10 @@ export class Settings extends HTMLElement {
         PageHandler.switchToMainPage();
         this.saveSettings(this.settingsData);
 
+        this.dispatchSettingsEvent();
+
         // Stop the auto save interval
         clearInterval(this.autoSaveInterval);
-    }
-
-    // Return settings data
-    getSettingsData() {
-        const settings = window.api.settings.getUserSettings();
-
-        if (Object.keys(settings).length == 0) {
-            this.saveSettings(this.defaultSettings);
-            return this.defaultSettings;
-        }
-        // Combine default settings and user settings to fill up empty values
-        return Object.assign(this.defaultSettings, settings);
     }
 
     saveSettings(object) {

@@ -52,8 +52,8 @@ class Weather extends HTMLElement {
 
         this.editWeatherId.value = this.location;
 
+        this.addSettingsEvent();
         this.addEditEvent();
-        this.updateWeather();
         this.updateInterval = setInterval(this.updateWeather.bind(this), this.delay);
     }
 
@@ -64,6 +64,13 @@ class Weather extends HTMLElement {
         else {
             this.forecastDays = 5;
         }
+    }
+
+    addSettingsEvent() {
+        document.addEventListener("settings-update", (e) => {
+            const updated = window.api.weather.setOpenWeatherKey(e.detail.settingsData.openWeatherApiKey);
+            updated && this.updateWeather();
+        });
     }
 
     addEditEvent() {
