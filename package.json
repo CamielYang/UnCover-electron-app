@@ -20,7 +20,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
-    "electron": "^16.0.7",
+    "electron": "^16.2.6",
     "eslint": "^8.18.0",
     "mini-css-extract-plugin": "^2.6.1",
     "webpack": "^5.73.0",
